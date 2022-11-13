@@ -295,6 +295,7 @@ function RecipeForm(props) {
                         </div>
                         <div hidden={editable} className="col s4">
                             <button className="btn waves-effect waves-light right" type="button" onClick={handleEditClick} >Edit Recipe
+                            <i className="material-icons right">edit</i>
                             </button>
                         </div>
                     </div>
