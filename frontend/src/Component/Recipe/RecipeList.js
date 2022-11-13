@@ -129,7 +129,10 @@ function RecipeList() {
                                         <td id="premade">{recipe.premade.toString()}</td>
                                         <td id="difficulty">{recipe.difficulty}</td>
                                         <td id="healthy">{recipe.healthy_level}</td>
-                                        <td id="delete" hidden={!isAdmin}><button onClick={handleDeleteClick}>Delete</button></td>
+                                        {/* <td id="details"><Link to="/recipes/:id"> <a href="#!" className="secondary-content">
+                                        <i className="material-icons left">details</i></a></Link></td> */}
+                                        <td id="delete" className="tooltipped" data-position="right" data-tooltip="delete?" hidden={!isAdmin}><a href="#!" className="secondary-content" onClick={handleDeleteClick}>
+                                        <i className="material-icons left">delete</i></a></td>
                                     </tr>
                                 )
                             })}
