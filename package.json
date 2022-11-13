@@ -1,0 +1,16 @@
+{
+  "name": "dinner-app",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "npm start --prefix backend",
+    "client": "npm start --prefix frontend"
+  },
+  "keywords": [],
+  "author": "Peter Kinsella",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^7.4.0"
+  }
+}
