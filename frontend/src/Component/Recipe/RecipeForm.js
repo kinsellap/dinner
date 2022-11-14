@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import UserContext from "../../Service/UserContext";
-import { createRecipe, updateRecipe } from "../../Service/ApiService"
+import { createRecipe, updateRecipe, getErrorDetails } from "../../Service/ApiService"
 import M from "materialize-css";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
@@ -146,7 +146,10 @@ function RecipeForm(props) {
                     setTimeout(() => navigate('/recipes'), 1000); // this is causing issues with loggedIn user state
                 })
                 .catch((err) => {
-                    M.toast({ html: 'There was an error updating this recipe', classes: 'red' })
+                    M.toast({
+                        html: `There was an error updating this recipe ${getErrorDetails(err)} `,
+                         classes: 'red'
+                    })
                     console.log(err)
                 })
         } else if (isCreateMode) {
@@ -156,11 +159,14 @@ function RecipeForm(props) {
                     setTimeout(() => navigate('/recipes'), 1000)
                 })
                 .catch((err) => {
-                    M.toast({ html: 'There was an error creating this recipe', classes: 'red' })
+
+                    M.toast({ html: `There was an error creating this recipe ${getErrorDetails(err)}`, classes: 'red' })
                     console.log(err)
                 })
         }
     };
+
+
 
     return (
         <div className="row">
@@ -295,7 +301,7 @@ function RecipeForm(props) {
                         </div>
                         <div hidden={editable} className="col s4">
                             <button className="btn waves-effect waves-light right" type="button" onClick={handleEditClick} >Edit Recipe
-                            <i className="material-icons right">edit</i>
+                                <i className="material-icons right">edit</i>
                             </button>
                         </div>
                     </div>

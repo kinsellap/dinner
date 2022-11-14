@@ -9,9 +9,9 @@ userRouter.post('/',async(req, res) => {
         .catch(err => {
             res.status(400);
             if(err.message.includes(" email_address_1 dup key")){
-                 res.json({ error: "email address is already in use" });
+                 res.json({ message: "email address is already in use" });
             } else {
-            res.json({ error: err.message });
+            res.json({ message: err.message });
             }
         });
 });
@@ -19,14 +19,14 @@ userRouter.post('/',async(req, res) => {
 userRouter.get('/', async(req, res) => {
     if (!req.query.name && Object.keys(req.query).length !== 0) {
         res.status(400);
-        res.json({ error: "invalid request params" });
+        res.json({ message: "invalid request params" });
         return;
     }
     getUsers(req.query.name)
         .then(result => res.json(result))
         .catch(err => {
             res.status(400);
-            res.json({ error: err.message });
+            res.json({ message: err.message });
         });
 });
 
@@ -35,7 +35,7 @@ userRouter.post('/login', async(req, res) => {
         .then(result => handleGetUserResult(result, res, result))
         .catch(err => {
             res.status(400);
-            res.json({ error: err.message });
+            res.json({ message: err.message });
         });
 });
 
@@ -44,7 +44,7 @@ userRouter.get('/:id', async(req, res) => {
         .then(result => handleGetUserResult(result, res, result))
         .catch(err => {
             res.status(404);
-            res.json({ error: err.message });
+            res.json({ message: err.message });
         });
 });
 
@@ -53,7 +53,7 @@ userRouter.put('/:id', async(req, res) => {
         .then(result => handleGetUserResult(result, res, result))
         .catch(err => {
             res.status(500);
-            res.json({ error: err.message });
+            res.json({ message: err.message });
         });
 });
 
@@ -62,7 +62,7 @@ userRouter.delete('/:id', async(req, res) => {
         .then(result => handleGetUserResult(result, res, { message: `successfully deleted user` }))
         .catch(err => {
             res.status(500);
-            res.json({ error: err.message });
+            res.json({ message: err.message });
         });
 });
 
@@ -71,14 +71,14 @@ userRouter.delete('/', (req, res) => {
         .then(() => res.json({ message: `successfully deleted all users` }))
         .catch(err => {
             res.status(500);
-            res.json({ error: err.message });
+            res.json({ message: err.message });
         });
 });
 
 const handleGetUserResult = (result, res, response) => {
     if (!result) {
         res.status(404);
-        res.json({ error: "User not found" });
+        res.json({ message: "User not found" });
     } else {
         res.json(response);
     };

@@ -7,21 +7,21 @@ recipeRouter.post('/', (req, res) => {
         .then(result => res.json(result))
         .catch(err => {
             res.status(400);
-            res.json({ error: err.message });
+            res.json({ message: err.message });
         });
 });
 
 recipeRouter.get('/', (req, res) => {
     if (!req.query.title && Object.keys(req.query).length !== 0) {
         res.status(400);
-        res.json({ error: "invalid request params" });
+        res.json({ message: "invalid request params" });
         return;
     }
     getRecipes(req.query.title)
         .then(result => res.json(result))
         .catch(err => {
             res.status(400);
-            res.json({ error: err.message });
+            res.json({ message: err.message });
         });
 });
 
@@ -33,7 +33,7 @@ recipeRouter.get('/:page/:limit', (req, res) => {
         .then(result => res.json(result))
         .catch(err => {
             res.status(400);
-            res.json({ error: err.message });
+            res.json({ message: err.message });
         });
 });
 
@@ -42,7 +42,7 @@ recipeRouter.get('/:id', (req, res) => {
         .then(result => handleGetByIdResult(result, res, result))
         .catch(err => {
             res.status(404);
-            res.json({ error: err.message });
+            res.json({ message: err.message });
         });
 });
 
@@ -51,7 +51,7 @@ recipeRouter.put('/:id', (req, res) => {
         .then(result => handleGetByIdResult(result, res, result))
         .catch(err => {
             res.status(500);
-            res.json({ error: err.message });
+            res.json({ message: err.message });
         });
 });
 
@@ -60,7 +60,7 @@ recipeRouter.delete('/:id', (req, res) => {
         .then(result => handleGetByIdResult(result, res, { message: `successfully deleted recipe` }))
         .catch(err => {
             res.status(500);
-            res.json({ error: err.message });
+            res.json({ message: err.message });
         });
 });
 
@@ -69,14 +69,14 @@ recipeRouter.delete('/', (req, res) => {
         .then(() => res.json({ message: `successfully deleted all recipes` }))
         .catch(err => {
             res.status(500);
-            res.json({ error: err.message });
+            res.json({ message: err.message });
         });
 });
 
 const handleGetByIdResult = (result, res, response) => {
     if (!result) {
         res.status(404);
-        res.json({ error: "Recipe not found" });
+        res.json({ message: "Recipe not found" });
     } else {
         res.json(response);
     };

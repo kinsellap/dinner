@@ -61,3 +61,8 @@ export const fetchRecipes = async (page, query, limit) => {
 
 const isNotEmpty = (query) => query !== undefined && query !== "" && query !== null;
 
+export const getErrorDetails = (err) => {
+    if (err.response?.data?.message) {
+        return " - " + err.response.data.message;
+    }
+}

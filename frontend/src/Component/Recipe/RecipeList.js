@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom"
-import { fetchRecipes, findRecipe, deleteRecipe } from "../../Service/ApiService";
+import { fetchRecipes, getErrorDetails, deleteRecipe } from "../../Service/ApiService";
 import M from 'materialize-css'
 import UserContext from "../../Service/UserContext";
 
@@ -33,7 +33,7 @@ function RecipeList() {
 
                 })
             .catch((err) => {
-                M.toast({ html: 'There was an error loading the recipes', classes: 'red' })
+                M.toast({ html:`There was an error loading the recipes ${getErrorDetails(err)}`, classes: 'red' })
                 console.log(err)
             })
     };
@@ -68,7 +68,6 @@ function RecipeList() {
         }
     };
 
-
     const handleDeleteClick = (event) => {
         event.preventDefault();
         if (isAdmin) {
@@ -80,7 +79,8 @@ function RecipeList() {
                     setTimeout(() => window.location.reload(), 1000);
                 })
                 .catch((err) => {
-                    M.toast({ html: 'There was an error deleting the recipe', classes: 'red' })
+                    M.toast({ html: `There was an error deleting the recipe ${getErrorDetails(err)}`,
+                     classes: 'red' })
                     console.log(err)
                 })
         }

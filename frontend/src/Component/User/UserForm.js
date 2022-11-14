@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createUser, login } from "../../Service/ApiService";
+import { createUser, login ,getErrorDetails} from "../../Service/ApiService";
 import M from "materialize-css";
 
 function UserForm(props) {
@@ -67,16 +67,10 @@ function UserForm(props) {
             setLoggedInUser(res.data);
             M.toast({ html: `Welcome ${values.first_name} ${values.last_name}!` })
         }).catch((err) => {
-            M.toast({ html: `There was an error getting this user  ${getErrorDetails(err)} `, classes: 'red' })
+            M.toast({ html: `There was an error getting this user ${getErrorDetails(err)} `, classes: 'red' })
             console.log(err)
         })
     };
-
-    const getErrorDetails = (err) => {
-        if (err.response?.data?.error) {
-            return " - " + err.response.data.error;
-        }
-    }
 
     return (
         <div className="col s12">
