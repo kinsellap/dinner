@@ -13,11 +13,15 @@ export const UserSchema = new Schema({
     },
     email_address: {
         type: String,
-        required: true
+        required: true,
+        match: /.+\@.+\..+/,
+        unique: true
     },
     password: {
         type: String,
-        required: true
+        minlength: 5,
+        required: true,
+        select: false
     },
     date_added: { 
         type: Date, 

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { createUser } from "../../Service/ApiService";
+import { createUser, login } from "../../Service/ApiService";
 import M from "materialize-css";
 
 function UserForm(props) {
+    const isRegister = props.createMode;
+    const formAction = isRegister ? "Register" : "Login";
     const [values, setValues] = useState({
         first_name: '',
         last_name: '',
@@ -10,6 +12,8 @@ function UserForm(props) {
         password: '',
         admin: false
     });
+
+    const [loggedInUser, setLoggedInUser] = useState(undefined);
 
     const handleFirstNameChange = (event) => {
         event.persist();
@@ -43,47 +47,69 @@ function UserForm(props) {
         }));
     };
 
-    const doSubmit = async (event) => {
+    const doRegister = async (event) => {
         event.preventDefault();
         await createUser(values)
-        .then((res) => {
-            M.toast({ html: `User ${values.first_name} ${values.last_name} created`})
-            setTimeout(() => window.location.reload(), 1000);
-        })
-        .catch((err) => {
-            M.toast({ html: 'There was an error creating this user', classes: 'red'  })
-            console.log(err)
-        })      
+            .then((res) => {
+                setLoggedInUser(res.data);
+                M.toast({ html: `User ${values.first_name} ${values.last_name} created` })
+            })
+            .catch((err) => {
+                M.toast({ html: `There was an error creating this user ${getErrorDetails(err)} `, classes: 'red' })
+                console.log(err)
+            })
     };
+
+    const doLogin = async (event) => {
+        event.preventDefault();
+        const { email_address, password } = values;
+        await login({ email_address, password }).then((res) => {
+            setLoggedInUser(res.data);
+            M.toast({ html: `Welcome ${values.first_name} ${values.last_name}!` })
+        }).catch((err) => {
+            M.toast({ html: `There was an error getting this user  ${getErrorDetails(err)} `, classes: 'red' })
+            console.log(err)
+        })
+    };
+
+    const getErrorDetails = (err) => {
+        if (err.response?.data?.error) {
+            return " - " + err.response.data.error;
+        }
+    }
 
     return (
         <div className="col s12">
-            <h4>Add a new user</h4>
-            <form onSubmit={doSubmit}>
-                <div className="row">
-                    <div className="input-field col s6">
-                        <input className="validate" id="first-name" value={values.first_name} type="text" required maxLength="20" onChange={handleFirstNameChange} />
+            <h4 className="teal-text text-lighten-2">{formAction}</h4>
+            <form onSubmit={isRegister ? doRegister : doLogin}>
+                <div hidden={!isRegister} className="row">
+                    <div className="input-field col s12">
+                        <input className="validate" id="first-name" value={values.first_name} type="text" required={isRegister} maxLength="20" onChange={handleFirstNameChange} />
                         <label htmlFor="first-name">First Name</label>
-
                     </div>
-                    <div className="input-field col s6">
-                        <input className="validate" id="last-name" value={values.last_name} type="text" required maxLength="20" onChange={handleLastNameChange} />
+                </div>
+                <div hidden={!isRegister} className="row">
+                    <div className="input-field col s12">
+                        <input className="validate" id="last-name" value={values.last_name} type="text" required={isRegister} maxLength="20" onChange={handleLastNameChange} />
                         <label htmlFor="last-name">Last Name</label>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="input-field col s6">
+                    <div className="input-field col s12">
                         <input className="validate" id="email-address" value={values.email_address} type="email" required onChange={handleEmailChange} />
                         <label htmlFor="email-address" data-error="wrong" data-success="right">Email</label>
                     </div>
-                    <div className="input-field col s6">
-                        <input id="password" value={values.password} type="text" required onChange={handlePasswordChange} />
+                </div>
+                <div className="row">
+                    <div className="input-field col s12">
+                        <input id="password" value={values.password} type="password" minLength="5" required onChange={handlePasswordChange} />
                         <label htmlFor="password">Password</label>
                     </div>
                 </div>
                 <div className="row">
                     <div className="input-field col s12">
-                        <button className="btn waves-effect waves-light" type="submit" name="action">Add User</button>
+                        <button className="btn waves-light" type="submit">{formAction}
+                            <i className="material-icons right">account_circle</i></button>
                     </div>
                 </div>
             </form>

@@ -165,7 +165,7 @@ function RecipeForm(props) {
     return (
         <div className="row">
             <div className="col s12 ">
-                <h5>{editable && isCreateMode ? "Add a new recipe" : "Recipe details"}</h5>
+                <h5 className="teal-text text-lighten-2">{editable && isCreateMode ? "Add a new recipe" : "Recipe details"}</h5>
                 <form onSubmit={doSubmit}>
                     <div className="row">
                         <div className="input-field col s12">

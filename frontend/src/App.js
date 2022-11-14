@@ -8,6 +8,7 @@ import RecipeFormLayout from './Layout/RecipeFormLayout';
 import RecipeListLayout from './Layout/RecipeListLayout';
 import RecipeLayout from './Layout/RecipeLayout';
 import LoginLayout from './Layout/LoginLayout';
+import RegisterLayout from './Layout/RegisterLayout';
 
 function App() {
   return (
@@ -23,12 +24,11 @@ function App() {
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/register" element={<LoginLayout/>} />
-        <Route path="/login" element={<LoginLayout/>} />
         <Route path="/users">
           <Route index element={<UserLayout />} />
+          <Route path="login" element={<LoginLayout/>} />
+          <Route path="register" element={<RegisterLayout />} />
           <Route path="id" element={<UserLayout />} />
-          <Route path="new" element={<UserForm />} />
         </Route>
         <Route path="/recipes">
           <Route index element={<RecipeListLayout />} />

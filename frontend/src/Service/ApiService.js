@@ -7,12 +7,16 @@ export const createUser = async (data) => {
     return await axios.post(usersEndpoint, data);
 }
 
-export const findUser = async (query) => {
+export const getUser = async (query) => {
     let url = usersEndpoint;
     if (isNotEmpty(query)) {
         url += "?name=" + query;
     }
     return await axios.get(url);
+}
+
+export const login = async (data) => {
+    return await axios.post(usersEndpoint + "login",data);
 }
 
 export const updateUser = async (userId, data) => {
@@ -28,7 +32,7 @@ export const fetchUsers = async () => {
 }
 
 export const createRecipe = async (data) => {
-   return await axios.post(recipesEndpoint, data)
+    return await axios.post(recipesEndpoint, data)
 }
 
 export const findRecipe = async (query) => {

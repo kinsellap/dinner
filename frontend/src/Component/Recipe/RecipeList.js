@@ -91,7 +91,7 @@ function RecipeList() {
             <div className="col s12">
                 <div className="row">
                     <div className="col s12">
-                        <h5>Search Recipe</h5>
+                        <h5 className="teal-text text-lighten-2">Search Recipe</h5>
                         <div className="input-field col s4 center">
                             <input className="validate" id="title-search" type="text" maxLength="20" />
                             <label htmlFor="title-search">Search Name
