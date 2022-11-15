@@ -5,16 +5,16 @@ import M from "materialize-css";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function RecipeForm(props) {
-    const [loggedInUser] = useContext(UserContext);
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const isAdmin = loggedInUser?.admin;
     const navigate = useNavigate();
     const location = useLocation();
     const data = location.state?.recipe;
     const isCreateMode = props.createMode;
     const [editable, setEditable] = useState(isCreateMode);
-    const addFormattedData = (data) => {
+    const addFormattedData = (valuesToFormat) => {
         return {
-            ...data,
+            ...valuesToFormat,
             premade: Boolean(data.premade),
             vegetarian: Boolean(data.vegetarian),
             batch: Boolean(data.batch),
@@ -143,7 +143,7 @@ function RecipeForm(props) {
             await updateRecipe(data._id, values)
                 .then((res) => {
                     M.toast({ html: `Recipe ${res.data.title} updated` })
-                    setTimeout(() => navigate('/recipes'), 1000); // this is causing issues with loggedIn user state
+                    setTimeout(() => navigate('/recipes'), 1000); 
                 })
                 .catch((err) => {
                     M.toast({
@@ -299,7 +299,7 @@ function RecipeForm(props) {
                                 <i className="material-icons right">send</i>
                             </button>
                         </div>
-                        <div hidden={editable} className="col s4">
+                        <div hidden={editable || !isAdmin} className="col s4">
                             <button className="btn waves-effect waves-light right" type="button" onClick={handleEditClick} >Edit Recipe
                                 <i className="material-icons right">edit</i>
                             </button>
