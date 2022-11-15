@@ -148,7 +148,7 @@ function RecipeForm(props) {
                 .catch((err) => {
                     M.toast({
                         html: `There was an error updating this recipe ${getErrorDetails(err)} `,
-                         classes: 'red'
+                        classes: 'red'
                     })
                     console.log(err)
                 })
@@ -175,20 +175,20 @@ function RecipeForm(props) {
                 <form onSubmit={doSubmit}>
                     <div className="row">
                         <div className="input-field col s12">
-                            <input className="validate" id="title" value={values.title} type="text" maxLength="20" onChange={handleTitleChange} required disabled={!editable} />
-                            <label className="active" htmlFor="title">Recipe Name</label>
+                            <input className={isCreateMode ? "validate" : ""} id="title" value={values.title} type="text" maxLength="20" onChange={handleTitleChange} required readOnly={!editable} />
+                            <label className={isCreateMode ? "" : "active"} htmlFor="title">Recipe Name</label>
                         </div>
                     </div>
                     <div className="row">
                         <div className="input-field col s12">
-                            <input className="validate" id="url" value={values.url} type="text" onChange={handleUrlChange} required disabled={!editable} />
-                            <label className="active" htmlFor="url">Webpage</label>
+                            <input className={isCreateMode ? "validate" : ""} id="url" value={values.url} type="url" onChange={handleUrlChange} required readOnly={!editable} />
+                            <label className={isCreateMode ? "" : "active"} htmlFor="url">Webpage</label>
                         </div>
                     </div>
                     <div className="row">
                         <div className="input-field col s4">
-                            <select className=".disabled" id="core-ingredient" value={values.core_ingredient} onChange={handleCoreChange} required disabled={!editable}>
-                                <option value="">Choose</option>
+                            <select className="validate" id="core-ingredient" value={values.core_ingredient} onChange={handleCoreChange} required disabled={!editable}>
+                                <option value="" disabled>Choose</option>
                                 <option value="Beans">Beans</option>
                                 <option value="Beef">Beef</option>
                                 <option value="Chicken">Chicken</option>
@@ -261,23 +261,23 @@ function RecipeForm(props) {
                     </div>
                     <div className="row">
                         <div className="input-field col s12">
-                            <textarea id="notes" className="materialize-textarea" value={values.notes} onChange={handleNotesChange} disabled={!editable}></textarea>
-                            <label className="active" htmlFor="notes">Notes</label>
+                            <textarea rows="10" id="notes" className="materialize-textarea" value={values.notes} onChange={handleNotesChange} readOnly={!editable}></textarea>
+                            <label className={isCreateMode ? "" : "active"} htmlFor="notes">Notes</label>
                         </div>
                     </div>
                     <div className="row" hidden={isCreateMode}>
                         <div className="input-field col s6">
-                            <textarea id="date-added" className="materialize-textarea " value={values.date_added} disabled></textarea>
+                            <textarea id="date-added" className="materialize-textarea " value={values.date_added} readOnly></textarea>
                             <label className="active" htmlFor="date-added">Date Added</label>
                         </div>
                         <div className="input-field col s6">
-                            <textarea id="added-by" className="materialize-textarea " value={values.added_by} disabled></textarea>
+                            <textarea id="added-by" className="materialize-textarea " value={values.added_by} readOnly></textarea>
                             <label className="active" htmlFor="added-by">Added By</label>
                         </div>
                     </div>
                     <div className="row" hidden={isCreateMode}>
                         <div className="input-field col s6">
-                            <textarea id="date-updated" className="materialize-textarea " value={values.date_updated} disabled></textarea>
+                            <textarea id="date-updated" className="materialize-textarea " value={values.date_updated} readOnly></textarea>
                             <label className="active" htmlFor="date-updated">Date Updated</label>
                         </div>
                         <div className="input-field col s6">
