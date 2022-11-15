@@ -140,7 +140,7 @@ function RecipeForm(props) {
     const doSubmit = async (event) => {
         event.preventDefault();
         if (!isCreateMode && data) {
-            await updateRecipe(data._id, values)
+            await updateRecipe(data._id, {...values,"updated_by": loggedInUser})
                 .then((res) => {
                     M.toast({ html: `Recipe ${res.data.title} updated` })
                     setTimeout(() => navigate('/recipes'), 1000); 
@@ -153,7 +153,7 @@ function RecipeForm(props) {
                     console.log(err)
                 })
         } else if (isCreateMode) {
-            await createRecipe(values)
+            await createRecipe({...values,"created_by": loggedInUser})
                 .then((res) => {
                     M.toast({ html: `Recipe ${res.data.title} created` })
                     setTimeout(() => navigate('/recipes'), 1000)
@@ -271,7 +271,7 @@ function RecipeForm(props) {
                             <label className="active" htmlFor="date-added">Date Added</label>
                         </div>
                         <div className="input-field col s6">
-                            <textarea id="added-by" className="materialize-textarea " value={values.added_by} readOnly></textarea>
+                            <textarea id="added-by" className="materialize-textarea " value={values.added_by?.email_address} readOnly></textarea>
                             <label className="active" htmlFor="added-by">Added By</label>
                         </div>
                     </div>
@@ -281,7 +281,7 @@ function RecipeForm(props) {
                             <label className="active" htmlFor="date-updated">Date Updated</label>
                         </div>
                         <div className="input-field col s6">
-                            <textarea id="updated-by" className="materialize-textarea " value={values.updated_by} disabled></textarea>
+                            <textarea id="updated-by" className="materialize-textarea " value={values.updated_by?.email_address} readOnly></textarea>
                             <label className="active" htmlFor="updated-by">Updated By</label>
                         </div>
                     </div>

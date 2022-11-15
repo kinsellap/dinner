@@ -8,7 +8,9 @@ export const createRecipe = async (recipeData) => {
 }
 
 export const getRecipe = async (recipeId) => {
-    return await (Recipe.findById(recipeId));
+    return await Recipe.findById(recipeId)
+        .populate('updated_by', 'email_address')
+        .populate('added_by', 'email_address');
 }
 
 export const getRecipes = async (searchQuery) => {
@@ -16,7 +18,9 @@ export const getRecipes = async (searchQuery) => {
     if (searchQuery) {
         filter = { title: { $regex: new RegExp(searchQuery, "i") } };
     }
-    return await (Recipe.find(filter));
+    return await (Recipe.find(filter)
+        .populate('updated_by', 'email_address')
+        .populate('added_by', 'email_address'));
 }
 
 export const getCountRecipes = async () => {
@@ -29,8 +33,10 @@ export const getRecipesByPage = async (page, limit, searchQuery) => {
         filter = { title: { $regex: new RegExp(searchQuery, "i") } };
     }
     return await Recipe.find(filter)
+        .populate('updated_by', 'email_address')
+        .populate('added_by', 'email_address')
         .skip(page * limit)
-        .limit(limit);
+        .limit(limit)
 }
 
 export const updateRecipe = async (recipeId, recipeBody) => {
