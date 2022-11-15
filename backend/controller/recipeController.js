@@ -1,4 +1,4 @@
-import { createRecipe, getRecipes, getRecipesByPage,getRecipe, updateRecipe, deleteRecipe, deleteRecipes } from '../service/recipeService';
+import { createRecipe, getRecipes, getRecipesByPage,getRecipe, updateRecipe, deleteRecipe, deleteRecipes,getCountRecipes } from '../service/recipeService';
 import express from 'express';
 const recipeRouter = express.Router();
 
@@ -24,6 +24,16 @@ recipeRouter.get('/', (req, res) => {
             res.json({ message: err.message });
         });
 });
+
+recipeRouter.get('/count', (req, res) => {
+    getCountRecipes()
+        .then(result => res.json(result))
+        .catch(err => {
+            res.status(400);
+            res.json({ message: err.message });
+        });
+});
+
 
 recipeRouter.get('/:page/:limit', (req, res) => {
     const page = parseInt(req.params.page);

@@ -59,6 +59,10 @@ export const fetchRecipes = async (page, query, limit) => {
     return await axios.get(url);
 }
 
+export const countRecipes = async () => {
+    return await axios.get(recipesEndpoint + '/count');
+}
+
 const isNotEmpty = (query) => query !== undefined && query !== "" && query !== null;
 
 export const getErrorDetails = (err) => {

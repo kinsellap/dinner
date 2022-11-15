@@ -6,14 +6,19 @@ const lodash = require('lodash');
 const User = mongoose.model('User', UserSchema);
 
 export const createUser = async (userData) => {
+    const userCount = await (User.count());
     const encryptedPassword = await encryptPassword(userData.password);
-    const newUser = new User({ ...userData, "password": encryptedPassword })
-    return await (newUser.save());
+    const newUser = new User({ ...userData, "password": encryptedPassword, "admin": userCount==0})
+    const user = await (newUser.save());
+    if (!user) {
+        return null;
+    }
+    return removePassword(user);
 }
 
 export const getUserByAuth = async (userData) => {
     const { email_address, password } = userData;
-    var user = await (User.findOne({ email_address }).select('+password'));
+    const user = await (User.findOne({ email_address }).select('+password'));
     if (!user) {
         return null;
     }

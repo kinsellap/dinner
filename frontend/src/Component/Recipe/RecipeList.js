@@ -1,26 +1,40 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom"
-import { fetchRecipes, getErrorDetails, deleteRecipe } from "../../Service/ApiService";
+import { fetchRecipes, getErrorDetails, deleteRecipe, countRecipes } from "../../Service/ApiService";
 import M from 'materialize-css'
 import UserContext from "../../Service/UserContext";
 
 function RecipeList() {
-    const [loggedInUser] = useContext(UserContext);
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const isAdmin = loggedInUser?.admin;
     const navigate = useNavigate();
     const itemsPerPage = 5;
     const maxPages = 4; //TODO get full amount of records on load and set max pages/number of paginations
     const [recipes, setRecipes] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
+    const [recipeCount, setRecipeCount] = useState(0);
     const [currentQuery, setCurrentQuery] = useState('');
 
     useEffect(() => {
         var elems = document.querySelectorAll('.tooltipped');
         M.Tooltip.init(elems);
     })
+
     useEffect(() => {
         getRecipes(currentPage, currentQuery);
-    }, [currentPage, currentQuery]);
+    }, [currentPage, currentQuery,recipeCount]);
+
+    useEffect(() => {
+        countRecipes()
+            .then(
+                (res) => {
+                   setRecipeCount(parseInt(res.data));
+                })
+            .catch((err) => {
+                M.toast({ html:`There was an error loading the recipes ${getErrorDetails(err)}`, classes: 'red' })
+                console.log(err)
+            })
+    }, [recipeCount]);
 
     const getRecipes = async (page, searchParams) => {
         await fetchRecipes(page, searchParams, itemsPerPage)
@@ -45,12 +59,10 @@ function RecipeList() {
     };
 
     const handlePaginationClick = async (e) => {
-        console.log("page before " + currentPage);
         const event = e.nativeEvent;
         event.preventDefault();
         const pageNumber = event.target.closest('a').text;
         setCurrentPage(pageNumber-1);
-        console.log("page after" + currentPage);
     };
 
     const handleChevronClick = async (e) => {
@@ -58,13 +70,9 @@ function RecipeList() {
         event.preventDefault();
         const chevron = event.target.closest('i').textContent;
         if (chevron.includes('right') && currentPage !== maxPages) {
-            console.log(currentPage);
             setCurrentPage(currentPage + 1);
-            console.log(currentPage);
         } else if(chevron.includes('left') && currentPage !== 0){
-            console.log(currentPage);
             setCurrentPage(currentPage - 1);
-            console.log(currentPage);
         }
     };
 
@@ -76,7 +84,7 @@ function RecipeList() {
             deleteRecipe(rowId)
                 .then((res) => {
                     M.toast({ html: `${res.data.message}` });
-                    setTimeout(() => window.location.reload(), 1000);
+                    setRecipeCount(countRecipes -1);
                 })
                 .catch((err) => {
                     M.toast({ html: `There was an error deleting the recipe ${getErrorDetails(err)}`,

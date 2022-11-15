@@ -19,6 +19,10 @@ export const getRecipes = async (searchQuery) => {
     return await (Recipe.find(filter));
 }
 
+export const getCountRecipes = async () => {
+    return await (Recipe.count());
+}
+
 export const getRecipesByPage = async (page, limit, searchQuery) => {
     let filter = {};
     if (searchQuery) {

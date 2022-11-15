@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import UserContext from "../../Service/UserContext";
 import { createUser, login ,getErrorDetails} from "../../Service/ApiService";
 import M from "materialize-css";
+import { useNavigate, Link } from 'react-router-dom'
 
 function UserForm(props) {
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+    const navigate = useNavigate();
     const isRegister = props.createMode;
     const formAction = isRegister ? "Register" : "Login";
     const [values, setValues] = useState({
@@ -12,8 +16,6 @@ function UserForm(props) {
         password: '',
         admin: false
     });
-
-    const [loggedInUser, setLoggedInUser] = useState(undefined);
 
     const handleFirstNameChange = (event) => {
         event.persist();
@@ -52,7 +54,8 @@ function UserForm(props) {
         await createUser(values)
             .then((res) => {
                 setLoggedInUser(res.data);
-                M.toast({ html: `User ${values.first_name} ${values.last_name} created` })
+                M.toast({ html: `User ${res.data.first_name} ${res.data.last_name} created` })
+                setTimeout(() => navigate('/recipes'), 1000); 
             })
             .catch((err) => {
                 M.toast({ html: `There was an error creating this user ${getErrorDetails(err)} `, classes: 'red' })
@@ -65,7 +68,8 @@ function UserForm(props) {
         const { email_address, password } = values;
         await login({ email_address, password }).then((res) => {
             setLoggedInUser(res.data);
-            M.toast({ html: `Welcome ${values.first_name} ${values.last_name}!` })
+            M.toast({ html: `Welcome ${res.data.first_name} ${res.data.last_name}!` })
+            setTimeout(() => navigate('/recipes'), 1000); 
         }).catch((err) => {
             M.toast({ html: `There was an error getting this user ${getErrorDetails(err)} `, classes: 'red' })
             console.log(err)
@@ -101,9 +105,21 @@ function UserForm(props) {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="input-field col s12">
+                    <div className="col s12">
                         <button className="btn waves-light" type="submit">{formAction}
                             <i className="material-icons right">account_circle</i></button>
+                    </div>
+                </div>
+                <div hidden={!isRegister} className="row">
+                    <div className="col s12">
+                   <span>Already have an account?</span>  <Link to="/users/login"><span>Login
+                        <i className="material-icons tiny">chevron_right</i></span></Link>
+                    </div>
+                </div>
+                <div hidden={isRegister} className="row">
+                    <div className="col s12">
+                   <span>Don't have an account?</span> <Link to="/users/register"><span>Register
+                        <i className="material-icons tiny">chevron_right</i></span></Link>
                     </div>
                 </div>
             </form>

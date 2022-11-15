@@ -1,16 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import UserContext from './UserContext';
 
 const UserProvider = ({ children }) => {
-    const [loggedInUser, setLoggedInUser] = useState();
-
-    useEffect(() =>
-        setLoggedInUser({
-            first_name: 'Peter',
-            last_name: 'Kinsella',
-            admin: true
-        }) , []);
-
+    const [loggedInUser, setLoggedInUser] = useState(undefined);
     return (
         <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
             {children}

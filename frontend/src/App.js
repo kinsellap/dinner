@@ -9,21 +9,23 @@ import RecipeListLayout from './Layout/RecipeListLayout';
 import RecipeLayout from './Layout/RecipeLayout';
 import LoginLayout from './Layout/LoginLayout';
 import RegisterLayout from './Layout/RegisterLayout';
+import UserProvider from "./Service/UserProvider"
 
 function App() {
   return (
+    <UserProvider>
     <div>
       <nav>
         <div className="nav-wrapper">
-          <Link to="/" className="brand-logo left">What's for Dinner?</Link>
+          <Link to="/recipes" className="brand-logo left">What's for Dinner?</Link>
           <ul className="right ">
-            <li><Link to="/users">Users</Link></li>
+            <li><Link to="/users/login">Users</Link></li>
             <li><Link to="/recipes">Recipes</Link></li>
           </ul>
         </div>
       </nav>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<LoginLayout />} />
         <Route path="/users">
           <Route index element={<UserLayout />} />
           <Route path="login" element={<LoginLayout/>} />
@@ -38,6 +40,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
+    </UserProvider>
   );
 }
 export default App;
