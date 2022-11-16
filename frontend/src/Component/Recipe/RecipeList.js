@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom"
-import { fetchRecipes, getErrorDetails, deleteRecipe, countRecipes } from "../../Service/ApiService";
+import { fetchRecipes, getErrorDetails, deleteRecipe } from "../../Service/ApiService";
 import M from 'materialize-css'
 import UserContext from "../../Service/UserContext";
 
@@ -12,7 +12,6 @@ function RecipeList() {
     const maxPages = 4; //TODO get full amount of records on load and set max pages/number of paginations
     const [recipes, setRecipes] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [recipeCount, setRecipeCount] = useState(0);
     const [currentQuery, setCurrentQuery] = useState('');
 
     useEffect(() => {
@@ -22,19 +21,7 @@ function RecipeList() {
 
     useEffect(() => {
         getRecipes(currentPage, currentQuery);
-    }, [currentPage, currentQuery,recipeCount]);
-
-    useEffect(() => {
-        countRecipes()
-            .then(
-                (res) => {
-                   setRecipeCount(parseInt(res.data));
-                })
-            .catch((err) => {
-                M.toast({ html:`There was an error loading the recipes ${getErrorDetails(err)}`, classes: 'red' })
-                console.log(err)
-            })
-    }, [recipeCount]);
+    }, [currentPage, currentQuery]);
 
     const getRecipes = async (page, searchParams) => {
         await fetchRecipes(page, searchParams, itemsPerPage)
@@ -84,7 +71,7 @@ function RecipeList() {
             deleteRecipe(rowId)
                 .then((res) => {
                     M.toast({ html: `${res.data.message}` });
-                    setRecipeCount(countRecipes -1);
+                    setTimeout(window.location.reload,3000);
                 })
                 .catch((err) => {
                     M.toast({ html: `There was an error deleting the recipe ${getErrorDetails(err)}`,
