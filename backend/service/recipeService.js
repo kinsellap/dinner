@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { RecipeSchema } from '../model/recipeModel';
+import { RecipeSchema } from '../model/RecipeModel';
 const Recipe = mongoose.model('Recipe', RecipeSchema);
 
 export const createRecipe = async (recipeData) => {

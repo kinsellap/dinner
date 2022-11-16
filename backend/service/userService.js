@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { UserSchema } from '../model/userModel'
+import { UserSchema } from '../model/UserModel'
 import bcrypt from 'bcryptjs';
 const saltRounds = 10;
 const lodash = require('lodash');

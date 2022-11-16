@@ -1,4 +1,4 @@
-import { createUser, getUser, getUsers, deleteUser,deleteUsers, updateUser,getUserByAuth } from '../service/userService';
+import { createUser, getUser, getUsers, deleteUser,deleteUsers, updateUser,getUserByAuth } from '../service/UserService';
 import express from 'express';
 
 const userRouter = express.Router();

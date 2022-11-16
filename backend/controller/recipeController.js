@@ -1,4 +1,4 @@
-import { createRecipe, getRecipes, getRecipesByPage,getRecipe, updateRecipe, deleteRecipe, deleteRecipes,getCountRecipes } from '../service/recipeService';
+import { createRecipe, getRecipes, getRecipesByPage,getRecipe, updateRecipe, deleteRecipe, deleteRecipes,getCountRecipes } from '../service/RecipeService';
 import express from 'express';
 const recipeRouter = express.Router();
 
