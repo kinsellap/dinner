@@ -104,6 +104,12 @@ function UserForm(props) {
                         <label htmlFor="password">Password</label>
                     </div>
                 </div>
+                <div hidden={isRegister} className="row">
+                    <div className="col s12">
+                   <span>Forgot your password?</span> <Link to="/users"><span className="tiny">Reset password
+                        <i className="material-icons tiny">chevron_right</i></span></Link>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col s12">
                         <button className="btn waves-light" type="submit">{formAction}
@@ -112,7 +118,7 @@ function UserForm(props) {
                 </div>
                 <div hidden={!isRegister} className="row">
                     <div className="col s12">
-                   <span>Already have an account?</span>  <Link to="/users/login"><span>Login
+                   <span>Already have an account?</span> <Link to="/users/login"><span>Login
                         <i className="material-icons tiny">chevron_right</i></span></Link>
                     </div>
                 </div>

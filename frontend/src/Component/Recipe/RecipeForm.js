@@ -6,7 +6,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function RecipeForm(props) {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
-    const isAdmin = loggedInUser?.admin;
     const navigate = useNavigate();
     const location = useLocation();
     const data = location.state?.recipe;
@@ -132,9 +131,7 @@ function RecipeForm(props) {
     };
 
     const handleEditClick = (event) => {
-        if (isAdmin) {
             setEditable(true);
-        }
     }
 
     const doSubmit = async (event) => {
@@ -259,19 +256,13 @@ function RecipeForm(props) {
                             </div>
                         </div>
                     </div>
-                    <div className="row">
-                        <div className="input-field col s12">
-                            <textarea rows="10" id="notes" className="materialize-textarea" value={values.notes} onChange={handleNotesChange} readOnly={!editable}></textarea>
-                            <label className={isCreateMode ? "" : "active"} htmlFor="notes">Notes</label>
-                        </div>
-                    </div>
                     <div className="row" hidden={isCreateMode}>
                         <div className="input-field col s6">
-                            <textarea id="date-added" className="materialize-textarea " value={values.date_added} readOnly></textarea>
+                            <textarea id="date-added" className="materialize-textarea" value={values.date_added} readOnly></textarea>
                             <label className="active" htmlFor="date-added">Date Added</label>
                         </div>
                         <div className="input-field col s6">
-                            <textarea id="added-by" className="materialize-textarea " value={values.added_by?.email_address} readOnly></textarea>
+                            <textarea id="added-by" className="materialize-textarea" value={values.added_by?.email_address} readOnly></textarea>
                             <label className="active" htmlFor="added-by">Added By</label>
                         </div>
                     </div>
@@ -283,6 +274,12 @@ function RecipeForm(props) {
                         <div className="input-field col s6">
                             <textarea id="updated-by" className="materialize-textarea " value={values.updated_by?.email_address} readOnly></textarea>
                             <label className="active" htmlFor="updated-by">Updated By</label>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="input-field col s12">
+                            <textarea className="flow-text small" id="notes" value={values.notes} onChange={handleNotesChange} readOnly={!editable}></textarea>
+                            <label className={isCreateMode ? "" : "active"} htmlFor="notes">Notes</label>
                         </div>
                     </div>
                     <div className="row">
@@ -299,7 +296,7 @@ function RecipeForm(props) {
                                 <i className="material-icons right">send</i>
                             </button>
                         </div>
-                        <div hidden={editable || !isAdmin} className="col s4">
+                        <div hidden={editable} className="col s4">
                             <button className="btn waves-effect waves-light right" type="button" onClick={handleEditClick} >Edit Recipe
                                 <i className="material-icons right">edit</i>
                             </button>
