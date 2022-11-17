@@ -10,17 +10,8 @@ import RecipeLayout from './Layout/RecipeLayout';
 import LoginLayout from './Layout/LoginLayout';
 import RegisterLayout from './Layout/RegisterLayout';
 import HeaderLayout from './Layout/HeaderLayout';
-import { useContext, useEffect } from "react";
-import { UserContext } from "./Service/UserProvider";
-import { getAuthenticatedUser } from './Service/AuthService';
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
-  useEffect(() => {
-    if (!loggedInUser) {
-      setLoggedInUser(getAuthenticatedUser());
-    }
-  })
   return (
       <div>
         <HeaderLayout />
