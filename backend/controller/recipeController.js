@@ -12,7 +12,7 @@ recipeRouter.post('/',verify, (req, res) => {
         });
 });
 
-recipeRouter.get('/',verify, (req, res) => {
+recipeRouter.get('/', (req, res) => {
     if (!req.query.title && Object.keys(req.query).length !== 0) {
         res.status(400);
         res.json({ message: "invalid request params" });
@@ -26,7 +26,7 @@ recipeRouter.get('/',verify, (req, res) => {
         });
 });
 
-recipeRouter.get('/count',verify, (req, res) => {
+recipeRouter.get('/count', (req, res) => {
     getCountRecipes()
         .then(result => res.json(result))
         .catch(err => {
@@ -36,7 +36,7 @@ recipeRouter.get('/count',verify, (req, res) => {
 });
 
 
-recipeRouter.get('/:page/:limit',verify, (req, res) => {
+recipeRouter.get('/:page/:limit', (req, res) => {
     const page = parseInt(req.params.page);
     const limit = parseInt(req.params.limit);
     const searchQuery = req.query.title
