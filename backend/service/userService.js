@@ -3,17 +3,20 @@ import { UserSchema } from '../model/UserModel'
 import bcrypt from 'bcryptjs';
 const saltRounds = 10;
 const lodash = require('lodash');
+import { signRequest } from '../service/AuthService';
 const User = mongoose.model('User', UserSchema);
 
 export const createUser = async (userData) => {
     const userCount = await (User.count());
     const encryptedPassword = await encryptPassword(userData.password);
-    const newUser = new User({ ...userData, "password": encryptedPassword, "admin": userCount==0})
+    const newUser = new User({ ...userData, "password": encryptedPassword, "admin": userCount == 0 })
     const user = await (newUser.save());
     if (!user) {
         return null;
     }
-    return removePassword(user);
+    const updatedUser = await removePassword(user);
+    return addTokenToUser(updatedUser)
+
 }
 
 export const getUserByAuth = async (userData) => {
@@ -23,10 +26,12 @@ export const getUserByAuth = async (userData) => {
         return null;
     }
     const matchedPassword = await comparePassword(password, user.password);
-    if (matchedPassword) {
-        return removePassword(user);
-    }
-    throw Error('Invalid password');
+    if (matchedPassword) {     
+        const updatedUser = await removePassword(user);
+        return addTokenToUser(updatedUser)
+    } else {
+        throw Error('Invalid password')
+    };
 }
 
 export const getUser = async (userId) => {
@@ -69,4 +74,9 @@ const comparePassword = async (password, encryptedPassword) => {
 
 const removePassword = async (user) => {
     return lodash.omit(user.toObject(), ['password']);
+}
+
+const addTokenToUser = (user) => {
+    const token = signRequest({user_id: user._id,email_address});
+    return ({ ...user, 'token': token });
 }

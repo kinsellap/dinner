@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../Service/UserProvider";
-import { removeAuthenticatedUser } from "../Service/AuthService";
+import { removeAuthenticatedUser } from "../Service/SessionService";
 import M from 'materialize-css';
 
 function HeaderLayout() {

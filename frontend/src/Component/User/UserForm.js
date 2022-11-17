@@ -3,7 +3,7 @@ import { UserContext } from "../../Service/UserProvider";
 import { createUser, getErrorDetails, loginUser } from "../../Service/ApiService";
 import M from "materialize-css";
 import { useNavigate, Link } from 'react-router-dom'
-import { setAuthenticatedUser } from "../../Service/AuthService";
+import { setAuthenticatedUser } from "../../Service/SessionService";
 
 function UserForm(props) {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
