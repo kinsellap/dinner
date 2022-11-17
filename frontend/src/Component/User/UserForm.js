@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../../Service/UserProvider";
-import { createUser, getErrorDetails, loginUser } from "../../Service/ApiService";
+import { createUser, loginUser } from "../../Service/ApiService";
+import { getErrorDetails } from "../../Utils/ErrorUtils"
 import M from "materialize-css";
 import { useNavigate, Link } from 'react-router-dom'
 import { setAuthenticatedUser } from "../../Service/SessionService";
@@ -14,8 +15,7 @@ function UserForm(props) {
         first_name: '',
         last_name: '',
         email_address: '',
-        password: '',
-        admin: false
+        password: ''
     });
 
     const handleFirstNameChange = (event) => {
@@ -54,9 +54,10 @@ function UserForm(props) {
         event.preventDefault();
         await createUser(values)
             .then((res) => {
-                setLoggedInUser(res.data);
+                console.log(res);
+                setLoggedInUser(res.data.user);
                 setAuthenticatedUser(res.data);
-                M.toast({ html: `User ${res.data.first_name} ${res.data.last_name} created` })
+                M.toast({ html: `User ${res.data.user.first_name} ${res.data.user.last_name} created` })
                 setTimeout(() => navigate('/recipes'), 1000);
             })
             .catch((err) => {
@@ -69,9 +70,9 @@ function UserForm(props) {
         event.preventDefault();
         const { email_address, password } = values;
         await loginUser({ email_address, password }).then((res) => {
-            setLoggedInUser(res.data);
+            setLoggedInUser(res.data.user);
             setAuthenticatedUser(res.data);
-            M.toast({ html: `Welcome ${res.data.first_name} ${res.data.last_name}!` })
+            M.toast({ html: `Welcome ${res.data.user.first_name} ${res.data.user.last_name}!` })
             setTimeout(() => navigate('/recipes'), 1000);
         }).catch((err) => {
             M.toast({ html: `There was an error getting this user ${getErrorDetails(err)} `, classes: 'red' })

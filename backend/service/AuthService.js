@@ -1,16 +1,11 @@
 import jwt from 'jsonwebtoken';
-const KEY = 'somecrazymadsecretkey'
-var crypto = require("crypto");
+const SECRET_KEY = 'somecrazymadsecretkey'
 
 export const signRequest = (data) => {
-    var random = crypto.randomBytes(20).toString('hex');
-    return jwt.sign(data, "somecrazymadsecretkey",
-        {
-            algorithm: "HS256",
-            expiresIn: 1800
-        });
+    return jwt.sign(data, SECRET_KEY,{  expiresIn: 7200  },
+    );
 }
 
 export const verifyToken = (token) => {
-    return jwt.verify(token, "somecrazymadsecretkey");
+    return jwt.verify(token, SECRET_KEY);
 }

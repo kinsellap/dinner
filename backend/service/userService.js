@@ -16,7 +16,6 @@ export const createUser = async (userData) => {
     }
     const updatedUser = await removePassword(user);
     return addTokenToUser(updatedUser)
-
 }
 
 export const getUserByAuth = async (userData) => {
@@ -77,6 +76,7 @@ const removePassword = async (user) => {
 }
 
 const addTokenToUser = (user) => {
-    const token = signRequest({user_id: user._id,email_address});
-    return ({ ...user, 'token': token });
+    const { email_address, password } = user
+    const token = signRequest({email_address,password});
+    return {user,  token};
 }

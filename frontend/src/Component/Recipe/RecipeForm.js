@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../Service/UserProvider";
-import { createRecipe, updateRecipe, getErrorDetails } from "../../Service/ApiService"
+import { createRecipe, updateRecipe } from "../../Service/ApiService";
+import { checkAuthFailure,getErrorDetails } from "../../Utils/ErrorUtils";
+import { removeAuthenticatedUser } from "../../Service/SessionService"
 import M from "materialize-css";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function RecipeForm(props) {
-    const [loggedInUser] = useContext(UserContext);
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const navigate = useNavigate();
     const location = useLocation();
     const data = location.state?.recipe;
@@ -134,6 +136,12 @@ function RecipeForm(props) {
         setEditable(true);
     }
 
+    const handleAuthFailure =() => {
+        setLoggedInUser();
+        removeAuthenticatedUser();
+        setTimeout(() => navigate('users/login'), 1000);
+    }
+
     const doSubmit = async (event) => {
         event.preventDefault();
         if (loggedInUser && !isCreateMode && data) {
@@ -148,22 +156,25 @@ function RecipeForm(props) {
                         classes: 'red'
                     })
                     console.log(err)
+                    if(checkAuthFailure(err)){
+                        handleAuthFailure();
+                    }
                 })
         } else if (loggedInUser && isCreateMode) {
-            await createRecipe({ ...values, "created_by": loggedInUser })
+            await createRecipe({ ...{}, "created_by": loggedInUser })
                 .then((res) => {
                     M.toast({ html: `Recipe ${res.data.title} created` })
                     setTimeout(() => navigate('/recipes'), 1000)
                 })
                 .catch((err) => {
-
                     M.toast({ html: `There was an error creating this recipe ${getErrorDetails(err)}`, classes: 'red' })
                     console.log(err)
+                    if(checkAuthFailure(err)){
+                        handleAuthFailure();
+                    }
                 })
         }
     };
-
-
 
     return (
         <div className="row">

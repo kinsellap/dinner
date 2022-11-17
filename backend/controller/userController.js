@@ -1,5 +1,6 @@
 import { createUser, getUser, getUsers, deleteUser, deleteUsers, updateUser, getUserByAuth } from '../service/UserService';
 import express from 'express';
+import verify from '../middleware/Auth';
 const userRouter = express.Router();
 
 userRouter.post('/', async (req, res) => {
@@ -15,7 +16,7 @@ userRouter.post('/', async (req, res) => {
         });
 });
 
-userRouter.get('/', async (req, res) => {
+userRouter.get('/',verify, async (req, res) => {
     if (!req.query.name && Object.keys(req.query).length !== 0) {
         res.status(400);
         res.json({ message: "invalid request params" });
@@ -38,7 +39,7 @@ userRouter.post('/login', async (req, res) => {
         });
 });
 
-userRouter.get('/:id', async (req, res) => {
+userRouter.get('/:id',verify, async (req, res) => {
     getUser(req.params.id)
         .then(result => handleGetUserResult(result, res, result))
         .catch(err => {
@@ -47,7 +48,7 @@ userRouter.get('/:id', async (req, res) => {
         });
 });
 
-userRouter.put('/:id', async (req, res) => {
+userRouter.put('/:id', verify, async (req, res) => {
     updateUser(req.params.id, req.body)
         .then(result => handleGetUserResult(result, res, result))
         .catch(err => {
@@ -56,7 +57,7 @@ userRouter.put('/:id', async (req, res) => {
         });
 });
 
-userRouter.delete('/:id', async (req, res) => {
+userRouter.delete('/:id',verify, async (req, res) => {
     deleteUser(req.params.id)
         .then(result => handleGetUserResult(result, res, { message: `successfully deleted user` }))
         .catch(err => {
@@ -65,7 +66,7 @@ userRouter.delete('/:id', async (req, res) => {
         });
 });
 
-userRouter.delete('/', (req, res) => {
+userRouter.delete('/',verify,  async(req, res) => {
     deleteUsers()
         .then(() => res.json({ message: `successfully deleted all users` }))
         .catch(err => {

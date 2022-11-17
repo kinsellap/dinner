@@ -21,7 +21,7 @@ function HeaderLayout() {
     <nav>
       <div className="nav-wrapper">
         <Link to="/" className="brand-logo center">What's for Dinner?</Link>
-        <a href="#§" data-target="burger" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+        <a hidden={!loggedInUser} href="#§" data-target="burger" className="sidenav-trigger"><i className="material-icons">menu</i></a>
         <ul hidden={!loggedInUser} className="right hide-on-med-and-down">
           <li><Link to="/users">Users</Link></li>
           <li><Link to="/recipes">Recipes</Link></li>
