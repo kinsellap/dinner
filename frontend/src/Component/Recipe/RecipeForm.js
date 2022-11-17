@@ -3,11 +3,9 @@ import { UserContext } from "../../Service/UserProvider";
 import { createRecipe, updateRecipe, getErrorDetails } from "../../Service/ApiService"
 import M from "materialize-css";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { getAuthenticatedUser } from '../../Service/AuthService';
 
 function RecipeForm(props) {
-    const user = getAuthenticatedUser();
-    const isAdmin = user?.admin;
+    const [loggedInUser] = useContext(UserContext);
     const navigate = useNavigate();
     const location = useLocation();
     const data = location.state?.recipe;
@@ -138,8 +136,8 @@ function RecipeForm(props) {
 
     const doSubmit = async (event) => {
         event.preventDefault();
-        if (user && !isCreateMode && data) {
-            await updateRecipe(data._id, { ...values, "updated_by": user })
+        if (loggedInUser && !isCreateMode && data) {
+            await updateRecipe(data._id, { ...values, "updated_by": loggedInUser })
                 .then((res) => {
                     M.toast({ html: `Recipe ${res.data.title} updated` })
                     setTimeout(() => navigate('/recipes'), 1000);
@@ -151,8 +149,8 @@ function RecipeForm(props) {
                     })
                     console.log(err)
                 })
-        } else if (user && isCreateMode) {
-            await createRecipe({ ...values, "created_by": user })
+        } else if (loggedInUser && isCreateMode) {
+            await createRecipe({ ...values, "created_by": loggedInUser })
                 .then((res) => {
                     M.toast({ html: `Recipe ${res.data.title} created` })
                     setTimeout(() => navigate('/recipes'), 1000)
@@ -298,7 +296,7 @@ function RecipeForm(props) {
                                 <i className="material-icons right">send</i>
                             </button>
                         </div>
-                        <div hidden={editable || !user} className="col s4">
+                        <div hidden={editable || !loggedInUser} className="col s4">
                             <button className="btn waves-effect waves-light right" type="button" onClick={handleEditClick} >Edit Recipe
                                 <i className="material-icons right">edit</i>
                             </button>

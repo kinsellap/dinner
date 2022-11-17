@@ -3,11 +3,10 @@ import { Link, useNavigate } from "react-router-dom"
 import { fetchRecipes, getErrorDetails, deleteRecipe } from "../../Service/ApiService";
 import M from 'materialize-css'
 import {UserContext} from "../../Service/UserProvider";
-import {getAuthenticatedUser} from '../../Service/AuthService';
 
 function RecipeList() {
-    const user = getAuthenticatedUser();
-    const isAdmin = user?.admin;
+    const [loggedInUser] = useContext(UserContext);
+    const isAdmin = loggedInUser?.admin;
     const navigate = useNavigate();
     const itemsPerPage = 5;
     const maxPages = 4; //TODO get full amount of records on load and set max pages/number of paginations
@@ -72,7 +71,7 @@ function RecipeList() {
             deleteRecipe(rowId)
                 .then((res) => {
                     M.toast({ html: `${res.data.message}` });
-                    setTimeout(window.location.reload,3000);
+                    setTimeout(window.location.reload(),1000);
                 })
                 .catch((err) => {
                     M.toast({ html: `There was an error deleting the recipe ${getErrorDetails(err)}`,
@@ -148,7 +147,7 @@ function RecipeList() {
                     </ul>
                 </div>
                 <div className="row"></div>
-                <div hidden={!user} className="row">
+                <div hidden={!loggedInUser} className="row">
                     <div className="col s12">
                         <Link to="/recipes/new">
                             <button className="btn waves-effect waves-light"> Add Recipe
