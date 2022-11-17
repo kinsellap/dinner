@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import UserContext from "../../Service/UserContext";
+import { UserContext } from "../../Service/UserProvider";
 import { createRecipe, updateRecipe, getErrorDetails } from "../../Service/ApiService"
 import M from "materialize-css";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { getAuthenticatedUser } from '../../Service/AuthService';
 
 function RecipeForm(props) {
-    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+    const user = getAuthenticatedUser();
+    const isAdmin = user?.admin;
     const navigate = useNavigate();
     const location = useLocation();
     const data = location.state?.recipe;
@@ -131,16 +133,16 @@ function RecipeForm(props) {
     };
 
     const handleEditClick = (event) => {
-            setEditable(true);
+        setEditable(true);
     }
 
     const doSubmit = async (event) => {
         event.preventDefault();
-        if (!isCreateMode && data) {
-            await updateRecipe(data._id, {...values,"updated_by": loggedInUser})
+        if (user && !isCreateMode && data) {
+            await updateRecipe(data._id, { ...values, "updated_by": user })
                 .then((res) => {
                     M.toast({ html: `Recipe ${res.data.title} updated` })
-                    setTimeout(() => navigate('/recipes'), 1000); 
+                    setTimeout(() => navigate('/recipes'), 1000);
                 })
                 .catch((err) => {
                     M.toast({
@@ -149,8 +151,8 @@ function RecipeForm(props) {
                     })
                     console.log(err)
                 })
-        } else if (isCreateMode) {
-            await createRecipe({...values,"created_by": loggedInUser})
+        } else if (user && isCreateMode) {
+            await createRecipe({ ...values, "created_by": user })
                 .then((res) => {
                     M.toast({ html: `Recipe ${res.data.title} created` })
                     setTimeout(() => navigate('/recipes'), 1000)
@@ -278,7 +280,7 @@ function RecipeForm(props) {
                     </div>
                     <div className="row">
                         <div className="input-field col s12">
-                            <textarea className="flow-text small" id="notes" value={values.notes} onChange={handleNotesChange} readOnly={!editable}></textarea>
+                            <textarea className="flow-text" id="notes" value={values.notes} onChange={handleNotesChange} readOnly={!editable}></textarea>
                             <label className={isCreateMode ? "" : "active"} htmlFor="notes">Notes</label>
                         </div>
                     </div>
@@ -296,7 +298,7 @@ function RecipeForm(props) {
                                 <i className="material-icons right">send</i>
                             </button>
                         </div>
-                        <div hidden={editable} className="col s4">
+                        <div hidden={editable || !user} className="col s4">
                             <button className="btn waves-effect waves-light right" type="button" onClick={handleEditClick} >Edit Recipe
                                 <i className="material-icons right">edit</i>
                             </button>

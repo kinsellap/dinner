@@ -15,8 +15,8 @@ export const getUser = async (query) => {
     return await axios.get(url);
 }
 
-export const login = async (data) => {
-    return await axios.post(usersEndpoint + "login",data);
+export const loginUser = async (credentials) => {
+    return await axios.post(usersEndpoint + "login", credentials);
 }
 
 export const updateUser = async (userId, data) => {
@@ -67,6 +67,7 @@ const isNotEmpty = (query) => query !== undefined && query !== "" && query !== n
 
 export const getErrorDetails = (err) => {
     if (err.response?.data?.message) {
-        return " - " + err.response.data.message;
+        return ' - ' + err.response.data.message;
     }
+    return '';
 }

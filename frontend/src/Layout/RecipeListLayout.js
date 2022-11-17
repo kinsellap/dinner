@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom"
 import RecipeList from '../Component/Recipe/RecipeList';
 
-function RecipeListLayout() {
+function RecipeListLayout(user) {
   return (
-      <div className="container"><RecipeList admin={true}/></div>
+      <div className="container"><RecipeList user/></div>
   )
 }
 export default RecipeListLayout;

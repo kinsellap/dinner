@@ -1,5 +1,5 @@
 import React from "react";
-import UserContext from "../../Service/UserContext";
+import {UserContext} from "../../Service/UserProvider";
 
 function UserList(props) {
     return (<div>

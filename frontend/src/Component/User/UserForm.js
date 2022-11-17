@@ -1,11 +1,15 @@
 import React, { useState, useContext } from "react";
-import UserContext from "../../Service/UserContext";
-import { createUser, login ,getErrorDetails} from "../../Service/ApiService";
+import {UserContext} from "../../Service/UserProvider";
+import { createUser ,getErrorDetails} from "../../Service/ApiService";
+import { login } from "../../Service/AuthService";
 import M from "materialize-css";
 import { useNavigate, Link } from 'react-router-dom'
+import {getAuthenticatedUser} from '../../Service/AuthService';
 
 function UserForm(props) {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+    const user = getAuthenticatedUser();
+    const isAdmin = user?.admin;
     const navigate = useNavigate();
     const isRegister = props.createMode;
     const formAction = isRegister ? "Register" : "Login";
@@ -66,14 +70,15 @@ function UserForm(props) {
     const doLogin = async (event) => {
         event.preventDefault();
         const { email_address, password } = values;
-        await login({ email_address, password }).then((res) => {
-            setLoggedInUser(res.data);
-            M.toast({ html: `Welcome ${res.data.first_name} ${res.data.last_name}!` })
+        try{
+            const user = await login({ email_address, password })
+            setLoggedInUser(user);
+            M.toast({ html: `Welcome ${user.first_name} ${user.last_name}!` })
             setTimeout(() => navigate('/recipes'), 1000); 
-        }).catch((err) => {
+        } catch (err){
             M.toast({ html: `There was an error getting this user ${getErrorDetails(err)} `, classes: 'red' })
             console.log(err)
-        })
+        }
     };
 
     return (

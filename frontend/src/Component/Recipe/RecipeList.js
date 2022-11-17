@@ -2,11 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom"
 import { fetchRecipes, getErrorDetails, deleteRecipe } from "../../Service/ApiService";
 import M from 'materialize-css'
-import UserContext from "../../Service/UserContext";
+import {UserContext} from "../../Service/UserProvider";
+import {getAuthenticatedUser} from '../../Service/AuthService';
 
 function RecipeList() {
-    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
-    const isAdmin = loggedInUser?.admin;
+    const user = getAuthenticatedUser();
+    const isAdmin = user?.admin;
     const navigate = useNavigate();
     const itemsPerPage = 5;
     const maxPages = 4; //TODO get full amount of records on load and set max pages/number of paginations
@@ -17,7 +18,7 @@ function RecipeList() {
     useEffect(() => {
         var elems = document.querySelectorAll('.tooltipped');
         M.Tooltip.init(elems);
-    })
+    },[])
 
     useEffect(() => {
         getRecipes(currentPage, currentQuery);
@@ -108,10 +109,11 @@ function RecipeList() {
                             <tr className="tooltipped" data-position="top" data-tooltip="Double click row for details">
                                 <th>Name</th>
                                 <th>Core</th>
-                                <th>Vegetarian</th>
                                 <th>Premade</th>
                                 <th>Difficulty</th>
                                 <th>Healthy</th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -120,14 +122,14 @@ function RecipeList() {
                                     <tr key={recipe._id} row_id={recipe._id} onDoubleClick={() => navigate('/recipes/' + recipe._id, { state: { recipe } })}>
                                         <td id="title"><a href={recipe.url} target="_blank" rel="noopener noreferrer">{recipe.title}</a></td>
                                         <td id="core">{recipe.core_ingredient}</td>
-                                        <td id="vegetarian">{recipe.vegetarian.toString()}</td>
                                         <td id="premade">{recipe.premade.toString()}</td>
                                         <td id="difficulty">{recipe.difficulty}</td>
                                         <td id="healthy">{recipe.healthy_level}</td>
-                                        {/* <td id="details"><Link to="/recipes/:id"> <a href="#!" className="secondary-content">
-                                        <i className="material-icons left">details</i></a></Link></td> */}
                                         <td id="delete" className="tooltipped" data-position="right" data-tooltip="delete?" hidden={!isAdmin}><a href="#!" className="secondary-content" onClick={handleDeleteClick}>
                                         <i className="material-icons left">delete</i></a></td>
+                                        <td id="details"><a href="#!" className="secondary-content" onClick={() => navigate('/recipes/' + recipe._id, { state: { recipe } })}>
+                                        <i className="material-icons left">remove_red_eye</i></a></td>
+
                                     </tr>
                                 )
                             })}
@@ -146,7 +148,7 @@ function RecipeList() {
                     </ul>
                 </div>
                 <div className="row"></div>
-                <div className="row">
+                <div hidden={!user} className="row">
                     <div className="col s12">
                         <Link to="/recipes/new">
                             <button className="btn waves-effect waves-light"> Add Recipe
