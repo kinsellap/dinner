@@ -25,7 +25,7 @@ export const getUserByAuth = async (userData) => {
         return null;
     }
     const matchedPassword = await comparePassword(password, user.password);
-    if (matchedPassword) {     
+    if (matchedPassword) {
         const updatedUser = await removePassword(user);
         return addTokenToUser(updatedUser)
     } else {
@@ -45,17 +45,26 @@ export const getUsers = async (searchQuery) => {
     return await (User.find(filter));
 }
 
-export const updateUser = async (userId, userBody) => {
-    const updatedDate = new Date(Date.now());
-    const updateBody = {
-        ...userBody,
-        date_updated: updatedDate
-    };
-    return await (User.findOneAndUpdate({ _id: userId }, updateBody, { new: true }));
+export const updateUser = async (userId, userBody, requesterId) => {
+    const requester = await getUser(requesterId);
+    if (requester.admin || requester._id === userId) {
+        console.log(requesterId + ' ' + userId);
+        const updatedDate = new Date(Date.now());
+        const updateBody = {
+            ...userBody,
+            date_updated: updatedDate
+        };
+        return await (User.findOneAndUpdate({ _id: userId }, updateBody, { new: true }));
+    }
+    throw Error('Action not authorised');
 }
 
-export const deleteUser = async (userId) => {
-    return await (User.findByIdAndDelete({ _id: userId }));
+export const deleteUser = async (userId, requesterId) => {
+    const requester = await getUser(requesterId);
+    if (requester.admin) {
+        return await (User.findByIdAndDelete({ _id: userId }));
+    }
+    throw Error('Action not authorised');
 }
 
 export const deleteUsers = async () => {
@@ -76,7 +85,7 @@ const removePassword = async (user) => {
 }
 
 const addTokenToUser = (user) => {
-    const {  _id, email_address, password, } = user
-    const token = signRequest({_id, email_address, password});
-    return {user,  token};
+    const { _id, email_address, password, } = user
+    const token = signRequest({ _id, email_address, password });
+    return { user, token };
 }

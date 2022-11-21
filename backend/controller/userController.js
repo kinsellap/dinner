@@ -49,7 +49,7 @@ userRouter.get('/:id',verify, async (req, res) => {
 });
 
 userRouter.put('/:id', verify, async (req, res) => {
-    updateUser(req.params.id, req.body)
+    updateUser(req.params.id, req.body,req.user._id)
         .then(result => handleGetUserResult(result, res, result))
         .catch(err => {
             res.status(500);
@@ -58,7 +58,7 @@ userRouter.put('/:id', verify, async (req, res) => {
 });
 
 userRouter.delete('/:id',verify, async (req, res) => {
-    deleteUser(req.params.id)
+    deleteUser(req.params.id,req.user._id)
         .then(result => handleGetUserResult(result, res, { message: `successfully deleted user` }))
         .catch(err => {
             res.status(500);
