@@ -23,15 +23,19 @@ export const UserSchema = new Schema({
         required: true,
         select: false
     },
-    date_added: { 
-        type: Date, 
-        default: Date.now 
+    date_added: {
+        type: Date,
+        default: Date.now
     },
-    date_updated: { 
-        type: Date, 
+    date_updated: {
+        type: Date,
     },
     admin: {
         type: Boolean,
         default: false
     },
+    favourite_recipes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Recipe',
+    }],
 })
