@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 import cors from "cors";
 import bodyparser from "body-parser";
 import bodyParserErrorHandler from "express-body-parser-error-handler";
-const userRouter = require("./controller/userController");
-const recipeRouter = require("./controller/recipeController");
+const userRouter = require("./controller/UserController");
+const recipeRouter = require("./controller/RecipeController");
 const port = process.env.PORT || 8080;
 const monbgoDb = process.env.MONGO_DB_URI || "mongodb://127.0.0.1/dinnerDB";
 

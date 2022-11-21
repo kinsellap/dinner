@@ -25,13 +25,11 @@ function HeaderLayout() {
         <ul hidden={!loggedInUser} className="right hide-on-med-and-down">
           <li><Link to="/users">Users</Link></li>
           <li><Link to="/recipes">Recipes</Link></li>
-          <li><Link to="/users/profile">Profile</Link></li>
           <li><Link to="/"><span onClick={doLogout}>Logout</span></Link></li>
         </ul>
         <ul hidden={!loggedInUser} className="sidenav !right" id="burger">
           <li><Link to="/users">Users</Link></li>
           <li><Link to="/recipes">Recipes</Link></li>
-          <li><Link to="/users/profile">Profile</Link></li>
           <li><Link to="/"><span onClick={doLogout}>Logout</span></Link></li>
         </ul>
       </div>
