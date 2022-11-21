@@ -1,8 +1,9 @@
 import { createRecipe, getRecipes, getRecipesByPage,getRecipe, updateRecipe, deleteRecipe, deleteRecipes,getCountRecipes } from '../service/RecipeService';
 import express from 'express';
+import verify from '../middleware/Auth';
 const recipeRouter = express.Router();
 
-recipeRouter.post('/', (req, res) => {
+recipeRouter.post('/',verify, (req, res) => {
     createRecipe(req.body)
         .then(result => res.json(result))
         .catch(err => {
@@ -47,7 +48,7 @@ recipeRouter.get('/:page/:limit', (req, res) => {
         });
 });
 
-recipeRouter.get('/:id', (req, res) => {
+recipeRouter.get('/:id',verify, (req, res) => {
     getRecipe(req.params.id)
         .then(result => handleGetByIdResult(result, res, result))
         .catch(err => {
@@ -56,7 +57,7 @@ recipeRouter.get('/:id', (req, res) => {
         });
 });
 
-recipeRouter.put('/:id', (req, res) => {
+recipeRouter.put('/:id',verify, (req, res) => {
     updateRecipe(req.params.id, req.body)
         .then(result => handleGetByIdResult(result, res, result))
         .catch(err => {
@@ -65,7 +66,7 @@ recipeRouter.put('/:id', (req, res) => {
         });
 });
 
-recipeRouter.delete('/:id', (req, res) => {
+recipeRouter.delete('/:id',verify, (req, res) => {
     deleteRecipe(req.params.id)
         .then(result => handleGetByIdResult(result, res, { message: `successfully deleted recipe` }))
         .catch(err => {
@@ -74,7 +75,7 @@ recipeRouter.delete('/:id', (req, res) => {
         });
 });
 
-recipeRouter.delete('/', (req, res) => {
+recipeRouter.delete('/',verify, (req, res) => {
     deleteRecipes()
         .then(() => res.json({ message: `successfully deleted all recipes` }))
         .catch(err => {

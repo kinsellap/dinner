@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom"
-import { fetchRecipes, getErrorDetails, deleteRecipe } from "../../Service/ApiService";
+import { fetchRecipes, deleteRecipe } from "../../Service/ApiService";
+import { checkAuthFailure,getErrorDetails } from "../../Utils/ErrorUtils"
+import { removeAuthenticatedUser } from "../../Service/SessionService"
 import M from 'materialize-css'
 import {UserContext} from "../../Service/UserProvider";
 
 function RecipeList() {
-    const [loggedInUser] = useContext(UserContext);
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const isAdmin = loggedInUser?.admin;
     const navigate = useNavigate();
     const itemsPerPage = 5;
@@ -63,6 +65,12 @@ function RecipeList() {
         }
     };
 
+    const handleAuthFailure =() => {
+        setLoggedInUser();
+        removeAuthenticatedUser();
+        setTimeout(() => navigate('/users/login'), 1000);
+    }
+
     const handleDeleteClick = (event) => {
         event.preventDefault();
         if (isAdmin) {
@@ -76,10 +84,14 @@ function RecipeList() {
                 .catch((err) => {
                     M.toast({ html: `There was an error deleting the recipe ${getErrorDetails(err)}`,
                      classes: 'red' })
-                    console.log(err)
+                     console.log(err);
+                     if(checkAuthFailure(err)){
+                        handleAuthFailure();
+                    }
                 })
         }
     }
+
 
     return (
         <div className="row">
