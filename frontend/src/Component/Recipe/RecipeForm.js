@@ -27,15 +27,15 @@ function RecipeForm(props) {
         {
             title: '',
             url: '',
-            core_ingredient: '',
+            core_ingredient: 'Other',
             vegetarian: false,
             premade: false,
             batch: false,
-            prep_time: '',
-            cook_time: '',
+            prep_time: '20-30 mins',
+            cook_time: '45-60 mins',
             healthy_level: 1,
             difficulty: 1,
-            notes: []
+            notes:''
         });
 
     useEffect(() => {
@@ -128,7 +128,7 @@ function RecipeForm(props) {
         event.persist();
         setValues((values) => ({
             ...values,
-            notes: [event.target.value],
+            notes: event.target.value,
         }));
     };
 
@@ -139,7 +139,7 @@ function RecipeForm(props) {
     const handleAuthFailure =() => {
         setLoggedInUser();
         removeAuthenticatedUser();
-        setTimeout(() => navigate('users/login'), 1000);
+        setTimeout(() => navigate('/users/login'), 1000);
     }
 
     const doSubmit = async (event) => {
@@ -195,21 +195,22 @@ function RecipeForm(props) {
                     </div>
                     <div className="row">
                         <div className="input-field col s4">
-                            <select className="validate" id="core-ingredient" value={values.core_ingredient} onChange={handleCoreChange} required disabled={!editable}>
+                            <select className="validate" id="core-ingredient" value={values.core_ingredient} onChange={handleCoreChange} disabled={!editable}>
                                 <option value="" disabled>Choose</option>
                                 <option value="Beans">Beans</option>
                                 <option value="Beef">Beef</option>
                                 <option value="Chicken">Chicken</option>
                                 <option value="Fish">Fish</option>
                                 <option value="Grains">Grains</option>
-                                <option value="Lentils">Lentils</option>
+                                <option value="Lentils">Lentils</option>]
+                                <option value="Other">Other</option>
                                 <option value="Pasta">Pasta</option>
                                 <option value="Pork">Pork</option>
                             </select>
                             <label>Core Ingredient</label>
                         </div>
                         <div className="input-field col s4">
-                            <select className="validate" id="prep-time" value={values.prep_time} onChange={handlePrepTimeChange} required disabled={!editable}>
+                            <select className="validate" id="prep-time" value={values.prep_time} onChange={handlePrepTimeChange} disabled={!editable}>
                                 <option value="" disabled>Choose</option>
                                 <option value="< 10 mins">10 mins or less</option>
                                 <option value="10-20 mins">10 to 20 mins</option>
@@ -220,7 +221,7 @@ function RecipeForm(props) {
                             <label htmlFor="prep-time">Prep Time</label>
                         </div>
                         <div className="input-field col s4">
-                            <select className="validate" id="cook-time" value={values.cook_time} onChange={handleCookTimeChange} required disabled={!editable}>
+                            <select className="validate" id="cook-time" value={values.cook_time} onChange={handleCookTimeChange} disabled={!editable}>
                                 <option value="" disabled>Choose</option>
                                 <option value="< 30 mins">30 mins or less</option>
                                 <option value="30-45 mins">30 to 45 mins</option>
@@ -283,13 +284,13 @@ function RecipeForm(props) {
                             <label className="active" htmlFor="date-updated">Date Updated</label>
                         </div>
                         <div className="input-field col s6">
-                            <textarea id="updated-by" className="materialize-textarea " value={values.updated_by?.email_address} readOnly></textarea>
+                            <textarea id="updated-by" className="materialize-textarea" value={values.updated_by?.email_address} readOnly></textarea>
                             <label className="active" htmlFor="updated-by">Updated By</label>
                         </div>
                     </div>
                     <div className="row">
                         <div className="input-field col s12">
-                            <textarea className="flow-text" id="notes" value={values.notes} onChange={handleNotesChange} readOnly={!editable}></textarea>
+                            <textarea id="notes" className="materialize-textarea{height: 12rem;}" value={values.notes} onChange={handleNotesChange} maxLength="500" readOnly={!editable}></textarea>
                             <label className={isCreateMode ? "" : "active"} htmlFor="notes">Notes</label>
                         </div>
                     </div>
@@ -302,7 +303,7 @@ function RecipeForm(props) {
                             </Link>
                         </div>
                         <div hidden={!editable} className="col s4">
-                            <button className="btn waves-effect waves-light right" type="submit">
+                            <button className="btn waves-light right" type="submit">
                                 {editable && !isCreateMode ? "Update Recipe" : "Add Recipe"}
                                 <i className="material-icons right">send</i>
                             </button>

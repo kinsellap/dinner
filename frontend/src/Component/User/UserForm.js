@@ -4,7 +4,7 @@ import { createUser, loginUser } from "../../Service/ApiService";
 import { getErrorDetails } from "../../Utils/ErrorUtils"
 import M from "materialize-css";
 import { useNavigate, Link } from 'react-router-dom'
-import { setAuthenticatedUser } from "../../Service/SessionService";
+import { setAuthenticatedUser, setAuthToken } from "../../Service/SessionService";
 
 function UserForm(props) {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
@@ -54,9 +54,9 @@ function UserForm(props) {
         event.preventDefault();
         await createUser(values)
             .then((res) => {
-                console.log(res);
                 setLoggedInUser(res.data.user);
-                setAuthenticatedUser(res.data);
+                setAuthenticatedUser(res.data.user);
+                setAuthToken(res.data.token)
                 M.toast({ html: `User ${res.data.user.first_name} ${res.data.user.last_name} created` })
                 setTimeout(() => navigate('/recipes'), 1000);
             })
@@ -71,7 +71,8 @@ function UserForm(props) {
         const { email_address, password } = values;
         await loginUser({ email_address, password }).then((res) => {
             setLoggedInUser(res.data.user);
-            setAuthenticatedUser(res.data);
+            setAuthenticatedUser(res.data.user);
+            setAuthToken(res.data.token)
             M.toast({ html: `Welcome ${res.data.user.first_name} ${res.data.user.last_name}!` })
             setTimeout(() => navigate('/recipes'), 1000);
         }).catch((err) => {

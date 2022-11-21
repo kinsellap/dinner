@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom"
-import { fetchRecipes, deleteRecipe } from "../../Service/ApiService";
-import { checkAuthFailure,getErrorDetails } from "../../Utils/ErrorUtils"
-import { removeAuthenticatedUser } from "../../Service/SessionService"
+import { fetchRecipes, deleteRecipe, updateUser } from "../../Service/ApiService";
+import { checkAuthFailure, getErrorDetails } from "../../Utils/ErrorUtils"
+import { removeAuthenticatedUser, setAuthenticatedUser } from "../../Service/SessionService"
 import M from 'materialize-css'
-import {UserContext} from "../../Service/UserProvider";
+import { UserContext } from "../../Service/UserProvider";
 
 function RecipeList() {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
@@ -19,7 +19,7 @@ function RecipeList() {
     useEffect(() => {
         var elems = document.querySelectorAll('.tooltipped');
         M.Tooltip.init(elems);
-    },[])
+    }, [])
 
     useEffect(() => {
         getRecipes(currentPage, currentQuery);
@@ -36,7 +36,7 @@ function RecipeList() {
 
                 })
             .catch((err) => {
-                M.toast({ html:`There was an error loading the recipes ${getErrorDetails(err)}`, classes: 'red' })
+                M.toast({ html: `There was an error loading the recipes ${getErrorDetails(err)}`, classes: 'red' })
                 console.log(err)
             })
     };
@@ -51,7 +51,7 @@ function RecipeList() {
         const event = e.nativeEvent;
         event.preventDefault();
         const pageNumber = event.target.closest('a').text;
-        setCurrentPage(pageNumber-1);
+        setCurrentPage(pageNumber - 1);
     };
 
     const handleChevronClick = async (e) => {
@@ -60,12 +60,12 @@ function RecipeList() {
         const chevron = event.target.closest('i').textContent;
         if (chevron.includes('right') && currentPage !== maxPages) {
             setCurrentPage(currentPage + 1);
-        } else if(chevron.includes('left') && currentPage !== 0){
+        } else if (chevron.includes('left') && currentPage !== 0) {
             setCurrentPage(currentPage - 1);
         }
     };
 
-    const handleAuthFailure =() => {
+    const handleAuthFailure = () => {
         setLoggedInUser();
         removeAuthenticatedUser();
         setTimeout(() => navigate('/users/login'), 1000);
@@ -79,19 +79,48 @@ function RecipeList() {
             deleteRecipe(rowId)
                 .then((res) => {
                     M.toast({ html: `${res.data.message}` });
-                    setTimeout(window.location.reload(),1000);
+                    setTimeout(window.location.reload(), 1000);
                 })
                 .catch((err) => {
-                    M.toast({ html: `There was an error deleting the recipe ${getErrorDetails(err)}`,
-                     classes: 'red' })
-                     console.log(err);
-                     if(checkAuthFailure(err)){
+                    M.toast({
+                        html: `There was an error deleting the recipe ${getErrorDetails(err)}`,
+                        classes: 'red'
+                    })
+                    console.log(err);
+                    if (checkAuthFailure(err)) {
                         handleAuthFailure();
                     }
                 })
         }
     }
 
+    const handleFavouriteClick = (event) => {
+        event.preventDefault();
+        const row = event.target.closest('tr');
+        const rowId = row.getAttribute("row_id");
+        const index = loggedInUser.favourite_recipes.indexOf(rowId);
+        if (index > -1) {
+            loggedInUser.favourite_recipes.splice(index, 1);
+        } else {
+            loggedInUser.favourite_recipes.push(rowId);
+        }
+        updateUser(loggedInUser._id, loggedInUser)
+            .then((res) => {
+                setLoggedInUser(res.data);
+                setAuthenticatedUser(res.data);
+                setTimeout(window.location.reload(),3000);
+            })
+            .catch((err) => {
+                M.toast({
+                    html: `There was an error favouriting the recipe ${getErrorDetails(err)}`,
+                    classes: 'red'
+                })
+                console.log(err);
+                if (checkAuthFailure(err)) {
+                    handleAuthFailure();
+                }
+            })
+    }
 
     return (
         <div className="row">
@@ -136,11 +165,10 @@ function RecipeList() {
                                         <td id="premade">{recipe.premade.toString()}</td>
                                         <td id="difficulty">{recipe.difficulty}</td>
                                         <td id="healthy">{recipe.healthy_level}</td>
-                                        <td id="delete" className="tooltipped" data-position="right" data-tooltip="delete?" hidden={!isAdmin}><a href="#!" className="secondary-content" onClick={handleDeleteClick}>
-                                        <i className="material-icons left">delete</i></a></td>
-                                        <td id="details"><a href="#!" className="secondary-content" onClick={() => navigate('/recipes/' + recipe._id, { state: { recipe } })}>
-                                        <i className="material-icons left">remove_red_eye</i></a></td>
-
+                                        <td id="delete" className="tooltipped" data-position="top" data-tooltip="delete?" hidden={!isAdmin}><a href="#!" className="secondary-content" onClick={handleDeleteClick}>
+                                            <i className="material-icons left">delete</i></a></td>
+                                        <td id="favourite" className="tooltipped" data-position="top" data-tooltip="mark favourite?" ><a href="#!" className="secondary-content" onClick={handleFavouriteClick}>
+                                            <i className="material-icons left">{loggedInUser?.favourite_recipes.includes(recipe._id) ? "star_border" : "star"}</i></a></td>
                                     </tr>
                                 )
                             })}
@@ -172,23 +200,5 @@ function RecipeList() {
         </div>
     )
 }
-
-//       {
-//         Header: "Notes",
-//         id: 'notes',
-//         accessor: "notes",
-//         Cell: ({ row }) => {
-//           let output = '';
-//           row.original.notes.forEach(function (item, index) {
-//             if (output.length >= 400) {
-//               output += '...';
-//               return output;
-//             }
-//             output += (item += index === row.original.notes.length - 1 ? '' : ' | ')
-//           })
-//           return output;
-//         }
-//       },
-
 
 export default RecipeList;
