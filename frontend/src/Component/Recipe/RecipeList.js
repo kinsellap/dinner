@@ -14,7 +14,7 @@ function RecipeList() {
     const maxPages = 4; //TODO get full amount of records on load and set max pages/number of paginations
     const [recipes, setRecipes] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [currentQuery, setCurrentQuery] = useState({searchKey: 'title', searchValue: ''});
+    const [currentQuery, setCurrentQuery] = useState({ searchKey: 'title', searchValue: '' });
 
 
     useEffect(() => {
@@ -55,13 +55,22 @@ function RecipeList() {
         }));
     };
 
+    const handleSearchValueFocusOut = (event) => {
+        if (event.target.value === '') {
+            setCurrentQuery((values) => ({
+                ...values,
+                searchValues: event.target.value,
+            }));
+        }
+    };
+
     const handleSearchRecipe = async (event) => {
         event.preventDefault();
         let searchParamValue = document.getElementById('search-value').value;
         setCurrentQuery((values) => ({
             ...values,
             searchValue: searchParamValue
-   
+
         }));
 
     };
@@ -156,8 +165,8 @@ function RecipeList() {
                                 <option value="healthy_level">Healthy</option>
                             </select>
                         </div>
-                        <div className="input-field col s3 center">
-                            <input className="validate" id="search-value" type="text" maxLength="20" />
+                        <div className="input-field col s4 center">
+                            <input className="validate" id="search-value" onFocusOut={handleSearchValueFocusOut} type="text" maxLength="20" />
                             <label htmlFor="search-value">Search
                                 <i className="material-icons left">search</i>
                             </label>
