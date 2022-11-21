@@ -5,13 +5,8 @@ import bodyparser from "body-parser";
 import bodyParserErrorHandler from "express-body-parser-error-handler";
 const userRouter = require("./controller/userController");
 const recipeRouter = require("./controller/recipeController");
-// const dotenv = require('dotenv');
-// dotenv.config();
-// const port =`${process.env.PORT}`;
-// const monbgoDb = `${process.env.MONGO_DB_URI}`
-
-const port = 8080;
-const monbgoDb = "mongodb://127.0.0.1/dinnerDB";
+const port = process.env.PORT|| 8080;
+const monbgoDb = process.env.MONGO_DB_URI||  "mongodb://127.0.0.1/dinnerDB";
 
 const app = express();
 mongoose.connect(monbgoDb);

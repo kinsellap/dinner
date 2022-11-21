@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
-const SECRET_KEY = 'somecrazymadsecretkey'
+const SECRET_KEY = process.env.SECRET_KEY|| 'somecrazymadsecretkey';
 
 export const signRequest = (data) => {
-    return jwt.sign(data, SECRET_KEY,{  expiresIn: 7200  },
+    return jwt.sign(data, SECRET_KEY, { expiresIn: 7200 },
     );
 }
 

@@ -74,9 +74,3 @@ const contentAuthHeaders = {
     }
 };
 
-const registerLoginHeaders = {
-    headers: {
-        "content-type": "application-x-www-form-urlencoded",
-        "accept": "application/json"
-    }
-};

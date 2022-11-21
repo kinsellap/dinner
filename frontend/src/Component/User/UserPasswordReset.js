@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
-import {UserContext} from "../../Service/UserProvider";
+import { UserContext } from "../../Service/UserProvider";
 import { useNavigate, Link } from 'react-router-dom'
 
-function UserProfile() {
+function UserPasswordReset() {
 
     const navigate = useNavigate();
 
@@ -13,4 +13,4 @@ function UserProfile() {
 
 }
 
-export default UserProfile;
+export default UserPasswordReset;

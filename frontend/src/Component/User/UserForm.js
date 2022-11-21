@@ -110,7 +110,7 @@ function UserForm(props) {
                 </div>
                 <div hidden={isRegister} className="row">
                     <div className="col s12">
-                        <span>Forgot your password?</span> <Link to="/users"><span className="tiny">Reset password
+                        <span>Forgot your password?</span> <Link to="/users/reset"><span className="tiny">Reset password
                             <i className="material-icons tiny">chevron_right</i></span></Link>
                     </div>
                 </div>
