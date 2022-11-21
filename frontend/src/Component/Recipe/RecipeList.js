@@ -14,12 +14,18 @@ function RecipeList() {
     const maxPages = 4; //TODO get full amount of records on load and set max pages/number of paginations
     const [recipes, setRecipes] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [currentQuery, setCurrentQuery] = useState('');
+    const [currentQuery, setCurrentQuery] = useState({searchKey: 'title', searchValue: ''});
+
 
     useEffect(() => {
         var elems = document.querySelectorAll('.tooltipped');
         M.Tooltip.init(elems);
     }, [])
+
+    useEffect(() => {
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+    }, []);
 
     useEffect(() => {
         getRecipes(currentPage, currentQuery);
@@ -41,10 +47,23 @@ function RecipeList() {
             })
     };
 
+    const handleSearchKeyChange = (event) => {
+        document.getElementById('search-value').value = '';
+        setCurrentQuery((values) => ({
+            ...values,
+            searchKey: event.target.value,
+        }));
+    };
+
     const handleSearchRecipe = async (event) => {
         event.preventDefault();
-        let searchParam = document.getElementById('title-search').value;
-        setCurrentQuery(searchParam);
+        let searchParamValue = document.getElementById('search-value').value;
+        setCurrentQuery((values) => ({
+            ...values,
+            searchValue: searchParamValue
+   
+        }));
+
     };
 
     const handlePaginationClick = async (e) => {
@@ -108,7 +127,7 @@ function RecipeList() {
             .then((res) => {
                 setLoggedInUser(res.data);
                 setAuthenticatedUser(res.data);
-                setTimeout(window.location.reload(),3000);
+                setTimeout(window.location.reload(), 3000);
             })
             .catch((err) => {
                 M.toast({
@@ -128,9 +147,18 @@ function RecipeList() {
                 <div className="row">
                     <div className="col s12">
                         <h5 className="teal-text text-lighten-2">Search Recipe</h5>
-                        <div className="input-field col s4 center">
-                            <input className="validate" id="title-search" type="text" maxLength="20" />
-                            <label htmlFor="title-search">Search Name
+                        <div className="input-field col s3 center">
+                            <select id="search-key" value={currentQuery.searchKey} onChange={handleSearchKeyChange}>
+                                <option value="title">Name</option>
+                                <option value="core_ingredient">Core</option>
+                                <option value="premade">Premade</option>
+                                <option value="difficulty">Difficulty</option>
+                                <option value="healthy_level">Healthy</option>
+                            </select>
+                        </div>
+                        <div className="input-field col s3 center">
+                            <input className="validate" id="search-value" type="text" maxLength="20" />
+                            <label htmlFor="search-value">Search
                                 <i className="material-icons left">search</i>
                             </label>
                         </div>
