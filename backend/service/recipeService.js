@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { RecipeSchema } from '../model/RecipeModel';
+import { getUser } from './UserService';
 const Recipe = mongoose.model('Recipe', RecipeSchema);
 
 export const createRecipe = async (recipeData) => {
@@ -48,8 +49,12 @@ export const updateRecipe = async (recipeId, recipeBody) => {
     return await (Recipe.findOneAndUpdate({ _id: recipeId }, updateBody, { new: true }));
 }
 
-export const deleteRecipe = async (recipeId) => {
-    return await (Recipe.findByIdAndDelete({ _id: recipeId }));
+export const deleteRecipe = async (recipeId, userId) => {
+    const user = await getUser(userId);
+    if (user.admin) {
+        return await (Recipe.findByIdAndDelete({ _id: recipeId }));
+    }
+    throw Error('Action not authorised')
 }
 
 export const deleteRecipes = async () => {

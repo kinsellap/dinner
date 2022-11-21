@@ -3,7 +3,7 @@ import { UserSchema } from '../model/UserModel'
 import bcrypt from 'bcryptjs';
 const saltRounds = 10;
 const lodash = require('lodash');
-import { signRequest } from '../service/AuthService';
+import { signRequest } from './AuthService';
 const User = mongoose.model('User', UserSchema);
 
 export const createUser = async (userData) => {
@@ -76,7 +76,7 @@ const removePassword = async (user) => {
 }
 
 const addTokenToUser = (user) => {
-    const { email_address, password } = user
-    const token = signRequest({email_address,password});
+    const {  _id, email_address, password, } = user
+    const token = signRequest({_id, email_address, password});
     return {user,  token};
 }

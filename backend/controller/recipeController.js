@@ -67,7 +67,7 @@ recipeRouter.put('/:id',verify, (req, res) => {
 });
 
 recipeRouter.delete('/:id',verify, (req, res) => {
-    deleteRecipe(req.params.id)
+    deleteRecipe(req.params.id, req.user._id)
         .then(result => handleGetByIdResult(result, res, { message: `successfully deleted recipe` }))
         .catch(err => {
             res.status(500);

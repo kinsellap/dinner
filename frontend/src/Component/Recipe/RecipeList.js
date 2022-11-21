@@ -173,22 +173,4 @@ function RecipeList() {
     )
 }
 
-//       {
-//         Header: "Notes",
-//         id: 'notes',
-//         accessor: "notes",
-//         Cell: ({ row }) => {
-//           let output = '';
-//           row.original.notes.forEach(function (item, index) {
-//             if (output.length >= 400) {
-//               output += '...';
-//               return output;
-//             }
-//             output += (item += index === row.original.notes.length - 1 ? '' : ' | ')
-//           })
-//           return output;
-//         }
-//       },
-
-
 export default RecipeList;
