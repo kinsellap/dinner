@@ -23,6 +23,7 @@ function RecipeForm(props) {
             date_updated: data.date_updated?.split('T')[0]
         };
     }
+
     const [values, setValues] = useState((!isCreateMode && data) ? addFormattedData(data) :
         {
             title: '',
@@ -37,6 +38,8 @@ function RecipeForm(props) {
             difficulty: 1,
             notes:''
         });
+
+     
 
     useEffect(() => {
         var elems = document.querySelectorAll('select');
@@ -256,14 +259,16 @@ function RecipeForm(props) {
                         <div className="input-field col s6">
                             <div className="range-field">
                                 <input type="range" id="difficulty" min="1" max="5" value={values.difficulty} onChange={handleDifficultyChange} disabled={!editable} />
-                                <label htmlFor="difficulty">Difficulty = </label>
+                                <label htmlFor="difficulty"> Note: 1 is easiest and 5 is hardest 
+                                <br/>Difficulty = </label>
                                 <output>{values.difficulty}</output>
                             </div>
                         </div>
                         <div className="input-field col s6">
                             <div className="range-field">
                                 <input type="range" id="healthy_level" min="1" max="5" value={values.healthy_level} onChange={handleHealthyChange} disabled={!editable} />
-                                <label htmlFor="healthy_level">Healthy = </label>
+                                <label htmlFor="healthy_level" >Note: 1 is easiest and 5 is hardest 
+                                <br/> Healthy = </label>
                                 <output>{values.healthy_level}</output>
                             </div>
                         </div>

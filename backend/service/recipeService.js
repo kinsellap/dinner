@@ -29,9 +29,11 @@ export const getCountRecipes = async () => {
 }
 
 export const getRecipesByPage = async (page, limit, searchQuery) => {
-    let filter = {};
-    if (searchQuery) {
-        filter = { title: { $regex: new RegExp(searchQuery, "i") } };
+    let filter = searchQuery;
+    if (searchQuery && (searchQuery.title || searchQuery.core_ingredient)) {
+        const key = Object.keys(searchQuery)[0];
+        const values = Object.values(searchQuery)[0];
+        filter[key] = { $regex: new RegExp(values, "i") }
     }
     return await Recipe.find(filter)
         .populate('updated_by', 'email_address')

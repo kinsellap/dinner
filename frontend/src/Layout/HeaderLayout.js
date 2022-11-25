@@ -13,8 +13,8 @@ function HeaderLayout() {
   }, [])
 
   const doLogout = () => {
-    setLoggedInUser();
     removeAuthenticatedUser();
+    setLoggedInUser();
   };
 
   return (
