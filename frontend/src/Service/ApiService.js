@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { getAuthToken } from "../Service/SessionService";
+import { isNotEmpty } from '../Utils/StringUtils';
 const serverUrl = 'http://localhost:8080/api'
 const usersEndpoint = serverUrl + '/users/'
 const recipesEndpoint = serverUrl + '/recipes/'
@@ -73,8 +74,6 @@ export const countRecipes = async () => {
     const token = getAuthToken();
     return await axios.get(recipesEndpoint + '/count', contentAuthHeaders(token));
 }
-
-const isNotEmpty = (query) => query !== undefined && query !== "" && query !== null;
 
 const contentAuthHeaders = (token) => {
     return {
