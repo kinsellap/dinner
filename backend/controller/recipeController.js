@@ -40,7 +40,7 @@ recipeRouter.get('/:page/:limit', (req, res) => {
     const page = parseInt(req.params.page);
     const limit = parseInt(req.params.limit);
     const searchQuery = req.query;
-    getRecipesByPage(page, limit,searchQuery)
+    getRecipesByPage(page, limit, searchQuery)
         .then(result => res.json(result))
         .catch(err => {
             res.status(400);
