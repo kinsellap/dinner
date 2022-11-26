@@ -3,9 +3,14 @@ import { RecipeSchema } from '../model/RecipeModel';
 import { getUser } from './UserService';
 const Recipe = mongoose.model('Recipe', RecipeSchema);
 
-export const createRecipe = async (recipeData) => {
-    let newRecipe = new Recipe(recipeData)
-    return await (newRecipe.save());
+export const createRecipe = async (recipeBody) => {
+    const { added_by } = recipeBody
+    const user = await getUser(added_by._id);
+    if (user) {
+        let newRecipe = new Recipe(recipeBody)
+        return await (newRecipe.save());
+    }
+    throw Error('Action not authorised');
 }
 
 export const getRecipe = async (recipeId) => {
@@ -14,13 +19,17 @@ export const getRecipe = async (recipeId) => {
         .populate('added_by', 'email_address');
 }
 
-export const getCountRecipes = async () => {
-    return await (Recipe.count());
+export const getCountRecipes = async (query) => {
+    const { added_by, updated_by } = query;
+    if (Object.keys(query).length && !added_by && !updated_by) {
+        throw Error('Query not suppored');
+    }
+    return await (Recipe.count(query));
 }
 
 export const getRecipesByPage = async (page, limit, searchQuery) => {
     let filter = searchQuery;
-    if (searchQuery && (searchQuery.title || searchQuery.core_ingredient)) {
+    if (Object.keys(searchQuery).length && (searchQuery.title || searchQuery.core_ingredient)) {
         const key = Object.keys(searchQuery)[0];
         const values = Object.values(searchQuery)[0];
         filter[key] = { $regex: new RegExp(values, "i") }
@@ -33,23 +42,32 @@ export const getRecipesByPage = async (page, limit, searchQuery) => {
 }
 
 export const updateRecipe = async (recipeId, recipeBody) => {
-    const updatedDate = new Date(Date.now());
-    const updateBody = {
-        ...recipeBody,
-        date_updated: updatedDate
-    };
-    return await (Recipe.findOneAndUpdate({ _id: recipeId }, updateBody, { new: true }));
+    const { updated_by } = recipeBody;
+    const user = await getUser(updated_by._id);
+    if (user) {
+        const updatedDate = new Date(Date.now());
+        const updateBody = {
+            ...recipeBody,
+            date_updated: updatedDate
+        };
+        return await (Recipe.findOneAndUpdate({ _id: recipeId }, updateBody, { new: true }));
+    }
+    throw Error('Action not authorised');
 }
 
 export const deleteRecipe = async (recipeId, userId) => {
     const user = await getUser(userId);
-    if (user.admin) {
+    if (user && user.admin) {
         return await (Recipe.findByIdAndDelete({ _id: recipeId }));
     }
-    throw Error('Action not authorised')
+    throw Error('Action not authorised');
 }
 
-export const deleteRecipes = async () => {
-    return await (Recipe.deleteMany());
+export const deleteRecipes = async (userId) => {
+    const user = await getUser(userId);
+    if (user && user.admin) {
+        return await Recipe.deleteMany({ _id: recipeId });
+    }
+    throw Error('Action not authorised');
 }
 

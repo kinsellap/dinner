@@ -164,7 +164,7 @@ function RecipeForm(props) {
                     }
                 })
         } else if (loggedInUser && isCreateMode) {
-            await createRecipe({ ...values, "created_by": loggedInUser })
+            await createRecipe({ ...values, "added_by": loggedInUser })
                 .then((res) => {
                     M.toast({ html: `Recipe ${res.data.title} created` })
                     setTimeout(() => navigate('/recipes'), 1000)

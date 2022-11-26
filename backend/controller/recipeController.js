@@ -13,14 +13,13 @@ recipeRouter.post('/',verify, (req, res) => {
 });
 
 recipeRouter.get('/count', (req, res) => {
-    getCountRecipes()
+    getCountRecipes(req.query)
         .then(result => res.json(result))
         .catch(err => {
             res.status(400);
             res.json({ message: err.message });
         });
 });
-
 
 recipeRouter.get('/:page/:limit', (req, res) => {
     const page = parseInt(req.params.page);
@@ -62,7 +61,7 @@ recipeRouter.delete('/:id',verify, (req, res) => {
 });
 
 recipeRouter.delete('/',verify, (req, res) => {
-    deleteRecipes()
+    deleteRecipes(req.user._id)
         .then(() => res.json({ message: `successfully deleted all recipes` }))
         .catch(err => {
             res.status(500);

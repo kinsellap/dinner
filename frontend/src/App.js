@@ -1,7 +1,7 @@
 import './App.css';
 import { Route, Routes } from "react-router-dom"
 import NotFound from './Layout/NotFound';
-import UserLayout from './Layout/UserLayout';
+import ProfileLayout from './Layout/ProfileLayout';
 import RecipeFormLayout from './Layout/RecipeFormLayout';
 import RecipeListLayout from './Layout/RecipeListLayout';
 import RecipeLayout from './Layout/RecipeLayout';
@@ -17,7 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginLayout />} />
           <Route path="/users">
-            <Route index element={<UserLayout />} />
+            <Route index element={<ProfileLayout />} />
             <Route path="login" element={<LoginLayout />} />
             <Route path="register" element={<RegisterLayout />} />
             <Route path="reset" element={<PasswordResetLayout />} />
