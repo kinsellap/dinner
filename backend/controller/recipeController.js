@@ -1,24 +1,10 @@
-import { createRecipe, getRecipes, getRecipesByPage,getRecipe, updateRecipe, deleteRecipe, deleteRecipes,getCountRecipes } from '../service/RecipeService';
+import { createRecipe, getRecipesByPage,getRecipe, updateRecipe, deleteRecipe, deleteRecipes,getCountRecipes } from '../service/RecipeService';
 import express from 'express';
 import verify from '../middleware/Auth';
 const recipeRouter = express.Router();
 
 recipeRouter.post('/',verify, (req, res) => {
     createRecipe(req.body)
-        .then(result => res.json(result))
-        .catch(err => {
-            res.status(400);
-            res.json({ message: err.message });
-        });
-});
-
-recipeRouter.get('/', (req, res) => {
-    if (!req.query.title && Object.keys(req.query).length !== 0) {
-        res.status(400);
-        res.json({ message: "invalid request params" });
-        return;
-    }
-    getRecipes(req.query.title)
         .then(result => res.json(result))
         .catch(err => {
             res.status(400);

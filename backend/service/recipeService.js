@@ -14,16 +14,6 @@ export const getRecipe = async (recipeId) => {
         .populate('added_by', 'email_address');
 }
 
-export const getRecipes = async (searchQuery) => {
-    let filter = {};
-    if (searchQuery) {
-        filter = { title: { $regex: new RegExp(searchQuery, "i") } };
-    }
-    return await (Recipe.find(filter)
-        .populate('updated_by', 'email_address')
-        .populate('added_by', 'email_address'));
-}
-
 export const getCountRecipes = async () => {
     return await (Recipe.count());
 }
