@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../Service/UserProvider";
 import { createRecipe, updateRecipe } from "../../Service/ApiService";
-import { checkAuthFailure,getErrorDetails } from "../../Utils/ErrorUtils";
+import { checkAuthFailure, getErrorDetails } from "../../Utils/ErrorUtils";
+import { dateOnly } from "../../Utils/DateTimeUtils";
 import { removeAuthenticatedUser } from "../../Service/SessionService"
 import M from "materialize-css";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -19,8 +20,8 @@ function RecipeForm(props) {
             premade: Boolean(data.premade),
             vegetarian: Boolean(data.vegetarian),
             batch: Boolean(data.batch),
-            date_added: data.date_added?.split('T')[0],
-            date_updated: data.date_updated?.split('T')[0]
+            date_added: dateOnly(data.date_added),
+            date_updated: dateOnly(data.date_updated)
         };
     }
 
@@ -36,10 +37,10 @@ function RecipeForm(props) {
             cook_time: '45-60 mins',
             healthy_level: 1,
             difficulty: 1,
-            notes:''
+            notes: ''
         });
 
-     
+
 
     useEffect(() => {
         var elems = document.querySelectorAll('select');
@@ -139,9 +140,9 @@ function RecipeForm(props) {
         setEditable(true);
     }
 
-    const handleAuthFailure =() => {
-        setLoggedInUser();
+    const handleAuthFailure = () => {
         removeAuthenticatedUser();
+        setLoggedInUser();
         setTimeout(() => navigate('/users/login'), 1000);
     }
 
@@ -159,7 +160,7 @@ function RecipeForm(props) {
                         classes: 'red'
                     })
                     console.log(err)
-                    if(checkAuthFailure(err)){
+                    if (checkAuthFailure(err)) {
                         handleAuthFailure();
                     }
                 })
@@ -172,7 +173,7 @@ function RecipeForm(props) {
                 .catch((err) => {
                     M.toast({ html: `There was an error creating this recipe ${getErrorDetails(err)}`, classes: 'red' })
                     console.log(err)
-                    if(checkAuthFailure(err)){
+                    if (checkAuthFailure(err)) {
                         handleAuthFailure();
                     }
                 })
@@ -259,38 +260,38 @@ function RecipeForm(props) {
                         <div className="input-field col s6">
                             <div className="range-field">
                                 <input type="range" id="difficulty" min="1" max="5" value={values.difficulty} onChange={handleDifficultyChange} disabled={!editable} />
-                                <label htmlFor="difficulty"> Note: 1 is easiest and 5 is hardest 
-                                <br/>Difficulty = </label>
+                                <label htmlFor="difficulty"> Note: 1 is easiest and 5 is hardest
+                                    <br />Difficulty = </label>
                                 <output>{values.difficulty}</output>
                             </div>
                         </div>
                         <div className="input-field col s6">
                             <div className="range-field">
                                 <input type="range" id="healthy_level" min="1" max="5" value={values.healthy_level} onChange={handleHealthyChange} disabled={!editable} />
-                                <label htmlFor="healthy_level" >Note: 1 is easiest and 5 is hardest 
-                                <br/> Healthy = </label>
+                                <label htmlFor="healthy_level" >Note: 1 is easiest and 5 is hardest
+                                    <br /> Healthy = </label>
                                 <output>{values.healthy_level}</output>
                             </div>
                         </div>
                     </div>
                     <div className="row" hidden={isCreateMode}>
-                        <div className="input-field col s6">
+                        <div className="col s6">
+                            <label htmlFor="date-added">Date Added</label>
                             <textarea id="date-added" className="materialize-textarea" value={values.date_added} readOnly></textarea>
-                            <label className="active" htmlFor="date-added">Date Added</label>
                         </div>
-                        <div className="input-field col s6">
+                        <div className="col s6">
+                            <label htmlFor="added-by">Added By</label>
                             <textarea id="added-by" className="materialize-textarea" value={values.added_by?.email_address} readOnly></textarea>
-                            <label className="active" htmlFor="added-by">Added By</label>
                         </div>
                     </div>
                     <div className="row" hidden={isCreateMode}>
-                        <div className="input-field col s6">
+                        <div className="col s6">
+                            <label htmlFor="date-updated">Date Updated</label>
                             <textarea id="date-updated" className="materialize-textarea " value={values.date_updated} readOnly></textarea>
-                            <label className="active" htmlFor="date-updated">Date Updated</label>
                         </div>
-                        <div className="input-field col s6">
+                        <div className="col s6">
+                            <label htmlFor="updated-by">Updated By</label>
                             <textarea id="updated-by" className="materialize-textarea" value={values.updated_by?.email_address} readOnly></textarea>
-                            <label className="active" htmlFor="updated-by">Updated By</label>
                         </div>
                     </div>
                     <div className="row">

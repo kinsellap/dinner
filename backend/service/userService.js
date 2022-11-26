@@ -47,8 +47,7 @@ export const getUsers = async (searchQuery) => {
 
 export const updateUser = async (userId, userBody, requesterId) => {
     const requester = await getUser(requesterId);
-    if (requester.admin || requester._id === userId) {
-        console.log(requesterId + ' ' + userId);
+    if (requester.admin || requester._id == userId) {
         const updatedDate = new Date(Date.now());
         const updateBody = {
             ...userBody,
@@ -61,7 +60,7 @@ export const updateUser = async (userId, userBody, requesterId) => {
 
 export const deleteUser = async (userId, requesterId) => {
     const requester = await getUser(requesterId);
-    if (requester.admin) {
+    if (requester.admin || requester._id == userId) {
         return await (User.findByIdAndDelete({ _id: userId }));
     }
     throw Error('Action not authorised');
