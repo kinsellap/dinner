@@ -143,31 +143,33 @@ function RecipeList() {
     }
 
     const handleFavouriteClick = (event) => {
-        event.preventDefault();
-        const row = event.target.closest('tr');
-        const rowId = row.getAttribute("row_id");
-        const index = loggedInUser.favourite_recipes.indexOf(rowId);
-        if (index > -1) {
-            loggedInUser.favourite_recipes.splice(index, 1);
-        } else {
-            loggedInUser.favourite_recipes.push(rowId);
-        }
-        updateUser(loggedInUser._id, { favourite_recipes: loggedInUser.favourite_recipes })
-            .then((res) => {
-                setLoggedInUser(res.data);
-                setAuthenticatedUser(res.data);
-                setTimeout(window.location.reload(), 3000);
-            })
-            .catch((err) => {
-                M.toast({
-                    html: `There was an error favouriting the recipe ${getErrorDetails(err)}`,
-                    classes: 'red'
+        if (loggedInUser) {
+            event.preventDefault();
+            const row = event.target.closest('tr');
+            const rowId = row.getAttribute("row_id");
+            const index = loggedInUser?.favourite_recipes.indexOf(rowId);
+            if (index > -1) {
+                loggedInUser.favourite_recipes.splice(index, 1);
+            } else {
+                loggedInUser.favourite_recipes.push(rowId);
+            }
+            updateUser(loggedInUser._id, { favourite_recipes: loggedInUser.favourite_recipes })
+                .then((res) => {
+                    setLoggedInUser(res.data);
+                    setAuthenticatedUser(res.data);
+                    setTimeout(window.location.reload(), 3000);
                 })
-                console.log(err);
-                if (checkAuthFailure(err)) {
-                    handleAuthFailure();
-                }
-            })
+                .catch((err) => {
+                    M.toast({
+                        html: `There was an error favouriting the recipe ${getErrorDetails(err)}`,
+                        classes: 'red'
+                    })
+                    console.log(err);
+                    if (checkAuthFailure(err)) {
+                        handleAuthFailure();
+                    }
+                })
+        }
     }
 
     return (
@@ -203,20 +205,18 @@ function RecipeList() {
                 <div>
                     <table className="table-auto">
                         <thead>
-                            <tr className="tooltipped" data-position="top" data-tooltip="Double click row for details">
+                            <tr className="tooltipped" data-position="top" data-tooltip= {loggedInUser ? "Double click row for details" : "Create an account to see more details"}>
                                 <th>Name</th>
                                 <th>Core</th>
                                 <th>Premade</th>
                                 <th>Difficulty</th>
                                 <th>Healthy</th>
-                                <th></th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {recipes.map((recipe) => {
                                 return (
-                                    <tr key={recipe._id} row_id={recipe._id} onDoubleClick={() => navigate('/recipes/' + recipe._id, { state: { recipe } })}>
+                                    <tr key={recipe._id} row_id={recipe._id} onDoubleClick={() => { if (loggedInUser) { navigate('/recipes/' + recipe._id, { state: { recipe } }) } }}>
                                         <td id="title"><a href={recipe.url} target="_blank" rel="noopener noreferrer">{recipe.title}</a></td>
                                         <td id="core">{recipe.core_ingredient}</td>
                                         <td id="premade">{recipe.premade.toString()}</td>
@@ -224,7 +224,7 @@ function RecipeList() {
                                         <td id="healthy">{recipe.healthy_level}</td>
                                         <td id="delete" className="tooltipped" data-position="top" data-tooltip="delete?" hidden={!isAdmin}><a href="#!" className="secondary-content" onClick={handleDeleteClick}>
                                             <i className="material-icons left">delete</i></a></td>
-                                        <td id="favourite" className="tooltipped" data-position="top" data-tooltip="mark favourite?" ><a href="#!" className="secondary-content" onClick={handleFavouriteClick}>
+                                        <td id="favourite" className="tooltipped" data-position="top" data-tooltip="mark favourite?" hidden={!loggedInUser}><a href="#!" className="secondary-content" onClick={handleFavouriteClick}>
                                             <i className="material-icons left">{loggedInUser?.favourite_recipes.includes(recipe._id) ? "star" : "star_border"}</i></a></td>
                                     </tr>
                                 )

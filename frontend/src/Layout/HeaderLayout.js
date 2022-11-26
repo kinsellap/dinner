@@ -20,17 +20,19 @@ function HeaderLayout() {
   return (
     <nav>
       <div className="nav-wrapper">
-        <Link to="/" className="brand-logo center">What's for Dinner?</Link>
-        <a hidden={!loggedInUser} href="#§" data-target="burger" className="sidenav-trigger"><i className="material-icons">menu</i></a>
-        <ul hidden={!loggedInUser} className="right hide-on-med-and-down">
-          <li><Link to="/users">Profile</Link></li>
+        <Link to="/recipes" className="brand-logo center">What's for Dinner?</Link>
+        <a href="#§" data-target="burger" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+        <ul className="right hide-on-med-and-down">
+          <li hidden={!loggedInUser}><Link to="/users">Profile</Link></li>
           <li><Link to="/recipes">Recipes</Link></li>
-          <li><Link to="/"><span onClick={doLogout}>Logout</span></Link></li>
+          <li hidden={!loggedInUser}><Link to="/"><span onClick={doLogout}>Logout</span></Link></li>
+          <li hidden={loggedInUser}><Link to="/users/register">Register</Link></li>
         </ul>
-        <ul hidden={!loggedInUser} className="sidenav !right" id="burger">
-          <li><Link to="/users">Profile</Link></li>
+        <ul className="sidenav !right" id="burger">
+          <li hidden={!loggedInUser}><Link to="/users">Profile</Link></li>
           <li><Link to="/recipes">Recipes</Link></li>
-          <li><Link to="/"><span onClick={doLogout}>Logout</span></Link></li>
+          <li hidden={!loggedInUser}><Link to="/"><span onClick={doLogout}>Logout</span></Link></li>
+          <li hidden={loggedInUser}><Link to="/users/register">Register</Link></li>
         </ul>
       </div>
     </nav>
