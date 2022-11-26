@@ -7,11 +7,9 @@ import { UserProvider } from './Service/UserProvider';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <UserProvider>
-    <React.StrictMode>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </React.StrictMode>
   </UserProvider>
 );
 

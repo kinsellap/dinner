@@ -31,7 +31,7 @@ function UserProfile() {
         if (loggedInUser) {
             userCountRecipesAdded(loggedInUser._id);
         }
-    }, [countRecipesAdded, loggedInUser]);
+    }, []);
 
     useEffect(() => {
         const userCountRecipesUpdated = async (userId) => {
@@ -50,7 +50,7 @@ function UserProfile() {
         if (loggedInUser) {
             userCountRecipesUpdated(loggedInUser._id);
         }
-    }, [countRecipesAdded, loggedInUser]);
+    }, []);
 
     const handleDeleteClick = (event) => {
         //TODO pop up double check
@@ -76,7 +76,7 @@ function UserProfile() {
     const handleClearFavouritesClick = (event) => {
         //TODO pop up double check
         event.preventDefault();
-        updateUser(loggedInUser._id, { favourite_recipes:[]})
+        updateUser(loggedInUser._id, { favourite_recipes: [] })
             .then((res) => {
                 setLoggedInUser(res.data);
                 setAuthenticatedUser(res.data);
@@ -100,19 +100,26 @@ function UserProfile() {
         setTimeout(() => navigate('/users/login'), 1000);
     }
 
+    const getCountRecipesFavourited = () => {
+        return loggedInUser ? loggedInUser.favourite_recipes.length : 0;
+    }
+
+    const getProfileName = () => {
+        return loggedInUser ? capitaliseFirstLetter(loggedInUser?.first_name) + "'s Profile" : '';
+    }
+    
     return (
         <div className="row">
             <div className="col s12">
-                <h4 className="teal-text text-lighten-2">{capitaliseFirstLetter(loggedInUser?.first_name)}'s Profile</h4>
+                <h4 className="teal-text text-lighten-2">{getProfileName()}</h4>
                 <div className="row">
-
                     <div className="col s3 center teal lighten-2 circle" style={{ color: "white" }}>
-                        <h5>  {countRecipesAdded}</h5>
+                        <h5> {countRecipesAdded}</h5>
                         <p>Recipes Added</p>
                     </div>
                     <div className="col s1" />
                     <div className="col s3 center circle" style={{ outline: "2px solid #4db6ac", color: "#4db6ac" }}>
-                        <h5>  {loggedInUser?.favourite_recipes.length}</h5>
+                        <h5>  {getCountRecipesFavourited()}</h5>
                         <p>Recipes Favourited</p>
                     </div>
                     <div className="col s1" />

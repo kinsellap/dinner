@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../Service/UserProvider";
 import { removeAuthenticatedUser } from "../Service/SessionService";
 import M from 'materialize-css';
 
 function HeaderLayout() {
+  const navigate = useNavigate();
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
 
   useEffect(() => {
@@ -15,6 +16,7 @@ function HeaderLayout() {
   const doLogout = () => {
     removeAuthenticatedUser();
     setLoggedInUser();
+    setTimeout(() => navigate('/'), 100);
   };
 
   return (
@@ -25,7 +27,7 @@ function HeaderLayout() {
         <ul className="right hide-on-med-and-down">
           <li hidden={!loggedInUser}><Link to="/users">Profile</Link></li>
           <li><Link to="/recipes">Recipes</Link></li>
-          <li hidden={!loggedInUser}><Link to="/"><span onClick={doLogout}>Logout</span></Link></li>
+          <li hidden={!loggedInUser}><Link onClick={doLogout}>Logout</Link></li>
           <li hidden={loggedInUser}><Link to="/users/register">Register</Link></li>
         </ul>
         <ul className="sidenav !right" id="burger">

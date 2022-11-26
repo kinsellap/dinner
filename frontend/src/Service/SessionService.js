@@ -3,6 +3,7 @@ const LOGGED_IN_USER = 'loggedInUser'
 const AUTH_TOKEN = 'authToken'
 
 export const setAuthenticatedUser = async (user) => {
+    console.log("setting session")
     sessionStorage.setItem(LOGGED_IN_USER, JSON.stringify(user));
 };
 
