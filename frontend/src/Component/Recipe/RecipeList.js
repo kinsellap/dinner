@@ -114,8 +114,8 @@ function RecipeList() {
     };
 
     const handleAuthFailure = () => {
-        setLoggedInUser();
         removeAuthenticatedUser();
+        setLoggedInUser();
         setTimeout(() => navigate('/users/login'), 1000);
     }
 

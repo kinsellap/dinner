@@ -22,7 +22,7 @@ export const getRecipe = async (recipeId) => {
 export const getCountRecipes = async (query) => {
     const { added_by, updated_by } = query;
     if (Object.keys(query).length && !added_by && !updated_by) {
-        throw Error('Query not suppored');
+        throw Error('Query not supported');
     }
     return await (Recipe.count(query));
 }
