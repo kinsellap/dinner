@@ -6,5 +6,5 @@ export const getErrorDetails = (err) => {
 }
 
 export const checkAuthFailure = (err) => {
-    return err.response.status === 401 || err.response.status === 403;
+    return err.response?.status === 401 || err.response?.status === 403;
 }

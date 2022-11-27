@@ -3,7 +3,7 @@ import { UserContext } from "../../Service/UserProvider";
 import { useNavigate, Link } from 'react-router-dom'
 
 function UserPasswordReset() {
-
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const navigate = useNavigate();
 
     return (

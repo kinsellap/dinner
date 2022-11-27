@@ -1,15 +1,12 @@
 import mongoose from 'mongoose'
 import { UserSchema } from '../model/UserModel'
-import bcrypt from 'bcryptjs';
-const saltRounds = 10;
 const lodash = require('lodash');
 import { signRequest } from './AuthService';
 const User = mongoose.model('User', UserSchema);
 
 export const createUser = async (userData) => {
     const userCount = await (User.count());
-    const encryptedPassword = await encryptPassword(userData.password);
-    const newUser = new User({ ...userData, "password": encryptedPassword, "admin": userCount == 0 })
+    const newUser = new User({ ...userData, "password": userData.password, "admin": userCount == 0 })
     const user = await (newUser.save());
     if (!user) {
         return null;
@@ -20,11 +17,11 @@ export const createUser = async (userData) => {
 
 export const getUserByAuth = async (userData) => {
     const { email_address, password } = userData;
-    const user = await (User.findOne({ email_address }).select('+password'));
+    const user = await User.findOne({ email_address }).select('+password');
     if (!user) {
         return null;
     }
-    const matchedPassword = await comparePassword(password, user.password);
+    const matchedPassword = await user.verifyPasswordSync(password);
     if (matchedPassword) {
         const updatedUser = await removePassword(user);
         return addTokenToUser(updatedUser)
@@ -33,16 +30,29 @@ export const getUserByAuth = async (userData) => {
     };
 }
 
-export const getUser = async (userId) => {
-    return await (User.findById(userId));
+export const changePassword = async (userData, requesterId) => {
+    const { email_address, password, new_password } = userData;
+    const user = await User.findOne({ email_address }).select('+password');
+    if (!user) {
+        return null;
+    }
+    const matchedPassword = await user.verifyPasswordSync(password);
+    if (matchedPassword) {
+        const updatedUserPassword = await updateUser(user._id, {password:new_password},requesterId)
+        // user.password = new_password;
+        // user.date_updated = new Date(Date.now());
+        // return await removePassword(await user.save());
+        return removePassword(updatedUserPassword);
+    } else {
+        throw Error('Invalid password')
+    };
 }
 
-export const getUsers = async (searchQuery) => {
-    let filter = {};
-    if (searchQuery) {
-        filter = { name: { $regex: new RegExp(req.query.name, "i") } };
+export const resetPassword = async (email) => {
+    let user = await User.findOne({ email_address: email })
+    if (!user) {
+        return null;
     }
-    return await (User.find(filter));
 }
 
 export const updateUser = async (userId, userBody, requesterId) => {
@@ -52,8 +62,8 @@ export const updateUser = async (userId, userBody, requesterId) => {
         const updateBody = {
             ...userBody,
             date_updated: updatedDate
-        };
-        return await (User.findOneAndUpdate({ _id: userId }, updateBody, { new: true }));
+        }
+        return await User.findOneAndUpdate({ _id: userId }, updateBody, { new: true });
     }
     throw Error('Action not authorised');
 }
@@ -61,7 +71,7 @@ export const updateUser = async (userId, userBody, requesterId) => {
 export const deleteUser = async (userId, requesterId) => {
     const requester = await getUser(requesterId);
     if (requester && (requester.admin || requester._id == userId)) {
-        return await (User.findByIdAndDelete({ _id: userId }));
+        return await User.findByIdAndDelete({ _id: userId });
     }
     throw Error('Action not authorised');
 }
@@ -69,18 +79,17 @@ export const deleteUser = async (userId, requesterId) => {
 export const deleteUsers = async (requesterId) => {
     const requester = await getUser(requesterId);
     if (requester && requester.admin) {
-        return await (User.deleteMany());
+        return await User.deleteMany();
     }
     throw Error('Action not authorised');
 }
 
-const encryptPassword = async (password) => {
-    const salt = await bcrypt.genSalt(saltRounds);
-    return bcrypt.hashSync(password, salt);
+export const getUser = async (userId) => {
+    return await User.findById(userId);
 }
 
-const comparePassword = async (password, encryptedPassword) => {
-    return await bcrypt.compare(password, encryptedPassword);
+export const getUsers = async () => {
+    return await User.find();
 }
 
 const removePassword = async (user) => {

@@ -1,4 +1,4 @@
-import { createUser, getUser, getUsers, deleteUser, deleteUsers, updateUser, getUserByAuth } from '../service/UserService';
+import { createUser, getUser, getUsers, deleteUser, deleteUsers, updateUser, getUserByAuth, resetPassword, changePassword } from '../service/UserService';
 import express from 'express';
 import verify from '../middleware/Auth';
 const userRouter = express.Router();
@@ -16,13 +16,8 @@ userRouter.post('/', async (req, res) => {
         });
 });
 
-userRouter.get('/',verify, async (req, res) => {
-    if (!req.query.name && Object.keys(req.query).length !== 0) {
-        res.status(400);
-        res.json({ message: "invalid request params" });
-        return;
-    }
-    getUsers(req.query.name)
+userRouter.get('/', async (req, res) => {
+    getUsers()
         .then(result => res.json(result))
         .catch(err => {
             res.status(400);
@@ -39,7 +34,25 @@ userRouter.post('/login', async (req, res) => {
         });
 });
 
-userRouter.get('/:id',verify, async (req, res) => {
+userRouter.put('/changepassword', verify, async (req, res) => {
+    changePassword(req.body, req.user._id)
+        .then(result => handleGetUserResult(result, res, result))
+        .catch(err => {
+            res.status(400);
+            res.json({ message: err.message });
+        });
+});
+
+userRouter.put('/resetpassword', async (req, res) => {
+    resetPassword(req.body)
+        .then(result => handleGetUserResult(result, res, result))
+        .catch(err => {
+            res.status(400);
+            res.json({ message: err.message });
+        });
+});
+
+userRouter.get('/:id', verify, async (req, res) => {
     getUser(req.params.id)
         .then(result => handleGetUserResult(result, res, result))
         .catch(err => {
@@ -49,7 +62,7 @@ userRouter.get('/:id',verify, async (req, res) => {
 });
 
 userRouter.put('/:id', verify, async (req, res) => {
-    updateUser(req.params.id, req.body,req.user._id)
+    updateUser(req.params.id, req.body, req.user._id)
         .then(result => handleGetUserResult(result, res, result))
         .catch(err => {
             res.status(500);
@@ -57,8 +70,8 @@ userRouter.put('/:id', verify, async (req, res) => {
         });
 });
 
-userRouter.delete('/:id',verify, async (req, res) => {
-    deleteUser(req.params.id,req.user._id)
+userRouter.delete('/:id', verify, async (req, res) => {
+    deleteUser(req.params.id, req.user._id)
         .then(result => handleGetUserResult(result, res, { message: `successfully deleted user` }))
         .catch(err => {
             res.status(500);
@@ -66,8 +79,8 @@ userRouter.delete('/:id',verify, async (req, res) => {
         });
 });
 
-userRouter.delete('/',verify,  async(req, res) => {
-    deleteUsers()
+userRouter.delete('/', verify, async (req, res) => {
+    deleteUsers(req.user._id)
         .then(() => res.json({ message: `successfully deleted all users` }))
         .catch(err => {
             res.status(500);

@@ -1,5 +1,4 @@
-import mongoose from 'mongoose'
-
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 export const UserSchema = new Schema({
@@ -21,7 +20,8 @@ export const UserSchema = new Schema({
         type: String,
         minlength: 5,
         required: true,
-        select: false
+        select: false,
+        bcrypt: true
     },
     date_added: {
         type: Date,
@@ -39,3 +39,5 @@ export const UserSchema = new Schema({
         ref: 'Recipe',
     }],
 })
+
+UserSchema.plugin(require('mongoose-bcrypt'));

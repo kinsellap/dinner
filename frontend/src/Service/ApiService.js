@@ -27,6 +27,11 @@ export const updateUser = async (userId, data) => {
     return await axios.put(usersEndpoint + userId, data, contentAuthHeaders(token));
 }
 
+export const changePassword = async (data) => {
+    const token = getAuthToken();
+    return await axios.put(usersEndpoint + 'changepassword', data, contentAuthHeaders(token));
+}
+
 export const deleteUser = async (userId) => {
     const token = getAuthToken();
     return await axios.delete(usersEndpoint + userId, contentAuthHeaders(token));
@@ -82,7 +87,7 @@ export const getCountRecipesUpdated = async (userId) => {
 
 export const getCountRecipes = async (query) => {
     const token = getAuthToken();
-    let countEndpoint = '/count';
+    let countEndpoint = 'count';
     if (query) {
         countEndpoint += query;
     }
