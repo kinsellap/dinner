@@ -6,6 +6,7 @@ import { capitaliseFirstLetter, isNotEmpty } from "../../Utils/StringUtils";
 import { removeAuthenticatedUser, setAuthenticatedUser } from "../../Service/SessionService"
 import { getCountRecipesUpdated, getCountRecipesAdded, deleteUser, updateUser, changePassword } from "../../Service/ApiService";
 import { dateOnly } from "../../Utils/DateTimeUtils";
+import ImageUploading from 'react-images-uploading';
 import M from 'materialize-css'
 
 function UserProfile() {
@@ -14,6 +15,7 @@ function UserProfile() {
     const [passwordChange, setPasswordChange] = useState(false);
     const [countRecipesAdded, setCountRecipesAdded] = useState(0);
     const [countRecipesUpdated, setCountRecipesUpdated] = useState(0);
+    const [profilePicture, setProfilePicture] = useState([]);
     const [passwordValues, setPasswordValues] = useState({
         password: '',
         new_password: ''
@@ -105,6 +107,7 @@ function UserProfile() {
             })
     }
 
+
     const handleCurrentPasswordChange = (event) => {
         event.persist();
         setPasswordValues((values) => ({
@@ -130,7 +133,7 @@ function UserProfile() {
         event.preventDefault();
         setPasswordValues(() => ({
             new_password: '',
-            password:''
+            password: ''
         }));
         setPasswordChange(false);
     }
@@ -173,6 +176,26 @@ function UserProfile() {
         return loggedInUser ? capitaliseFirstLetter(loggedInUser?.first_name) + "'s Profile" : '';
     }
 
+    const onImageChange = (image) => {
+        setProfilePicture(image);
+        if (loggedInUser) {
+            updateUser(loggedInUser._id, { profile_picture: image[0].data_url })
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch((err) => {
+                    M.toast({
+                        html: `There was an error uploading your photo ${getErrorDetails(err)}`,
+                        classes: 'red'
+                    })
+                    console.log(err);
+                    if (checkAuthFailure(err)) {
+                        handleAuthFailure();
+                    }
+                })
+        }
+    };
+
     return (
         <div className="row">
             <div className="col s12">
@@ -181,16 +204,33 @@ function UserProfile() {
                     <div className="row">
                         <div className="col s2 left teal lighten-2 circle" style={{ color: "white" }}>
                             <h5 className="center"> {countRecipesAdded}</h5>
-                            <p className="center"> Recipes <br/><i className="material-icons">add_circle</i></p>
+                            <p className="center"> Recipes <br /><i className="material-icons">add_circle</i></p>
                         </div>
                         <div className="col s2  circle" style={{ outline: "2px solid #4db6ac", color: "#4db6ac", marginLeft: "25%" }}>
                             <h5 className="center"> {getCountRecipesFavourited()}</h5>
-                            <p className="center" >Recipes <br/><i className="material-icons">star</i></p>
+                            <p className="center" >Recipes <br /><i className="material-icons">star</i></p>
                         </div>
+
                         <div className="col s2 right  teal lighten-2 circle" style={{ color: "white" }}>
                             <h5 className="center">  {countRecipesUpdated}</h5>
-                            <p className="center">Recipes <br/><i className="material-icons">edit</i></p>
+                            <p className="center">Recipes <br /><i className="material-icons">edit</i></p>
                         </div>
+                    </div>
+                    <div className="row col s12 center " >
+                        {profilePicture.map((image, index) => (
+                            <div key={index} className="image-item"><img src={image.data_url} alt="" width="100" /></div>
+                        ))}
+                    </div>
+                    <div className="row">
+                        <ImageUploading value={profilePicture} onChange={onImageChange} maxNumber={1} dataURLKey="data_url" acceptType={["jpg"]}>
+                            {({ onImageUpload, onImageRemove }) => (
+                                <div className="upload__image-wrapper center">
+                                    <button className=" btn waves-light center" type="button" onClick={onImageUpload}>Update Photo</button>
+                                    &nbsp;
+                                    <button className="btn waves-light center" type="button" onClick={onImageRemove}>Remove Photo</button>
+                                </div>
+                            )}
+                        </ImageUploading>
                     </div>
                     <div className="row">
                         <div className="col s12">
@@ -222,16 +262,16 @@ function UserProfile() {
                     </div>
                     <div hidden={!passwordChange} className="row">
                         <div className="input-field col s5">
-                            <input className="validate" id="current-password" type={showPassword ? "text" : "password"} minLength="5" maxLength="20" required autoComplete="on" value={passwordValues.password} onChange={handleCurrentPasswordChange} />
+                            <input id="current-password" type={showPassword ? "text" : "password"} minLength="5" maxLength="20" required autoComplete="on" value={passwordValues.password} onChange={handleCurrentPasswordChange} />
                             <label htmlFor="current-password">Current Password</label>
                         </div>
                         <div className="input-field col s5">
-                            <input className="validate" id="new-password" type={showPassword ? "text" : "password"} minLength="5" maxLength="20" required autoComplete="on" value={passwordValues.new_password} onChange={handleNewPasswordChange} />
+                            <input id="new-password" type={showPassword ? "text" : "password"} minLength="5" maxLength="20" required autoComplete="on" value={passwordValues.new_password} onChange={handleNewPasswordChange} />
                             <label htmlFor="new-password">New Password</label>
                         </div>
                         <div className="input-field col s2">
-                        <a href="#!" className="secondary-content left" onClick={handleShowPasswordClick}>
-                            <i className="material-icons">{showPassword ? "visibility_off" : "visibility"}</i>
+                            <a href="#!" className="secondary-content left" onClick={handleShowPasswordClick}>
+                                <i className="material-icons">{showPassword ? "visibility_off" : "visibility"}</i>
                             </a>
                         </div>
                     </div>

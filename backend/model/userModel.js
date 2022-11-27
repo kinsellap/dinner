@@ -4,10 +4,12 @@ const Schema = mongoose.Schema;
 export const UserSchema = new Schema({
     first_name: {
         type: String,
+        maxlength: 20,
         required: true
     },
     last_name: {
         type: String,
+        maxlength: 20,
         required: true
     },
     email_address: {
@@ -19,6 +21,7 @@ export const UserSchema = new Schema({
     password: {
         type: String,
         minlength: 5,
+        maxlength: 20,
         required: true,
         select: false,
         bcrypt: true
@@ -38,6 +41,9 @@ export const UserSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Recipe',
     }],
+    profile_picture: {
+        type: Buffer
+    }
 })
 
 UserSchema.plugin(require('mongoose-bcrypt'));
