@@ -222,11 +222,11 @@ function UserProfile() {
                     </div>
                     <div hidden={!passwordChange} className="row">
                         <div className="input-field col s5">
-                            <input id="current-password" type={showPassword ? "text" : "password"} minLength="5" maxLength="20" required autoComplete="on" value={passwordValues.password} onChange={handleCurrentPasswordChange} />
+                            <input className="validate" id="current-password" type={showPassword ? "text" : "password"} minLength="5" maxLength="20" required autoComplete="on" value={passwordValues.password} onChange={handleCurrentPasswordChange} />
                             <label htmlFor="current-password">Current Password</label>
                         </div>
                         <div className="input-field col s5">
-                            <input id="new-password" type={showPassword ? "text" : "password"} minLength="5" maxLength="20" required autoComplete="on" value={passwordValues.new_password} onChange={handleNewPasswordChange} />
+                            <input className="validate" id="new-password" type={showPassword ? "text" : "password"} minLength="5" maxLength="20" required autoComplete="on" value={passwordValues.new_password} onChange={handleNewPasswordChange} />
                             <label htmlFor="new-password">New Password</label>
                         </div>
                         <div className="input-field col s2">
