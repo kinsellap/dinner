@@ -178,8 +178,9 @@ function UserProfile() {
 
     const onImageChange = (image) => {
         setProfilePicture(image);
-        if (loggedInUser) {
-            updateUser(loggedInUser._id, { profile_picture: image[0].data_url })
+        const file = image[0];
+        if (loggedInUser && file) {
+            updateUser(loggedInUser._id, { profile_picture: {data: file.data_url, contentType: 'image/jpeg'} })
                 .then((res) => {
                     console.log(res);
                 })

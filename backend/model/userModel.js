@@ -42,7 +42,8 @@ export const UserSchema = new Schema({
         ref: 'Recipe',
     }],
     profile_picture: {
-        type: Buffer
+        data: { type: Buffer },
+        contentType: { type: String }
     }
 })
 
