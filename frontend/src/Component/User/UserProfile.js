@@ -200,7 +200,24 @@ function UserProfile() {
     return (
         <div className="row">
             <div className="col s12">
-                <h4 className="teal-text text-lighten-2">{getProfileName()}</h4>
+                <h4 className="teal-text text-lighten-2 center">{getProfileName()}</h4>
+                <div className="row col s12 center " >
+                        {profilePicture.map((image, index) => (
+                            <div key={index} className="image-item"><img className="circle responsive-img" src={image.data_url} alt="" width="100" /></div>
+                        ))}
+                    </div>
+                    <div className="row">
+                        <ImageUploading value={profilePicture} onChange={onImageChange} maxNumber={1} dataURLKey="data_url" acceptType={["jpg"]}>
+                            {({ onImageUpload, onImageRemove }) => (
+                                <div className="upload__image-wrapper center">
+                                    <button className=" btn waves-light center" type="button" onClick={onImageUpload}>Update Photo</button>
+                                    &nbsp;
+                                    <button className="btn waves-light center" type="button" onClick={onImageRemove}>Remove Photo</button>
+                                </div>
+                            )}
+                        </ImageUploading>
+                    </div>
+                    <div className="row"/>
                 <form onSubmit={doPasswordUpdate}>
                     <div className="row">
                         <div className="col s2 left teal lighten-2 circle" style={{ color: "white" }}>
@@ -216,22 +233,6 @@ function UserProfile() {
                             <h5 className="center">  {countRecipesUpdated}</h5>
                             <p className="center">Recipes <br /><i className="material-icons">edit</i></p>
                         </div>
-                    </div>
-                    <div className="row col s12 center " >
-                        {profilePicture.map((image, index) => (
-                            <div key={index} className="image-item"><img src={image.data_url} alt="" width="100" /></div>
-                        ))}
-                    </div>
-                    <div className="row">
-                        <ImageUploading value={profilePicture} onChange={onImageChange} maxNumber={1} dataURLKey="data_url" acceptType={["jpg"]}>
-                            {({ onImageUpload, onImageRemove }) => (
-                                <div className="upload__image-wrapper center">
-                                    <button className=" btn waves-light center" type="button" onClick={onImageUpload}>Update Photo</button>
-                                    &nbsp;
-                                    <button className="btn waves-light center" type="button" onClick={onImageRemove}>Remove Photo</button>
-                                </div>
-                            )}
-                        </ImageUploading>
                     </div>
                     <div className="row">
                         <div className="col s12">
