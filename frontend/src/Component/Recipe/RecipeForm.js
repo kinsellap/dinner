@@ -268,7 +268,7 @@ function RecipeForm(props) {
                         <div className="input-field col s6">
                             <div className="range-field">
                                 <input type="range" id="healthy_level" min="1" max="5" value={values.healthy_level} onChange={handleHealthyChange} disabled={!editable} />
-                                <label htmlFor="healthy_level" >Note: 1 is easiest and 5 is hardest
+                                <label htmlFor="healthy_level" >Note: 1 is most healthy and 5 is least healthy
                                     <br /> Healthy = </label>
                                 <output>{values.healthy_level}</output>
                             </div>
@@ -311,7 +311,7 @@ function RecipeForm(props) {
                         <div hidden={!editable} className="col s4">
                             <button className="btn waves-light right" type="submit">
                                 {editable && !isCreateMode ? "Update Recipe" : "Add Recipe"}
-                                <i className="material-icons right">send</i>
+                                <i className="material-icons right">add_circle</i>
                             </button>
                         </div>
                         <div hidden={editable || !loggedInUser} className="col s4">

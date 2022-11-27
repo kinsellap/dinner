@@ -9,3 +9,11 @@ export const signRequest = (data) => {
 export const verifyToken = (token) => {
     return jwt.verify(token, SECRET_KEY);
 }
+
+export function isAuthorised(requester, userId) {
+    return requester && (requester.admin || requester._id == userId || requester._id.equals(userId));
+}
+
+export function isAdminAuthorised(requester) {
+    return requester && requester.admin;
+}

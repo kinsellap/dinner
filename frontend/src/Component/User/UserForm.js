@@ -105,7 +105,7 @@ function UserForm(props) {
                 </div>
                 <div className="row">
                     <div className="input-field col s12">
-                        <input id="password" value={values.password} type="password" minLength="5" required autoComplete="on" onChange={handlePasswordChange} />
+                        <input id="password" value={values.password} type="password" minLength="5" maxLength="20" required autoComplete="on" onChange={handlePasswordChange} />
                         <label htmlFor="password">Password</label>
                     </div>
                 </div>

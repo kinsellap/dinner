@@ -18,6 +18,7 @@ function UserProfile() {
         password: '',
         new_password: ''
     });
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         const userCountRecipesAdded = async (userId) => {
@@ -56,6 +57,11 @@ function UserProfile() {
             userCountRecipesUpdated(loggedInUser._id);
         }
     }, []);
+
+    const handleShowPasswordClick = (event) => {
+        event.preventDefault();
+        setShowPassword(!showPassword);
+    }
 
     const handleDeleteClick = (event) => {
         //TODO pop up double check
@@ -120,6 +126,15 @@ function UserProfile() {
         setPasswordChange(true);
     }
 
+    const handleCancelChangePasswordClick = (event) => {
+        event.preventDefault();
+        setPasswordValues(() => ({
+            new_password: '',
+            password:''
+        }));
+        setPasswordChange(false);
+    }
+
     const doPasswordUpdate = (event) => {
         event.preventDefault();
         if (loggedInUser && isNotEmpty(passwordValues.password) && isNotEmpty(passwordValues.new_password)) {
@@ -164,19 +179,17 @@ function UserProfile() {
                 <h4 className="teal-text text-lighten-2">{getProfileName()}</h4>
                 <form onSubmit={doPasswordUpdate}>
                     <div className="row">
-                        <div className="col s3 center teal lighten-2 circle" style={{ color: "white" }}>
-                            <h5> {countRecipesAdded}</h5>
-                            <p>Recipes Added</p>
+                        <div className="col s2 left teal lighten-2 circle" style={{ color: "white" }}>
+                            <h5 className="center"> {countRecipesAdded}</h5>
+                            <p className="center"> Recipes <br/><i className="material-icons">add_circle</i></p>
                         </div>
-                        <div className="col s1" />
-                        <div className="col s3 center circle" style={{ outline: "2px solid #4db6ac", color: "#4db6ac" }}>
-                            <h5> {getCountRecipesFavourited()}</h5>
-                            <p>Recipes Favourited</p>
+                        <div className="col s2  circle" style={{ outline: "2px solid #4db6ac", color: "#4db6ac", marginLeft: "25%" }}>
+                            <h5 className="center"> {getCountRecipesFavourited()}</h5>
+                            <p className="center" >Recipes <br/><i className="material-icons">star</i></p>
                         </div>
-                        <div className="col s1" />
-                        <div className="col s3 center  teal lighten-2 circle" style={{ color: "white" }}>
-                            <h5>  {countRecipesUpdated}</h5>
-                            <p>Recipes Updated</p>
+                        <div className="col s2 right  teal lighten-2 circle" style={{ color: "white" }}>
+                            <h5 className="center">  {countRecipesUpdated}</h5>
+                            <p className="center">Recipes <br/><i className="material-icons">edit</i></p>
                         </div>
                     </div>
                     <div className="row">
@@ -208,13 +221,18 @@ function UserProfile() {
                         </div>
                     </div>
                     <div hidden={!passwordChange} className="row">
-                        <div className="input-field col s6">
-                            <input id="current-password" type="password" minLength="5" required autoComplete="on" value={passwordValues.password} onChange={handleCurrentPasswordChange} />
+                        <div className="input-field col s5">
+                            <input id="current-password" type={showPassword ? "text" : "password"} minLength="5" maxLength="20" required autoComplete="on" value={passwordValues.password} onChange={handleCurrentPasswordChange} />
                             <label htmlFor="current-password">Current Password</label>
                         </div>
-                        <div className="input-field col s6">
-                            <input id="new-password" type="password" minLength="5" required autoComplete="on" value={passwordValues.new_password} onChange={handleNewPasswordChange} />
+                        <div className="input-field col s5">
+                            <input id="new-password" type={showPassword ? "text" : "password"} minLength="5" maxLength="20" required autoComplete="on" value={passwordValues.new_password} onChange={handleNewPasswordChange} />
                             <label htmlFor="new-password">New Password</label>
+                        </div>
+                        <div className="input-field col s2">
+                        <a href="#!" className="secondary-content left" onClick={handleShowPasswordClick}>
+                            <i className="material-icons">{showPassword ? "visibility_off" : "visibility"}</i>
+                            </a>
                         </div>
                     </div>
                     <div className="row">
@@ -228,8 +246,12 @@ function UserProfile() {
                                 <i className="material-icons right"></i>
                             </button>
                         </div>
+                        <div hidden={!loggedInUser || !passwordChange} className="col s4 right">
+                            <button className="btn waves-light right" type="submit">Submit
+                                <i className="material-icons right"></i></button>
+                        </div>
                         <div hidden={!loggedInUser || !passwordChange} className="col s4 left">
-                            <button className="btn waves-light left" type="submit">Submit
+                            <button className="btn waves-light left" type="button" onClick={handleCancelChangePasswordClick}>Cancel
                                 <i className="material-icons right"></i></button>
                         </div>
                         <div hidden={!loggedInUser || passwordChange} className="col s4 right">

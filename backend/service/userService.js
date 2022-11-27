@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import { UserSchema } from '../model/UserModel'
 const lodash = require('lodash');
-import { signRequest } from './AuthService';
+import { signRequest, isAuthorised, isAdminAuthorised} from './AuthService';
 const User = mongoose.model('User', UserSchema);
 
 export const createUser = async (userData) => {
@@ -38,11 +38,7 @@ export const changePassword = async (userData, requesterId) => {
     }
     const matchedPassword = await user.verifyPasswordSync(password);
     if (matchedPassword) {
-        const updatedUserPassword = await updateUser(user._id, {password:new_password},requesterId)
-        // user.password = new_password;
-        // user.date_updated = new Date(Date.now());
-        // return await removePassword(await user.save());
-        return removePassword(updatedUserPassword);
+        return await updateUser(user._id, {password:new_password},requesterId);
     } else {
         throw Error('Invalid password')
     };
@@ -57,7 +53,7 @@ export const resetPassword = async (email) => {
 
 export const updateUser = async (userId, userBody, requesterId) => {
     const requester = await getUser(requesterId);
-    if (requester && (requester.admin || requester._id == userId)) {
+    if (isAuthorised(requester, userId)) {
         const updatedDate = new Date(Date.now());
         const updateBody = {
             ...userBody,
@@ -70,7 +66,7 @@ export const updateUser = async (userId, userBody, requesterId) => {
 
 export const deleteUser = async (userId, requesterId) => {
     const requester = await getUser(requesterId);
-    if (requester && (requester.admin || requester._id == userId)) {
+    if (isAuthorised(requester, userId)) {
         return await User.findByIdAndDelete({ _id: userId });
     }
     throw Error('Action not authorised');
@@ -78,7 +74,7 @@ export const deleteUser = async (userId, requesterId) => {
 
 export const deleteUsers = async (requesterId) => {
     const requester = await getUser(requesterId);
-    if (requester && requester.admin) {
+    if (isAdminAuthorised(requester)) {
         return await User.deleteMany();
     }
     throw Error('Action not authorised');
@@ -101,3 +97,5 @@ const addTokenToUser = (user) => {
     const token = signRequest({ _id, email_address, password });
     return { user, token };
 }
+
+
