@@ -7,8 +7,11 @@ import { capitaliseFirstLetter, isNotEmpty } from "../../Utils/StringUtils";
 import { removeAuthenticatedUser, setAuthenticatedUser } from "../../Service/SessionService"
 import { getCountRecipesUpdated, getCountRecipesAdded, deleteUser, updateUser, changePassword } from "../../Service/ApiService";
 import { dateOnly } from "../../Utils/DateTimeUtils";
+import { getMimeType } from "../../Utils/FileUtils";
 import ImageUploading from 'react-images-uploading';
-import M from 'materialize-css'
+import M from 'materialize-css';
+const MAX_FILE_SIZE = 55000;
+const ACCEPTED_FILE_TYPES = ["jpg", "jpeg"];
 
 function UserProfile() {
     const navigate = useNavigate();
@@ -63,10 +66,10 @@ function UserProfile() {
 
     useEffect(() => {
         const setFileType = async (profile_picture) => {
-            const mimeType = (profile_picture.match(/^data:([^;]+);/) || '')[1];
             await axios.get(profile_picture, { responseType: 'arraybuffer' })
                 .then(
                     (res) => {
+                        const mimeType = getMimeType(profile_picture);
                         const profileFile = { "data_url": profile_picture, "file": new File([res.data], { type: mimeType }) }
                         setProfilePicture([profileFile]);
                     })
@@ -87,22 +90,24 @@ function UserProfile() {
     const handleDeleteClick = (event) => {
         //TODO pop up double check
         event.preventDefault();
-        deleteUser(loggedInUser._id)
-            .then(() => {
-                removeAuthenticatedUser();
-                setLoggedInUser();
-                setTimeout(() => navigate('/users/register'), 1000);
-            })
-            .catch((err) => {
-                M.toast({
-                    html: `There was an error deleting this user ${getErrorDetails(err)}`,
-                    classes: 'red'
+        if (loggedInUser) {
+            deleteUser(loggedInUser._id)
+                .then(() => {
+                    removeAuthenticatedUser();
+                    setLoggedInUser();
+                    setTimeout(() => navigate('/users/register'), 1000);
                 })
-                console.log(err);
-                if (checkAuthFailure(err)) {
-                    handleAuthFailure();
-                }
-            })
+                .catch((err) => {
+                    M.toast({
+                        html: `There was an error deleting this user ${getErrorDetails(err)}`,
+                        classes: 'red'
+                    })
+                    console.log(err);
+                    if (checkAuthFailure(err)) {
+                        handleAuthFailure();
+                    }
+                })
+        }
     }
 
     const handleClearFavouritesClick = (event) => {
@@ -127,7 +132,6 @@ function UserProfile() {
                 })
         }
     }
-
 
     const handleCurrentPasswordChange = (event) => {
         event.persist();
@@ -189,6 +193,10 @@ function UserProfile() {
         setTimeout(() => navigate('/users/login'), 1000);
     }
 
+    const isRemoveProfilePicture = (file) => {
+        return profilePicture?.length > 0 && !file;
+    }
+
     const getCountRecipesFavourited = () => {
         return loggedInUser ? loggedInUser.favourite_recipes.length : 0;
     }
@@ -201,8 +209,31 @@ function UserProfile() {
         return loggedInUser ? capitaliseFirstLetter(loggedInUser?.first_name) + "'s Profile" : '';
     }
 
+    const isWithinFileSizeLimit = (file) => {
+        return file.size <= MAX_FILE_SIZE;
+    }
+
+    const isAcceptedMimeType = (file) => {
+        const mime = file.type.substring(file.type.indexOf('/')+1);
+        return ACCEPTED_FILE_TYPES.includes(mime.toLowerCase());
+    }
+
     const onImageChange = (image) => {
         const file = image[0];
+        if(!isWithinFileSizeLimit(file.file)){
+            M.toast({
+                html: `The max file size is ${MAX_FILE_SIZE} mb`,
+                classes: 'red'
+            })
+            return;
+        }
+        if(!isAcceptedMimeType(file.file)){
+            M.toast({
+                html: `The supported file types are ${ACCEPTED_FILE_TYPES}`,
+                classes: 'red'
+            })
+            return;
+        }
         if (loggedInUser && file) {
             updateUser(loggedInUser._id, { profile_picture: file.data_url })
                 .then((res) => {
@@ -221,7 +252,7 @@ function UserProfile() {
                     }
                 })
         }
-        if (profilePicture && profilePicture.length > 0 && !file) {
+        if (isRemoveProfilePicture(file)) {
             updateUser(loggedInUser._id, { profile_picture: '' })
                 .then((res) => {
                     setProfilePicture([]);
@@ -251,7 +282,7 @@ function UserProfile() {
                     ))}
                 </div>
                 <div className="row">
-                    <ImageUploading value={profilePicture} onChange={onImageChange} maxNumber={1} dataURLKey="data_url" maxFileSize="55000" acceptType={["jpg"]}>
+                    <ImageUploading value={profilePicture} onChange={onImageChange} maxNumber={1} dataURLKey="data_url" acceptType={ACCEPTED_FILE_TYPES}>
                         {({ onImageUpdate, onImageRemove }) => (
                             <div className="upload__image-wrapper center">
                                 <button className=" btn waves-light center" type="button" onClick={onImageUpdate}>{loggedInUser?.profile_picture ? "Update Photo" : "Upload Photo"}</button>
