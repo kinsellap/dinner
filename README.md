@@ -1,5 +1,8 @@
 # dinner
 
+# dependencies
+- version of react etc
+
 # database
 - mongodb
 - version --
