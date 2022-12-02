@@ -193,7 +193,7 @@ function RecipeForm(props) {
                     </div>
                     <div className="row">
                         <div className="input-field col s12">
-                            <input className={isCreateMode ? "validate" : ""} id="url" value={values.url} type="url" onChange={handleUrlChange} required readOnly={!editable} />
+                            <input className={isCreateMode ? "validate" : ""} id="url" value={values.url} type="url" onChange={handleUrlChange} maxLength="250" required readOnly={!editable} />
                             <label className={isCreateMode ? "" : "active"} htmlFor="url">Webpage</label>
                         </div>
                     </div>

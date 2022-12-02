@@ -1,9 +1,9 @@
-import axios from 'axios'
+import axios from 'axios';
 import { getAuthToken } from "../Service/SessionService";
 import { isNotEmpty } from '../Utils/StringUtils';
-const serverUrl = 'http://localhost:8080/api'
-const usersEndpoint = serverUrl + '/users/'
-const recipesEndpoint = serverUrl + '/recipes/'
+const serverUrl = 'http://localhost:8080/api';
+const usersEndpoint = serverUrl + '/users/';
+const recipesEndpoint = serverUrl + '/recipes/';
 
 export const createUser = async (data) => {
     return await axios.post(usersEndpoint, data);

@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 export const RecipeSchema = new Schema({
     title: {
         type: String,
+        maxlength: 20,
         required: true
     },
     vegetarian: {
@@ -43,10 +44,12 @@ export const RecipeSchema = new Schema({
     },
     url: {
         type: String,
-        required: true
+        required: true,
+        maxlength: 250,
     },
     notes: {
         type: String,
+        maxlength: 500,
     },
     added_by: {
         type: mongoose.Schema.Types.ObjectId,
