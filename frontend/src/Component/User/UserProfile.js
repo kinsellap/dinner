@@ -63,11 +63,11 @@ function UserProfile() {
 
     useEffect(() => {
         const setFileType = async (profile_picture) => {
-                const mimeType = (profile_picture.match(/^data:([^;]+);/) || '')[1];
-                await axios.get(profile_picture,{ responseType: 'arraybuffer' })
+            const mimeType = (profile_picture.match(/^data:([^;]+);/) || '')[1];
+            await axios.get(profile_picture, { responseType: 'arraybuffer' })
                 .then(
                     (res) => {
-                        const profileFile =  {"data_url": profile_picture, "file": new File([res.data], { type: mimeType }) }
+                        const profileFile = { "data_url": profile_picture, "file": new File([res.data], { type: mimeType }) }
                         setProfilePicture([profileFile]);
                     })
                 .catch((err) => {
@@ -108,22 +108,24 @@ function UserProfile() {
     const handleClearFavouritesClick = (event) => {
         //TODO pop up double check
         event.preventDefault();
-        updateUser(loggedInUser._id, { favourite_recipes: [] })
-            .then((res) => {
-                setLoggedInUser(res.data);
-                setAuthenticatedUser(res.data);
-                setTimeout(window.location.reload(), 1000);
-            })
-            .catch((err) => {
-                M.toast({
-                    html: `There was an error clearing your favourites ${getErrorDetails(err)}`,
-                    classes: 'red'
+        if (hasFavouriteRecipies()) {
+            updateUser(loggedInUser._id, { favourite_recipes: [] })
+                .then((res) => {
+                    setLoggedInUser(res.data);
+                    setAuthenticatedUser(res.data);
+                    setTimeout(window.location.reload(), 1000);
                 })
-                console.log(err);
-                if (checkAuthFailure(err)) {
-                    handleAuthFailure();
-                }
-            })
+                .catch((err) => {
+                    M.toast({
+                        html: `There was an error clearing your favourites ${getErrorDetails(err)}`,
+                        classes: 'red'
+                    })
+                    console.log(err);
+                    if (checkAuthFailure(err)) {
+                        handleAuthFailure();
+                    }
+                })
+        }
     }
 
 
@@ -191,6 +193,10 @@ function UserProfile() {
         return loggedInUser ? loggedInUser.favourite_recipes.length : 0;
     }
 
+    const hasFavouriteRecipies = () => {
+        return loggedInUser ? loggedInUser.favourite_recipes.length > 0 : false;
+    }
+
     const getProfileName = () => {
         return loggedInUser ? capitaliseFirstLetter(loggedInUser?.first_name) + "'s Profile" : '';
     }
@@ -198,7 +204,7 @@ function UserProfile() {
     const onImageChange = (image) => {
         const file = image[0];
         if (loggedInUser && file) {
-            updateUser(loggedInUser._id, { profile_picture: file.data_url})
+            updateUser(loggedInUser._id, { profile_picture: file.data_url })
                 .then((res) => {
                     setProfilePicture(image);
                     setLoggedInUser(res.data);
@@ -215,7 +221,7 @@ function UserProfile() {
                     }
                 })
         }
-        if (profilePicture && profilePicture.length>0 && !file) {
+        if (profilePicture && profilePicture.length > 0 && !file) {
             updateUser(loggedInUser._id, { profile_picture: '' })
                 .then((res) => {
                     setProfilePicture([]);
@@ -240,22 +246,22 @@ function UserProfile() {
             <div className="col s12">
                 <h4 className="teal-text text-lighten-2 center">{getProfileName()}</h4>
                 <div className="row col s12 center " >
-                        {profilePicture.map((image, index) => (
-                            <div key={index} className="image-item"><img className="circle responsive-img" src={image.data_url} alt="" width="100" /></div>
-                        ))}
-                    </div>
-                    <div className="row">
-                        <ImageUploading value={profilePicture} onChange={onImageChange} maxNumber={1} dataURLKey="data_url" maxFileSize="55000" acceptType={["jpg"]}>
-                            {({ onImageUpdate, onImageRemove }) => (
-                                <div className="upload__image-wrapper center">
-                                    <button className=" btn waves-light center" type="button" onClick={onImageUpdate}>{loggedInUser?.profile_picture ? "Update Photo": "Upload Photo"}</button>
-                                    &nbsp;
-                                    <button className="btn waves-light center" type="button" onClick={onImageRemove}>Remove Photo</button>
-                                </div>
-                            )}
-                        </ImageUploading>
-                    </div>
-                    <div className="row"/>
+                    {profilePicture.map((image, index) => (
+                        <div key={index} className="image-item"><img className="circle responsive-img" src={image.data_url} alt="" width="100" /></div>
+                    ))}
+                </div>
+                <div className="row">
+                    <ImageUploading value={profilePicture} onChange={onImageChange} maxNumber={1} dataURLKey="data_url" maxFileSize="55000" acceptType={["jpg"]}>
+                        {({ onImageUpdate, onImageRemove }) => (
+                            <div className="upload__image-wrapper center">
+                                <button className=" btn waves-light center" type="button" onClick={onImageUpdate}>{loggedInUser?.profile_picture ? "Update Photo" : "Upload Photo"}</button>
+                                &nbsp;
+                                <button className="btn waves-light center" type="button" onClick={onImageRemove}>Remove Photo</button>
+                            </div>
+                        )}
+                    </ImageUploading>
+                </div>
+                <div className="row" />
                 <form onSubmit={doPasswordUpdate}>
                     <div className="row">
                         <div className="col s2 left teal lighten-2 circle" style={{ color: "white" }}>
