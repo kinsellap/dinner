@@ -40,8 +40,6 @@ function RecipeForm(props) {
             notes: ''
         });
 
-
-
     useEffect(() => {
         var elems = document.querySelectorAll('select');
         M.FormSelect.init(elems);

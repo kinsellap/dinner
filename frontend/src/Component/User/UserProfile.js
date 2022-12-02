@@ -9,6 +9,7 @@ import { getCountRecipesUpdated, getCountRecipesAdded, deleteUser, updateUser, c
 import { dateOnly } from "../../Utils/DateTimeUtils";
 import { getMimeType } from "../../Utils/FileUtils";
 import ImageUploading from 'react-images-uploading';
+import DinnerModal from "../Shared/DinnerModal";
 import M from 'materialize-css';
 const MAX_FILE_SIZE = 55000;
 const ACCEPTED_FILE_TYPES = ["jpg", "jpeg"];
@@ -88,7 +89,6 @@ function UserProfile() {
     }
 
     const handleDeleteClick = (event) => {
-        //TODO pop up double check
         event.preventDefault();
         if (loggedInUser) {
             deleteUser(loggedInUser._id)
@@ -111,7 +111,6 @@ function UserProfile() {
     }
 
     const handleClearFavouritesClick = (event) => {
-        //TODO pop up double check
         event.preventDefault();
         if (hasFavouriteRecipies()) {
             updateUser(loggedInUser._id, { favourite_recipes: [] })
@@ -354,7 +353,8 @@ function UserProfile() {
                     </div>
                     <div className="row">
                         <div hidden={!loggedInUser || passwordChange} className="col s4 left">
-                            <button className="btn waves-light left" type="button" onClick={handleDeleteClick} >Delete Account
+                        <DinnerModal header="Delete Account" content="Are you sure you want to delete your account? This cannot be undone." callback={handleDeleteClick}/>
+                            <button className="btn waves-light modal-trigger left" type="button" data-target="modal" >Delete Account
                                 <i className="material-icons right">delete_forever</i>
                             </button>
                         </div>
@@ -372,7 +372,8 @@ function UserProfile() {
                                 <i className="material-icons right"></i></button>
                         </div>
                         <div hidden={!loggedInUser || passwordChange} className="col s4 right">
-                            <button className="btn waves-light right" type="button" onClick={handleClearFavouritesClick} >Clear Favourites
+                            <DinnerModal header="Clear Favourites" content="Are you sure you want to clear your favourites, they cannot be recovered?" callback={handleClearFavouritesClick}/>
+                            <button className="btn waves-light right modal-trigger" type="button" data-target="modal" >Clear Favourites
                                 <i className="material-icons right">delete_sweep</i>
                             </button>
                         </div>
