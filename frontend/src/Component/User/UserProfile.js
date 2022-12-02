@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import axios from 'axios';
 import { UserContext } from "../../Service/UserProvider";
 import { useNavigate } from "react-router-dom"
 import { checkAuthFailure, getErrorDetails } from "../../Utils/ErrorUtils";
@@ -36,10 +37,10 @@ function UserProfile() {
                     console.log(err)
                 })
         };
-        if (loggedInUser) {
+        if (loggedInUser?._id) {
             userCountRecipesAdded(loggedInUser._id);
         }
-    }, []);
+    }, [loggedInUser?._id]);
 
     useEffect(() => {
         const userCountRecipesUpdated = async (userId) => {
@@ -55,10 +56,28 @@ function UserProfile() {
                     console.log(err)
                 })
         };
-        if (loggedInUser) {
+        if (loggedInUser?._id) {
             userCountRecipesUpdated(loggedInUser._id);
         }
-    }, []);
+    }, [loggedInUser?._id]);
+
+    useEffect(() => {
+        const setFileType = async (profile_picture) => {
+                const mimeType = (profile_picture.match(/^data:([^;]+);/) || '')[1];
+                await axios.get(profile_picture,{ responseType: 'arraybuffer' })
+                .then(
+                    (res) => {
+                        const profileFile =  {"data_url": profile_picture, "file": new File([res.data], { type: mimeType }) }
+                        setProfilePicture([profileFile]);
+                    })
+                .catch((err) => {
+                    console.log(err)
+                })
+        };
+        if (loggedInUser?.profile_picture) {
+            setFileType(loggedInUser.profile_picture);
+        }
+    }, [loggedInUser?.profile_picture]);
 
     const handleShowPasswordClick = (event) => {
         event.preventDefault();
@@ -177,16 +196,35 @@ function UserProfile() {
     }
 
     const onImageChange = (image) => {
-        setProfilePicture(image);
         const file = image[0];
         if (loggedInUser && file) {
-            updateUser(loggedInUser._id, { profile_picture: {data: file.data_url, contentType: 'image/jpeg'} })
+            updateUser(loggedInUser._id, { profile_picture: file.data_url})
                 .then((res) => {
-                    console.log(res);
+                    setProfilePicture(image);
+                    setLoggedInUser(res.data);
+                    setAuthenticatedUser(res.data);
                 })
                 .catch((err) => {
                     M.toast({
                         html: `There was an error uploading your photo ${getErrorDetails(err)}`,
+                        classes: 'red'
+                    })
+                    console.log(err);
+                    if (checkAuthFailure(err)) {
+                        handleAuthFailure();
+                    }
+                })
+        }
+        if (profilePicture && profilePicture.length>0 && !file) {
+            updateUser(loggedInUser._id, { profile_picture: '' })
+                .then((res) => {
+                    setProfilePicture([]);
+                    setLoggedInUser(res.data);
+                    setAuthenticatedUser(res.data);
+                })
+                .catch((err) => {
+                    M.toast({
+                        html: `There was an error removing your photo ${getErrorDetails(err)}`,
                         classes: 'red'
                     })
                     console.log(err);
@@ -207,10 +245,10 @@ function UserProfile() {
                         ))}
                     </div>
                     <div className="row">
-                        <ImageUploading value={profilePicture} onChange={onImageChange} maxNumber={1} dataURLKey="data_url" acceptType={["jpg"]}>
-                            {({ onImageUpload, onImageRemove }) => (
+                        <ImageUploading value={profilePicture} onChange={onImageChange} maxNumber={1} dataURLKey="data_url" maxFileSize="55000" acceptType={["jpg"]}>
+                            {({ onImageUpdate, onImageRemove }) => (
                                 <div className="upload__image-wrapper center">
-                                    <button className=" btn waves-light center" type="button" onClick={onImageUpload}>Update Photo</button>
+                                    <button className=" btn waves-light center" type="button" onClick={onImageUpdate}>{loggedInUser?.profile_picture ? "Update Photo": "Upload Photo"}</button>
                                     &nbsp;
                                     <button className="btn waves-light center" type="button" onClick={onImageRemove}>Remove Photo</button>
                                 </div>
