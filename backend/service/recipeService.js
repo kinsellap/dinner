@@ -30,7 +30,7 @@ export const getCountRecipes = async (query) => {
 
 export const getRecipesByPage = async (page, limit, searchQuery) => {
     let filter = searchQuery;
-    if (Object.keys(searchQuery).length && (searchQuery.title || searchQuery.core_ingredient)) {
+    if (Object.keys(searchQuery).length && isRegexSearchKey(searchQuery)) {
         const key = Object.keys(searchQuery)[0];
         const values = Object.values(searchQuery)[0];
         filter[key] = { $regex: new RegExp(values, "i") }
@@ -72,3 +72,7 @@ export const deleteRecipes = async (userId) => {
     throw Error(UNAUTHORISED_ACTION);
 }
 
+const isRegexSearchKey = (searchQuery) => {
+    return (searchQuery.title || searchQuery.core_ingredient
+        || searchQuery.prep_time || searchQuery.cook_time);
+}
