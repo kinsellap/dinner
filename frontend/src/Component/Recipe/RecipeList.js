@@ -224,7 +224,7 @@ function RecipeList() {
                             </tr>
                         </thead>
                         <tbody>
-                            {recipes.map((recipe) => {
+                            {recipes.map((recipe) => {                                                                   
                                 return (
                                     <tr key={recipe._id} row_id={recipe._id} onDoubleClick={() => { if (loggedInUser) { navigate('/recipes/' + recipe._id, { state: { recipe } }) } }}>
                                         <td id="title"><a href={recipe.url} target="_blank" rel="noopener noreferrer">{recipe.title}</a></td>
@@ -236,7 +236,7 @@ function RecipeList() {
                                             <i className="material-icons left">delete</i></a></td>
                                         <td id="favourite" className="tooltipped" data-position="top" data-tooltip="mark favourite?" hidden={!loggedInUser}><a href="#!" className="secondary-content" onClick={handleFavouriteClick}>
                                             <i className="material-icons left">{loggedInUser?.favourite_recipes.includes(recipe._id) ? "star" : "star_border"}</i></a></td>
-                                            <ConfirmActionModal id={recipe._id} header="Delete Recipe" content="Are you sure you want to delete this recipe? This cannot be undone." callback={handleDeleteClick} />
+                                            <ConfirmActionModal id={recipe._id} header="Delete Recipe" content="Are you sure you want to delete this recipe? This cannot be undone." callback={handleDeleteClick}/>
                                     </tr>
                                 )
                             })}

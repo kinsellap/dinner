@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 import { RecipeSchema } from '../model/RecipeModel';
-import { getUser } from './UserService';
+import { getUserInternal } from './UserService';
 import { isAdminAuthorised, UNAUTHORISED_ACTION } from './AuthService';
 const Recipe = mongoose.model('Recipe', RecipeSchema);
 
 export const createRecipe = async (recipeBody) => {
     const { added_by } = recipeBody
-    const user = await getUser(added_by._id);
+    const user = await getUserInternal(added_by._id);
     if (user) {
         let newRecipe = new Recipe(recipeBody)
         return await (newRecipe.save());
@@ -44,7 +44,7 @@ export const getRecipesByPage = async (page, limit, searchQuery) => {
 
 export const updateRecipe = async (recipeId, recipeBody) => {
     const { updated_by } = recipeBody;
-    const user = await getUser(updated_by._id);
+    const user = await getUserInternal(updated_by._id);
     if (user) {
         const updatedDate = new Date(Date.now());
         const updateBody = {
@@ -57,7 +57,7 @@ export const updateRecipe = async (recipeId, recipeBody) => {
 }
 
 export const deleteRecipe = async (recipeId, userId) => {
-    const user = await getUser(userId);
+    const user = await getUserInternal(userId);
     if (isAdminAuthorised(user)) {
         return await (Recipe.findByIdAndDelete({ _id: recipeId }));
     }
@@ -65,7 +65,7 @@ export const deleteRecipe = async (recipeId, userId) => {
 }
 
 export const deleteRecipes = async (userId) => {
-    const user = await getUser(userId);
+    const user = await getUserInternal(userId);
     if (isAdminAuthorised(user)) {
         return await Recipe.deleteMany();
     }

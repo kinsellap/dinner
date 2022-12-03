@@ -52,7 +52,7 @@ export const resetPassword = async (email) => {
 }
 
 export const updateUser = async (userId, userBody, requesterId) => {
-    const requester = await getUser(requesterId);
+    const requester = await getUserInternal(requesterId);
     if (isAuthorised(requester, userId)) {
         const updatedDate = new Date(Date.now());
         const updateBody = {
@@ -65,7 +65,7 @@ export const updateUser = async (userId, userBody, requesterId) => {
 }
 
 export const deleteUser = async (userId, requesterId) => {
-    const requester = await getUser(requesterId);
+    const requester = await getUserInternal(requesterId);
     if (isAuthorised(requester, userId)) {
         return await User.findByIdAndDelete({ _id: userId });
     }
@@ -73,7 +73,7 @@ export const deleteUser = async (userId, requesterId) => {
 }
 
 export const deleteUsers = async (requesterId) => {
-    const requester = await getUser(requesterId);
+    const requester = await getUserInternal(requesterId);
     if (isAdminAuthorised(requester)) {
         return await User.deleteMany();
     }
@@ -81,16 +81,19 @@ export const deleteUsers = async (requesterId) => {
 }
 
 export const getUser = async (userId, requesterId) => {
-    const requester = await getUser(requesterId);
+    const requester = await getUserInternal(requesterId);
     if (isAdminAuthorised(requester)) {
         return await User.findById(userId);
     }
     throw Error(UNAUTHORISED_ACTION);
+}
 
+export const getUserInternal = async (userId) => {
+    return await User.findById(userId);
 }
 
 export const getUsers = async (requesterId) => {
-    const requester = await getUser(requesterId);
+    const requester = await getUserInternal(requesterId);
     if (isAdminAuthorised(requester)) {
         return await User.find();
     }
