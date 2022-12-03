@@ -78,7 +78,7 @@ function RecipeList() {
             if (isSearchKeyNumericValue()) {
                 if (isAnInteger(searchParamValue.trim())) {
                     searchParamValue = parseInt(searchParamValue.trim());
-                    if (searchParamValue < 0 || searchParamValue > 6) {
+                    if (searchParamValue < 1 || searchParamValue > 6) {
                         M.toast({
                             html: `A range of 1 to 5 are the only values accepted in the search box`,
                             classes: 'red'
