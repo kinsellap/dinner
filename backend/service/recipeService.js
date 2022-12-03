@@ -67,7 +67,7 @@ export const deleteRecipe = async (recipeId, userId) => {
 export const deleteRecipes = async (userId) => {
     const user = await getUser(userId);
     if (isAdminAuthorised(user)) {
-        return await Recipe.deleteMany({ _id: recipeId });
+        return await Recipe.deleteMany();
     }
     throw Error(UNAUTHORISED_ACTION);
 }
