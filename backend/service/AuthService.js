@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
 const SECRET_KEY = process.env.SECRET_KEY || 'somecrazymadsecretkey';
+export const UNAUTHORISED_ACTION = 'Action not authorised';
 
 export const signRequest = (data) => {
-    return jwt.sign(data, SECRET_KEY, { expiresIn: 7200 },
-    );
+    return jwt.sign(data, SECRET_KEY, { expiresIn: 7200 });
 }
 
 export const verifyToken = (token) => {

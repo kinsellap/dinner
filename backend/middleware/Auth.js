@@ -1,4 +1,4 @@
-import { verifyToken } from '../service/AuthService'
+import { verifyToken } from '../service/AuthService';
 
 const verify = (req, res, next) => {
   const token = req.headers["x-access-token"];

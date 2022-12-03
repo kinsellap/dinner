@@ -1,5 +1,4 @@
-import './App.css';
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes } from 'react-router-dom';
 import NotFound from './Layout/NotFound';
 import ProfileLayout from './Layout/ProfileLayout';
 import RecipeFormLayout from './Layout/RecipeFormLayout';

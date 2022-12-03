@@ -3,7 +3,7 @@ import { UserContext } from "../../Service/UserProvider";
 import { createRecipe, updateRecipe } from "../../Service/ApiService";
 import { checkAuthFailure, getErrorDetails } from "../../Utils/ErrorUtils";
 import { dateOnly } from "../../Utils/DateTimeUtils";
-import { removeAuthenticatedUser } from "../../Service/SessionService"
+import { removeAuthenticatedUser } from "../../Service/SessionService";
 import M from "materialize-css";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 

@@ -16,8 +16,8 @@ userRouter.post('/', async (req, res) => {
         });
 });
 
-userRouter.get('/', async (req, res) => {
-    getUsers()
+userRouter.get('/', verify, async (req, res) => {
+    getUsers(req.user._id)
         .then(result => res.json(result))
         .catch(err => {
             res.status(400);
@@ -43,17 +43,8 @@ userRouter.put('/changepassword', verify, async (req, res) => {
         });
 });
 
-userRouter.put('/resetpassword', async (req, res) => {
-    resetPassword(req.body)
-        .then(result => handleGetUserResult(result, res, result))
-        .catch(err => {
-            res.status(400);
-            res.json({ message: err.message });
-        });
-});
-
 userRouter.get('/:id', verify, async (req, res) => {
-    getUser(req.params.id)
+    getUser(req.params.id, req.user._id)
         .then(result => handleGetUserResult(result, res, result))
         .catch(err => {
             res.status(404);

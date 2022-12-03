@@ -1,4 +1,4 @@
-import RecipeList from '../Component/Recipe/RecipeList';
+import RecipeList from "../Component/Recipe/RecipeList";
 
 function RecipeListLayout(user) {
   return (

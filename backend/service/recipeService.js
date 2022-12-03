@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { RecipeSchema } from '../model/RecipeModel';
 import { getUser } from './UserService';
-import { isAuthorised, isAdminAuthorised } from './AuthService';
+import { isAdminAuthorised, UNAUTHORISED_ACTION } from './AuthService';
 const Recipe = mongoose.model('Recipe', RecipeSchema);
 
 export const createRecipe = async (recipeBody) => {
@@ -11,7 +11,7 @@ export const createRecipe = async (recipeBody) => {
         let newRecipe = new Recipe(recipeBody)
         return await (newRecipe.save());
     }
-    throw Error('Action not authorised');
+    throw Error(UNAUTHORISED_ACTION);
 }
 
 export const getRecipe = async (recipeId) => {
@@ -53,7 +53,7 @@ export const updateRecipe = async (recipeId, recipeBody) => {
         };
         return await (Recipe.findOneAndUpdate({ _id: recipeId }, updateBody, { new: true }));
     }
-    throw Error('Action not authorised');
+    throw Error(UNAUTHORISED_ACTION);
 }
 
 export const deleteRecipe = async (recipeId, userId) => {
@@ -61,7 +61,7 @@ export const deleteRecipe = async (recipeId, userId) => {
     if (isAdminAuthorised(user)) {
         return await (Recipe.findByIdAndDelete({ _id: recipeId }));
     }
-    throw Error('Action not authorised');
+    throw Error(UNAUTHORISED_ACTION);
 }
 
 export const deleteRecipes = async (userId) => {
@@ -69,6 +69,6 @@ export const deleteRecipes = async (userId) => {
     if (isAdminAuthorised(user)) {
         return await Recipe.deleteMany({ _id: recipeId });
     }
-    throw Error('Action not authorised');
+    throw Error(UNAUTHORISED_ACTION);
 }
 

@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../../Service/UserProvider";
 import { createUser, loginUser } from "../../Service/ApiService";
-import { getErrorDetails } from "../../Utils/ErrorUtils"
+import { getErrorDetails } from "../../Utils/ErrorUtils";
 import M from "materialize-css";
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link } from "react-router-dom";
 import { setAuthenticatedUser, setAuthToken } from "../../Service/SessionService";
 
 function UserForm(props) {

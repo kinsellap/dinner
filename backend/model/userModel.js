@@ -39,7 +39,7 @@ export const UserSchema = new Schema({
     },
     favourite_recipes: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Recipe',
+        ref: 'Recipe'
     }],
     profile_picture: {
         type: String 

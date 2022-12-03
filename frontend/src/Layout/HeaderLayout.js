@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../Service/UserProvider";
 import { removeAuthenticatedUser } from "../Service/SessionService";
-import M from 'materialize-css';
+import M from "materialize-css";
 
 function HeaderLayout() {
   const navigate = useNavigate();

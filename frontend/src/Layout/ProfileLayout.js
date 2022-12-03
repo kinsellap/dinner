@@ -1,4 +1,4 @@
-import UserProfile from '../Component/User/UserProfile';
+import UserProfile from "../Component/User/UserProfile";
 
 function ProfileLayout() {
 

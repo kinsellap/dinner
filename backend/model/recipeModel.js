@@ -1,5 +1,4 @@
-import mongoose from 'mongoose'
-
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 export const RecipeSchema = new Schema({
@@ -36,28 +35,28 @@ export const RecipeSchema = new Schema({
     },
     prep_time: {
         type: String,
-        enum: ["< 10 mins", "10-20 mins", "20-30 mins", "30-40 mins", "> 40 mins"],
+        enum: ["< 10 mins", "10-20 mins", "20-30 mins", "30-40 mins", "> 40 mins"]
     },
     cook_time: {
         type: String,
-        enum: ["< 30 mins", "30-45 mins", "45-60 mins", "60-75 mins", "> 75 mins"],
+        enum: ["< 30 mins", "30-45 mins", "45-60 mins", "60-75 mins", "> 75 mins"]
     },
     url: {
         type: String,
         required: true,
-        maxlength: 250,
+        maxlength: 250
     },
     notes: {
         type: String,
-        maxlength: 500,
+        maxlength: 500
     },
     added_by: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'User'
     },
     updated_by: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'User'
     },
     date_added: {
         type: Date,

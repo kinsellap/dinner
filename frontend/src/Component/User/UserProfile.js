@@ -1,17 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { UserContext } from "../../Service/UserProvider";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import { checkAuthFailure, getErrorDetails } from "../../Utils/ErrorUtils";
 import { capitaliseFirstLetter, isNotEmpty } from "../../Utils/StringUtils";
 import { removeAuthenticatedUser, setAuthenticatedUser } from "../../Service/SessionService"
 import { getCountRecipesUpdated, getCountRecipesAdded, deleteUser, updateUser, changePassword } from "../../Service/ApiService";
 import { dateOnly } from "../../Utils/DateTimeUtils";
 import { getMimeType } from "../../Utils/FileUtils";
-import ImageUploading from 'react-images-uploading';
+import ImageUploading from "react-images-uploading";
 import DinnerModal from "../Shared/DinnerModal";
-import M from 'materialize-css';
-const MAX_FILE_SIZE = 55000;
+import M from "materialize-css";
+const MAX_FILE_SIZE = 720000;
 const ACCEPTED_FILE_TYPES = ["jpg", "jpeg"];
 
 function UserProfile() {
@@ -91,6 +91,13 @@ function UserProfile() {
     const handleDeleteClick = (event) => {
         event.preventDefault();
         if (loggedInUser) {
+            if (loggedInUser.admin) {
+                M.toast({
+                    html: "You are the sole administrator, therefore your account cannot be deleted.<br/>Please assign another admin before deleting your account.",
+                    classes: 'red'
+                })
+                return;
+            }
             deleteUser(loggedInUser._id)
                 .then(() => {
                     removeAuthenticatedUser();
@@ -117,7 +124,6 @@ function UserProfile() {
                 .then((res) => {
                     setLoggedInUser(res.data);
                     setAuthenticatedUser(res.data);
-                    setTimeout(window.location.reload(), 1000);
                 })
                 .catch((err) => {
                     M.toast({
@@ -213,44 +219,12 @@ function UserProfile() {
     }
 
     const isAcceptedMimeType = (file) => {
-        const mime = file.type.substring(file.type.indexOf('/')+1);
+        const mime = file.type.substring(file.type.indexOf('/') + 1);
         return ACCEPTED_FILE_TYPES.includes(mime.toLowerCase());
     }
 
     const onImageChange = (image) => {
         const file = image[0];
-        if(!isWithinFileSizeLimit(file.file)){
-            M.toast({
-                html: `The max file size is ${MAX_FILE_SIZE} mb`,
-                classes: 'red'
-            })
-            return;
-        }
-        if(!isAcceptedMimeType(file.file)){
-            M.toast({
-                html: `The supported file types are ${ACCEPTED_FILE_TYPES}`,
-                classes: 'red'
-            })
-            return;
-        }
-        if (loggedInUser && file) {
-            updateUser(loggedInUser._id, { profile_picture: file.data_url })
-                .then((res) => {
-                    setProfilePicture(image);
-                    setLoggedInUser(res.data);
-                    setAuthenticatedUser(res.data);
-                })
-                .catch((err) => {
-                    M.toast({
-                        html: `There was an error uploading your photo ${getErrorDetails(err)}`,
-                        classes: 'red'
-                    })
-                    console.log(err);
-                    if (checkAuthFailure(err)) {
-                        handleAuthFailure();
-                    }
-                })
-        }
         if (isRemoveProfilePicture(file)) {
             updateUser(loggedInUser._id, { profile_picture: '' })
                 .then((res) => {
@@ -261,6 +235,39 @@ function UserProfile() {
                 .catch((err) => {
                     M.toast({
                         html: `There was an error removing your photo ${getErrorDetails(err)}`,
+                        classes: 'red'
+                    })
+                    console.log(err);
+                    if (checkAuthFailure(err)) {
+                        handleAuthFailure();
+                    }
+                })
+            return;
+        } 
+        if (loggedInUser && file) {
+            if (!isWithinFileSizeLimit(file.file)) {
+                M.toast({
+                    html: `The max file size is ${MAX_FILE_SIZE} mb`,
+                    classes: 'red'
+                })
+                return;
+            }
+            if (!isAcceptedMimeType(file.file)) {
+                M.toast({
+                    html: `The supported file types are ${ACCEPTED_FILE_TYPES}`,
+                    classes: 'red'
+                })
+                return;
+            }
+            updateUser(loggedInUser._id, { profile_picture: file.data_url })
+                .then((res) => {
+                    setProfilePicture(image);
+                    setLoggedInUser(res.data);
+                    setAuthenticatedUser(res.data);
+                })
+                .catch((err) => {
+                    M.toast({
+                        html: `There was an error uploading your photo ${getErrorDetails(err)}`,
                         classes: 'red'
                     })
                     console.log(err);
@@ -353,8 +360,8 @@ function UserProfile() {
                     </div>
                     <div className="row">
                         <div hidden={!loggedInUser || passwordChange} className="col s4 left">
-                        <DinnerModal header="Delete Account" content="Are you sure you want to delete your account? This cannot be undone." callback={handleDeleteClick}/>
-                            <button className="btn waves-light modal-trigger left" type="button" data-target="modal" >Delete Account
+                            <DinnerModal id="delete-account-modal" header="Delete Account" content="Are you sure you want to delete your account? This cannot be undone." callback={handleDeleteClick} />
+                            <button className="btn waves-light modal-trigger left" type="button" data-target="delete-account-modal" >Delete Account
                                 <i className="material-icons right">delete_forever</i>
                             </button>
                         </div>
@@ -372,8 +379,8 @@ function UserProfile() {
                                 <i className="material-icons right"></i></button>
                         </div>
                         <div hidden={!loggedInUser || passwordChange} className="col s4 right">
-                            <DinnerModal header="Clear Favourites" content="Are you sure you want to clear your favourites, they cannot be recovered?" callback={handleClearFavouritesClick}/>
-                            <button className="btn waves-light right modal-trigger" type="button" data-target="modal" >Clear Favourites
+                            <DinnerModal id="clear-favourites-modal" header="Clear Favourites" content="Are you sure you want to clear your favourites? They cannot be recovered if deleted." callback={handleClearFavouritesClick} />
+                            <button className="btn waves-light right modal-trigger" type="button" data-target="clear-favourites-modal" >Clear Favourites
                                 <i className="material-icons right">delete_sweep</i>
                             </button>
                         </div>

@@ -1,4 +1,4 @@
-import image from "../Asset/404.jpg"
+import image from "../Asset/404.jpg";
 
 function NotFound() {
     return (

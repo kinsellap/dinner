@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
 import { fetchRecipes, deleteRecipe, updateUser } from "../../Service/ApiService";
-import { checkAuthFailure, getErrorDetails } from "../../Utils/ErrorUtils"
+import { checkAuthFailure, getErrorDetails } from "../../Utils/ErrorUtils";
+import DinnerModal from "../Shared/DinnerModal";
 import { isNotEmpty, isAnInteger } from '../../Utils/StringUtils';
-import { removeAuthenticatedUser, setAuthenticatedUser } from "../../Service/SessionService"
-import M from 'materialize-css'
+import { removeAuthenticatedUser, setAuthenticatedUser } from "../../Service/SessionService";
+import M from 'materialize-css';
 import { UserContext } from "../../Service/UserProvider";
+const ITEMS_PER_PAGE = 10;
+const MAX_PAGES = 9; //TODO get full amount of records on load and set max pages/number of paginations
 
 function RecipeList() {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const isAdmin = loggedInUser?.admin;
     const navigate = useNavigate();
-    const itemsPerPage = 10;
-    const maxPages = 4; //TODO get full amount of records on load and set max pages/number of paginations
     const [recipes, setRecipes] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [searchKey, setSearchKey] = useState('title');
@@ -33,7 +34,7 @@ function RecipeList() {
     }, [currentPage, currentQuery]);
 
     const getRecipes = async (page, searchParams) => {
-        await fetchRecipes(page, searchParams, itemsPerPage)
+        await fetchRecipes(page, searchParams, ITEMS_PER_PAGE)
             .then(
                 (res) => {
                     if (res.data.length === 0) {
@@ -106,7 +107,7 @@ function RecipeList() {
         const event = e.nativeEvent;
         event.preventDefault();
         const chevron = event.target.closest('i').textContent;
-        if (chevron.includes('right') && currentPage !== maxPages) {
+        if (chevron.includes('right') && currentPage !== MAX_PAGES) {
             setCurrentPage(currentPage + 1);
         } else if (chevron.includes('left') && currentPage !== 0) {
             setCurrentPage(currentPage - 1);
@@ -203,6 +204,7 @@ function RecipeList() {
                     </div>
                 </div>
                 <div>
+                <DinnerModal id="delete-recipe-modal" header="Delete Recipe" content="Are you sure you want to delete this recipe? This cannot be undone." callback={handleDeleteClick}/>
                     <table className="table-auto">
                         <thead>
                             <tr className="tooltipped" data-position="top" data-tooltip= {loggedInUser ? "Double click row for details" : "Create an account to see more details"}>
@@ -222,7 +224,7 @@ function RecipeList() {
                                         <td id="premade">{recipe.premade.toString()}</td>
                                         <td id="difficulty">{recipe.difficulty}</td>
                                         <td id="healthy">{recipe.healthy_level}</td>
-                                        <td id="delete" className="tooltipped" data-position="top" data-tooltip="delete?" hidden={!isAdmin}><a href="#!" className="secondary-content" onClick={handleDeleteClick}>
+                                        <td id="delete" className="tooltipped" data-position="top" data-tooltip="delete?" hidden={!isAdmin}><a href="#!" className="secondary-content modal-trigger" data-target="delete-recipe-modal">
                                             <i className="material-icons left">delete</i></a></td>
                                         <td id="favourite" className="tooltipped" data-position="top" data-tooltip="mark favourite?" hidden={!loggedInUser}><a href="#!" className="secondary-content" onClick={handleFavouriteClick}>
                                             <i className="material-icons left">{loggedInUser?.favourite_recipes.includes(recipe._id) ? "star" : "star_border"}</i></a></td>

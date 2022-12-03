@@ -1,17 +1,17 @@
-import axios from 'axios';
+import axios from "axios";
 import { getAuthToken } from "../Service/SessionService";
-import { isNotEmpty } from '../Utils/StringUtils';
-const serverUrl = 'http://localhost:8080/api';
-const usersEndpoint = serverUrl + '/users/';
-const recipesEndpoint = serverUrl + '/recipes/';
+import { isNotEmpty } from "../Utils/StringUtils";
+const SERVER_URL = "http://localhost:8080/api";
+const USERS_ENDPOINT = SERVER_URL + "/users/";
+const RECIPES_ENDPOINT = SERVER_URL + "/recipes/";
 
 export const createUser = async (data) => {
-    return await axios.post(usersEndpoint, data);
+    return await axios.post(USERS_ENDPOINT, data);
 }
 
 export const getUser = async (query) => {
     const token = getAuthToken();
-    let url = usersEndpoint;
+    let url = USERS_ENDPOINT;
     if (isNotEmpty(query)) {
         url += "?name=" + query;
     }
@@ -19,37 +19,37 @@ export const getUser = async (query) => {
 }
 
 export const loginUser = async (credentials) => {
-    return await axios.post(usersEndpoint + "login", credentials);
+    return await axios.post(USERS_ENDPOINT + "login", credentials);
 }
 
 export const updateUser = async (userId, data) => {
     const token = getAuthToken();
-    return await axios.put(usersEndpoint + userId, data, contentAuthHeaders(token));
+    return await axios.put(USERS_ENDPOINT + userId, data, contentAuthHeaders(token));
 }
 
 export const changePassword = async (data) => {
     const token = getAuthToken();
-    return await axios.put(usersEndpoint + 'changepassword', data, contentAuthHeaders(token));
+    return await axios.put(USERS_ENDPOINT + "changepassword", data, contentAuthHeaders(token));
 }
 
 export const deleteUser = async (userId) => {
     const token = getAuthToken();
-    return await axios.delete(usersEndpoint + userId, contentAuthHeaders(token));
+    return await axios.delete(USERS_ENDPOINT + userId, contentAuthHeaders(token));
 }
 
 export const fetchUsers = async () => {
     const token = getAuthToken();
-    return await axios.get(usersEndpoint, contentAuthHeaders(token));
+    return await axios.get(USERS_ENDPOINT, contentAuthHeaders(token));
 }
 
 export const createRecipe = async (data) => {
     const token = getAuthToken();
-    return await axios.post(recipesEndpoint, data, contentAuthHeaders(token))
+    return await axios.post(RECIPES_ENDPOINT, data, contentAuthHeaders(token))
 }
 
 export const findRecipe = async (query) => {
     const token = getAuthToken();
-    let url = recipesEndpoint;
+    let url = RECIPES_ENDPOINT;
     if (isNotEmpty(query)) {
         url += "?title=" + query;
     }
@@ -58,17 +58,17 @@ export const findRecipe = async (query) => {
 
 export const updateRecipe = async (recipeId, data) => {
     const token = getAuthToken();
-    return await axios.put(recipesEndpoint + recipeId, data, contentAuthHeaders(token));
+    return await axios.put(RECIPES_ENDPOINT + recipeId, data, contentAuthHeaders(token));
 }
 
 export const deleteRecipe = async (recipeId) => {
     const token = getAuthToken();
-    return await axios.delete(recipesEndpoint + recipeId, contentAuthHeaders(token));
+    return await axios.delete(RECIPES_ENDPOINT + recipeId, contentAuthHeaders(token));
 }
 
 export const fetchRecipes = async (page, query, limit) => {
     const token = getAuthToken();
-    let url = recipesEndpoint + page + "/" + limit;
+    let url = RECIPES_ENDPOINT + page + "/" + limit;
     if (isNotEmpty(query) && isNotEmpty(query.searchValue)) {
         url += "?" + query.searchKey + "=" + query.searchValue;
     }
@@ -76,22 +76,22 @@ export const fetchRecipes = async (page, query, limit) => {
 }
 
 export const getCountRecipesAdded = async (userId) => {
-    const query = '?added_by=' + userId;
+    const query = "?added_by=" + userId;
     return await getCountRecipes(query)
 }
 
 export const getCountRecipesUpdated = async (userId) => {
-    const query = '?updated_by=' + userId;
+    const query = "?updated_by=" + userId;
     return await getCountRecipes(query)
 }
 
 export const getCountRecipes = async (query) => {
     const token = getAuthToken();
-    let countEndpoint = 'count';
+    let countEndpoint = "count";
     if (query) {
         countEndpoint += query;
     }
-    return await axios.get(recipesEndpoint + countEndpoint, contentAuthHeaders(token));
+    return await axios.get(RECIPES_ENDPOINT + countEndpoint, contentAuthHeaders(token));
 }
 
 const contentAuthHeaders = (token) => {

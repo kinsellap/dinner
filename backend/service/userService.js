@@ -1,7 +1,7 @@
-import mongoose from 'mongoose'
-import { UserSchema } from '../model/UserModel'
+import mongoose from 'mongoose';
+import { UserSchema } from '../model/UserModel';
+import { signRequest, isAuthorised, isAdminAuthorised, UNAUTHORISED_ACTION } from './AuthService';
 const lodash = require('lodash');
-import { signRequest, isAuthorised, isAdminAuthorised} from './AuthService';
 const User = mongoose.model('User', UserSchema);
 
 export const createUser = async (userData) => {
@@ -38,7 +38,7 @@ export const changePassword = async (userData, requesterId) => {
     }
     const matchedPassword = await user.verifyPasswordSync(password);
     if (matchedPassword) {
-        return await updateUser(user._id, {password:new_password},requesterId);
+        return await updateUser(user._id, { password: new_password }, requesterId);
     } else {
         throw Error('Invalid password')
     };
@@ -61,7 +61,7 @@ export const updateUser = async (userId, userBody, requesterId) => {
         }
         return await User.findOneAndUpdate({ _id: userId }, updateBody, { new: true });
     }
-    throw Error('Action not authorised');
+    throw Error(UNAUTHORISED_ACTION);
 }
 
 export const deleteUser = async (userId, requesterId) => {
@@ -69,7 +69,7 @@ export const deleteUser = async (userId, requesterId) => {
     if (isAuthorised(requester, userId)) {
         return await User.findByIdAndDelete({ _id: userId });
     }
-    throw Error('Action not authorised');
+    throw Error(UNAUTHORISED_ACTION);
 }
 
 export const deleteUsers = async (requesterId) => {
@@ -77,15 +77,24 @@ export const deleteUsers = async (requesterId) => {
     if (isAdminAuthorised(requester)) {
         return await User.deleteMany();
     }
-    throw Error('Action not authorised');
+    throw Error(UNAUTHORISED_ACTION);
 }
 
-export const getUser = async (userId) => {
-    return await User.findById(userId);
+export const getUser = async (userId, requesterId) => {
+    const requester = await getUser(requesterId);
+    if (isAdminAuthorised(requester)) {
+        return await User.findById(userId);
+    }
+    throw Error(UNAUTHORISED_ACTION);
+
 }
 
-export const getUsers = async () => {
-    return await User.find();
+export const getUsers = async (requesterId) => {
+    const requester = await getUser(requesterId);
+    if (isAdminAuthorised(requester)) {
+        return await User.find();
+    }
+    throw Error(UNAUTHORISED_ACTION);
 }
 
 const removePassword = async (user) => {
@@ -93,7 +102,7 @@ const removePassword = async (user) => {
 }
 
 const addTokenToUser = (user) => {
-    const { _id, email_address, password, } = user
+    const { _id, email_address, password, } = user;
     const token = signRequest({ _id, email_address, password });
     return { user, token };
 }
