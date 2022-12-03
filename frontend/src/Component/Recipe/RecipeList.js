@@ -9,6 +9,7 @@ import M from "materialize-css";
 import { UserContext } from "../../Service/UserProvider";
 const ITEMS_PER_PAGE = 10;
 const MAX_PAGES = 9; 
+const MAX_FAVOURITE_RECIPES = 50;
 const FAVOURITE_SEARCH_KEY = "id";
 
 function RecipeList() {
@@ -176,8 +177,20 @@ function RecipeList() {
         return loggedInUser?.favourite_recipes.length === 0 ;
     }
 
+    const isUserFavouriteRecipesFull = () => {
+        return loggedInUser?.favourite_recipes.length === MAX_FAVOURITE_RECIPES ;
+    }
+
     const handleFavouriteClick = (event) => {
         if (loggedInUser) {
+            if(isUserFavouriteRecipesFull()){
+                M.toast({
+                    html: `<strong>You have reached the maximum recipes that can be favourited (${MAX_FAVOURITE_RECIPES}).<br/>
+                            Please remove a receipe from your favourites to add this one</strong>`,
+                    classes: 'red lighten-2' 
+                })
+                return;
+            }
             event.preventDefault();
             const row = event.target.closest('tr');
             const rowId = row.getAttribute("row_id");
