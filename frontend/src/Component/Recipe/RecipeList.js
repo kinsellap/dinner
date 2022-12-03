@@ -131,9 +131,8 @@ function RecipeList() {
     const handleDeleteClick = (event) => {
         event.preventDefault();
         if (isAdmin) {
-            const row = event.target.closest('tr');
-            const rowId = row.getAttribute("row_id");
-            deleteRecipe(rowId)
+            const recipeId = event.currentTarget.offsetParent.id;
+            deleteRecipe(recipeId)
                 .then((res) => {
                     M.toast({ html: `${res.data.message}` });
                     setTimeout(window.location.reload(), 1000);
@@ -214,7 +213,6 @@ function RecipeList() {
                     </div>
                 </div>
                 <div>
-                    <ConfirmActionModal id="delete-recipe-modal" header="Delete Recipe" content="Are you sure you want to delete this recipe? This cannot be undone." callback={handleDeleteClick} />
                     <table className="table-auto">
                         <thead>
                             <tr className="tooltipped" data-position="top" data-tooltip={loggedInUser ? "Double click row for details" : "Create an account to see more details"}>
@@ -234,10 +232,11 @@ function RecipeList() {
                                         <td id="premade">{recipe.premade.toString()}</td>
                                         <td id="difficulty">{recipe.difficulty}</td>
                                         <td id="healthy">{recipe.healthy_level}</td>
-                                        <td id="delete" className="tooltipped" data-position="top" data-tooltip="delete?" hidden={!isAdmin}><a href="#!" className="secondary-content modal-trigger" data-target="delete-recipe-modal">
+                                        <td id="delete" className="tooltipped" data-position="top" data-tooltip="delete?" hidden={!isAdmin}><a href="#!" className="secondary-content modal-trigger" data-target={recipe._id}>
                                             <i className="material-icons left">delete</i></a></td>
                                         <td id="favourite" className="tooltipped" data-position="top" data-tooltip="mark favourite?" hidden={!loggedInUser}><a href="#!" className="secondary-content" onClick={handleFavouriteClick}>
                                             <i className="material-icons left">{loggedInUser?.favourite_recipes.includes(recipe._id) ? "star" : "star_border"}</i></a></td>
+                                            <ConfirmActionModal id={recipe._id} header="Delete Recipe" content="Are you sure you want to delete this recipe? This cannot be undone." callback={handleDeleteClick} />
                                     </tr>
                                 )
                             })}
