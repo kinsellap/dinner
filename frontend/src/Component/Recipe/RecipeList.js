@@ -9,7 +9,7 @@ import M from "materialize-css";
 import { UserContext } from "../../Service/UserProvider";
 const ITEMS_PER_PAGE = 10;
 const MAX_PAGES = 9; 
-const FAVOURITE_SEARCH_VALUE = "id";
+const FAVOURITE_SEARCH_KEY = "id";
 
 function RecipeList() {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
@@ -57,7 +57,7 @@ function RecipeList() {
     const handleSearchKeyChange = (event) => {
         document.getElementById('search-value').value = '';
         const searchValueDivElement = document.getElementById('search-value-div');
-        if(event.target.value === FAVOURITE_SEARCH_VALUE){
+        if(event.target.value === FAVOURITE_SEARCH_KEY){
             searchValueDivElement.hidden = true;
         } else {
             searchValueDivElement.hidden = false;
@@ -110,7 +110,7 @@ function RecipeList() {
             }
 
         } 
-       if(searchKey===FAVOURITE_SEARCH_VALUE){
+       if(searchKey===FAVOURITE_SEARCH_KEY){
             if(isUserFavouriteRecipesEmpty()){
                 M.toast({
                     html: `<strong>You currently have no favourites</strong>`,
@@ -214,7 +214,7 @@ function RecipeList() {
                         <div className="input-field col s3 center">
                             <select id="search-key" value={searchKey} onChange={handleSearchKeyChange}>
                                 <option value="title">Name</option>
-                                <option value={FAVOURITE_SEARCH_VALUE}>Favourites</option>
+                                <option value={FAVOURITE_SEARCH_KEY}>Favourites</option>
                                 <option value="core_ingredient">Core</option>
                                 <option value="premade">Premade</option>
                                 <option value="difficulty">Difficulty</option>
