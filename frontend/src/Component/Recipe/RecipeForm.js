@@ -154,8 +154,8 @@ function RecipeForm(props) {
                 })
                 .catch((err) => {
                     M.toast({
-                        html: `There was an error updating this recipe ${getErrorDetails(err)} `,
-                        classes: 'red'
+                        html: `<strong>There was an error updating this recipe ${getErrorDetails(err)} </strong>`,
+                        classes: 'red lighten-2' 
                     })
                     console.log(err)
                     if (checkAuthFailure(err)) {
@@ -165,11 +165,13 @@ function RecipeForm(props) {
         } else if (loggedInUser && isCreateMode) {
             await createRecipe({ ...values, "added_by": loggedInUser })
                 .then((res) => {
-                    M.toast({ html: `Recipe ${res.data.title} created` })
-                    setTimeout(() => navigate('/recipes'), 1000)
+                        M.toast({ html: `Recipe ${res.data.title} created` })
+                        setTimeout(() => navigate('/recipes'), 1000)
                 })
                 .catch((err) => {
-                    M.toast({ html: `There was an error creating this recipe ${getErrorDetails(err)}`, classes: 'red' })
+                    M.toast({
+                        html: `<strong>There was an error creating this recipe ${getErrorDetails(err)}</strong>`,
+                        classes: 'red lighten-2' })
                     console.log(err)
                     if (checkAuthFailure(err)) {
                         handleAuthFailure();

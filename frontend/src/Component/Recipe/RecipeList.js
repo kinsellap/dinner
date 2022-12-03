@@ -8,7 +8,7 @@ import { removeAuthenticatedUser, setAuthenticatedUser } from "../../Service/Ses
 import M from 'materialize-css';
 import { UserContext } from "../../Service/UserProvider";
 const ITEMS_PER_PAGE = 10;
-const MAX_PAGES = 9; //TODO get full amount of records on load and set max pages/number of paginations
+const MAX_PAGES = 9; 
 
 function RecipeList() {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
@@ -38,13 +38,17 @@ function RecipeList() {
             .then(
                 (res) => {
                     if (res.data.length === 0) {
-                        M.toast({ html: 'No results found', classes: 'red' })
+                        M.toast({
+                            html: '<strong>No results found</strong>', 
+                            classes: 'red lighten-2' })
                     }
                     setRecipes(res.data);
 
                 })
             .catch((err) => {
-                M.toast({ html: `There was an error loading the recipes ${getErrorDetails(err)}`, classes: 'red' })
+                M.toast({ 
+                    html: `<strong>There was an error loading the recipes ${getErrorDetails(err)}</strong>`, 
+                    classes: 'red lighten-2' })
                 console.log(err)
             })
     };
@@ -70,11 +74,11 @@ function RecipeList() {
                 if (searchParamValue.toLowerCase().trim() === 'false') {
                     searchParamValue = Boolean(false);
                 } else if (searchParamValue.toLowerCase().trim() === 'true') {
-                    searchParamValue = Boolean(true);
+                    searchParamValue = Boolean(true);          
                 } else {
                     M.toast({
-                        html: `True or false are the only values accepted in the search box`,
-                        classes: 'red'
+                        html: `<strong>True or false are the only values accepted in the search box</strong>`,
+                        classes: 'red lighten-2' 
                     })
                     return;
                 }
@@ -84,19 +88,30 @@ function RecipeList() {
                     searchParamValue = parseInt(searchParamValue.trim());
                     if (searchParamValue < 1 || searchParamValue > 6) {
                         M.toast({
-                            html: `A range of 1 to 5 are the only values accepted in the search box`,
-                            classes: 'red'
+                            html: `<strong>A range of 1 to 5 are the only values accepted in the search box</strong>`,
+                            classes: 'red lighten-2' 
                         })
                         return;
                     }
                 } else {
                     M.toast({
-                        html: `Whole number values are the only values accepted in the search box`,
-                        classes: 'red'
+                        html: `<strong>Whole number values are the only values accepted in the search box</strong>`,
+                        classes: 'red lighten-2' 
                     })
                     return;
                 }
             }
+
+        } 
+       if(searchKey==='id'){
+            if(isUserFavouriteRecipesEmpty()){
+                M.toast({
+                    html: `<strong>You currently have no favourites</strong>`,
+                    classes: 'red lighten-2' 
+                })
+                return;
+            } 
+            searchParamValue = loggedInUser.favourite_recipes;
         }
         setCurrentQuery(() => ({
             key: searchKey,
@@ -139,8 +154,8 @@ function RecipeList() {
                 })
                 .catch((err) => {
                     M.toast({
-                        html: `There was an error deleting the recipe ${getErrorDetails(err)}`,
-                        classes: 'red'
+                        html: `<strong>There was an error deleting the recipe ${getErrorDetails(err)}</strong>`,
+                        classes: 'red lighten-2' 
                     })
                     console.log(err);
                     if (checkAuthFailure(err)) {
@@ -148,6 +163,10 @@ function RecipeList() {
                     }
                 })
         }
+    }
+
+    const isUserFavouriteRecipesEmpty = () => {
+        return loggedInUser?.favourite_recipes.length === 0 ;
     }
 
     const handleFavouriteClick = (event) => {
@@ -165,12 +184,11 @@ function RecipeList() {
                 .then((res) => {
                     setLoggedInUser(res.data);
                     setAuthenticatedUser(res.data);
-                    setTimeout(window.location.reload(), 3000);
                 })
                 .catch((err) => {
                     M.toast({
-                        html: `There was an error favouriting the recipe ${getErrorDetails(err)}`,
-                        classes: 'red'
+                        html: `<strong>There was an error favouriting the recipe ${getErrorDetails(err)}</strong>`,
+                        classes: 'red lighten-2' 
                     })
                     console.log(err);
                     if (checkAuthFailure(err)) {
@@ -189,6 +207,7 @@ function RecipeList() {
                         <div className="input-field col s3 center">
                             <select id="search-key" value={searchKey} onChange={handleSearchKeyChange}>
                                 <option value="title">Name</option>
+                                <option value="id">Favourites</option>
                                 <option value="core_ingredient">Core</option>
                                 <option value="premade">Premade</option>
                                 <option value="difficulty">Difficulty</option>
@@ -236,7 +255,7 @@ function RecipeList() {
                                             <i className="material-icons left">delete</i></a></td>
                                         <td id="favourite" className="tooltipped" data-position="top" data-tooltip="mark favourite?" hidden={!loggedInUser}><a href="#!" className="secondary-content" onClick={handleFavouriteClick}>
                                             <i className="material-icons left">{loggedInUser?.favourite_recipes.includes(recipe._id) ? "star" : "star_border"}</i></a></td>
-                                            <ConfirmActionModal id={recipe._id} header="Delete Recipe" content="Are you sure you want to delete this recipe? This cannot be undone." callback={handleDeleteClick}/>
+                                        <ConfirmActionModal id={recipe._id} header="Delete Recipe" content="Are you sure you want to delete this recipe? This cannot be undone." callback={handleDeleteClick}/>
                                     </tr>
                                 )
                             })}

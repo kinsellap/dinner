@@ -37,7 +37,9 @@ function UserProfile() {
                         }
                     })
                 .catch((err) => {
-                    M.toast({ html: `There was an error loading the added recipe count ${getErrorDetails(err)}`, classes: 'red' })
+                    M.toast({ 
+                        html: `<strong>There was an error loading the added recipe count ${getErrorDetails(err)}</strong>`,
+                        classes: 'red lighten-2' })
                     console.log(err)
                 })
         };
@@ -56,7 +58,9 @@ function UserProfile() {
                         }
                     })
                 .catch((err) => {
-                    M.toast({ html: `There was an error loading the updated recipe count ${getErrorDetails(err)}`, classes: 'red' })
+                    M.toast({ 
+                        html: `<strong>There was an error loading the updated recipe count ${getErrorDetails(err)}</strong>`,
+                        classes: 'red lighten-2' })
                     console.log(err)
                 })
         };
@@ -93,8 +97,8 @@ function UserProfile() {
         if (loggedInUser) {
             if (loggedInUser.admin) {
                 M.toast({
-                    html: "You are the sole administrator, therefore your account cannot be deleted.<br/>Please assign another admin before deleting your account.",
-                    classes: 'red'
+                    html: "<strong>You are the sole administrator, therefore your account cannot be deleted.<br/>Please assign another admin before deleting your account.</strong>",
+                    classes: 'red lighten-2' 
                 })
                 return;
             }
@@ -106,8 +110,8 @@ function UserProfile() {
                 })
                 .catch((err) => {
                     M.toast({
-                        html: `There was an error deleting this user ${getErrorDetails(err)}`,
-                        classes: 'red'
+                        html: `<strong>There was an error deleting this user ${getErrorDetails(err)}</strong>`,
+                        classes: 'red lighten-2' 
                     })
                     console.log(err);
                     if (checkAuthFailure(err)) {
@@ -127,8 +131,8 @@ function UserProfile() {
                 })
                 .catch((err) => {
                     M.toast({
-                        html: `There was an error clearing your favourites ${getErrorDetails(err)}`,
-                        classes: 'red'
+                        html: `<strong>There was an error clearing your favourites ${getErrorDetails(err)}<strong>`,
+                        classes: 'red lighten-2' 
                     })
                     console.log(err);
                     if (checkAuthFailure(err)) {
@@ -181,8 +185,8 @@ function UserProfile() {
                 })
                 .catch((err) => {
                     M.toast({
-                        html: `There was an error changing your password ${getErrorDetails(err)}`,
-                        classes: 'red'
+                        html: `<strong>There was an error changing your password ${getErrorDetails(err)}</strong>`,
+                        classes: 'red lighten-2' 
                     })
                     console.log(err);
                     if (checkAuthFailure(err)) {
@@ -234,8 +238,8 @@ function UserProfile() {
                 })
                 .catch((err) => {
                     M.toast({
-                        html: `There was an error removing your photo ${getErrorDetails(err)}`,
-                        classes: 'red'
+                        html: `<strong>There was an error removing your photo ${getErrorDetails(err)}</strong>`,
+                        classes: 'red lighten-2' 
                     })
                     console.log(err);
                     if (checkAuthFailure(err)) {
@@ -247,15 +251,15 @@ function UserProfile() {
         if (loggedInUser && file) {
             if (!isWithinFileSizeLimit(file.file)) {
                 M.toast({
-                    html: `The max file size is ${MAX_FILE_SIZE} mb`,
-                    classes: 'red'
+                    html: `<strong>The max file size is ${MAX_FILE_SIZE} mb</strong>`,
+                    classes: 'red lighten-2' 
                 })
                 return;
             }
             if (!isAcceptedMimeType(file.file)) {
                 M.toast({
-                    html: `The supported file types are ${ACCEPTED_FILE_TYPES}`,
-                    classes: 'red'
+                    html: `<strong>The supported file types are ${ACCEPTED_FILE_TYPES}</strong>`,
+                    classes: 'red lighten-2' 
                 })
                 return;
             }
@@ -267,8 +271,8 @@ function UserProfile() {
                 })
                 .catch((err) => {
                     M.toast({
-                        html: `There was an error uploading your photo ${getErrorDetails(err)}`,
-                        classes: 'red'
+                        html: `<strong>There was an error uploading your photo ${getErrorDetails(err)}</strong>`,
+                        classes: 'red lighten-2' 
                     })
                     console.log(err);
                     if (checkAuthFailure(err)) {

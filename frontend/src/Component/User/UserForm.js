@@ -61,7 +61,10 @@ function UserForm(props) {
                 setTimeout(() => navigate('/recipes'), 1000);
             })
             .catch((err) => {
-                M.toast({ html: `There was an error creating this user ${getErrorDetails(err)} `, classes: 'red' })
+                M.toast({
+                    html: `<strong>There was an error creating this user ${getErrorDetails(err)}</strong>`,
+                    classes: 'red lighten-2'
+                })
                 console.log(err)
             })
     };
@@ -76,7 +79,9 @@ function UserForm(props) {
             M.toast({ html: `Welcome ${res.data.user.first_name} ${res.data.user.last_name}!` })
             setTimeout(() => navigate('/recipes'), 1000);
         }).catch((err) => {
-            M.toast({ html: `There was an error getting this user ${getErrorDetails(err)} `, classes: 'red' })
+            M.toast({ 
+                html: `<strong>There was an error getting this user ${getErrorDetails(err)} </strong>`,
+                classes: 'red lighten-2'  })
             console.log(err)
         })
     };

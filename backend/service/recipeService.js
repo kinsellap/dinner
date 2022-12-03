@@ -34,6 +34,9 @@ export const getRecipesByPage = async (page, limit, searchQuery) => {
         const key = Object.keys(searchQuery)[0];
         const values = Object.values(searchQuery)[0];
         filter[key] = { $regex: new RegExp(values, "i") }
+    } else if (searchQuery.id) {
+        const objectIds = convertStringIdToObject(filter.id);
+        filter = { _id: { $in: objectIds } }
     }
     return await Recipe.find(filter)
         .populate('updated_by', 'email_address')
@@ -41,6 +44,7 @@ export const getRecipesByPage = async (page, limit, searchQuery) => {
         .skip(page * limit)
         .limit(limit)
 }
+
 
 export const updateRecipe = async (recipeId, recipeBody) => {
     const { updated_by } = recipeBody;
@@ -75,4 +79,10 @@ export const deleteRecipes = async (userId) => {
 const isRegexSearchKey = (searchQuery) => {
     return (searchQuery.title || searchQuery.core_ingredient
         || searchQuery.prep_time || searchQuery.cook_time);
+}
+
+const convertStringIdToObject = (ids) => {
+    return ids.split(',').map((element) => {
+        return mongoose.Types.ObjectId(element);
+    })
 }
