@@ -44,7 +44,7 @@ function UserProfile() {
         if (loggedInUser?._id) {
             userCountRecipesAdded(loggedInUser._id);
         }
-    }, [loggedInUser?._id]);
+    }, []);
 
     useEffect(() => {
         const userCountRecipesUpdated = async (userId) => {
@@ -63,7 +63,7 @@ function UserProfile() {
         if (loggedInUser?._id) {
             userCountRecipesUpdated(loggedInUser._id);
         }
-    }, [loggedInUser?._id]);
+    }, []);
 
     useEffect(() => {
         const setFileType = async (profile_picture) => {
