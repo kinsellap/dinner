@@ -295,7 +295,7 @@ function RecipeList() {
                         <li className={currentPage === 7 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">8</a></li>
                         <li className={currentPage === 8 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">9</a></li>
                         <li className={currentPage === 9 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">10</a></li>
-                        <li className={currentPage === 9 ? "disabled" : ""} o onClick={handleChevronClick}><a href="#!"><i className="material-icons">chevron_right</i></a></li>
+                        <li className={currentPage === 9 ? "disabled" : ""} onClick={handleChevronClick}><a href="#!"><i className="material-icons">chevron_right</i></a></li>
                     </ul>
                 </div>
                 <div className="row"></div>
