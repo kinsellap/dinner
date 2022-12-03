@@ -58,11 +58,15 @@ function RecipeList() {
         return (searchKey === 'difficulty' || searchKey === 'healthy_level');
     };
 
+    const isSearchKeyBooleanValue = () => {
+        return (searchKey === 'premade' || searchKey === 'vegetarian' || searchKey === 'batch');
+    };
+
     const handleSearchRecipe = async (event) => {
         event.preventDefault();
         let searchParamValue = document.getElementById('search-value').value;
         if (isNotEmpty(searchParamValue)) {
-            if (searchKey === 'premade') {
+            if (isSearchKeyBooleanValue()) {
                 if (searchParamValue.toLowerCase().trim() === 'false') {
                     searchParamValue = Boolean(false);
                 } else if (searchParamValue.toLowerCase().trim() === 'true') {
@@ -190,6 +194,8 @@ function RecipeList() {
                                 <option value="premade">Premade</option>
                                 <option value="difficulty">Difficulty</option>
                                 <option value="healthy_level">Healthy</option>
+                                <option value="vegetarian">Veggie</option>
+                                <option value="batch">Batch</option>
                             </select>
                         </div>
                         <div className="input-field col s4 center">
