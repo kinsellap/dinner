@@ -12,13 +12,13 @@ export const createRecipe = async (recipeBody) => {
         return await (newRecipe.save());
     }
     throw Error(UNAUTHORISED_ACTION);
-}
+};
 
 export const getRecipe = async (recipeId) => {
     return await Recipe.findById(recipeId)
         .populate('updated_by', 'email_address')
         .populate('added_by', 'email_address');
-}
+};
 
 export const getCountRecipes = async (query) => {
     const { added_by, updated_by } = query;
@@ -26,7 +26,7 @@ export const getCountRecipes = async (query) => {
         throw Error('Query not supported');
     }
     return await (Recipe.count(query));
-}
+};
 
 export const getRecipesByPage = async (page, limit, searchQuery) => {
     let filter = searchQuery;
@@ -43,7 +43,7 @@ export const getRecipesByPage = async (page, limit, searchQuery) => {
         .populate('added_by', 'email_address')
         .skip(page * limit)
         .limit(limit)
-}
+};
 
 
 export const updateRecipe = async (recipeId, recipeBody) => {
@@ -58,7 +58,7 @@ export const updateRecipe = async (recipeId, recipeBody) => {
         return await (Recipe.findOneAndUpdate({ _id: recipeId }, updateBody, { new: true }));
     }
     throw Error(UNAUTHORISED_ACTION);
-}
+};
 
 export const deleteRecipe = async (recipeId, userId) => {
     const user = await getUserInternal(userId);
@@ -66,7 +66,7 @@ export const deleteRecipe = async (recipeId, userId) => {
         return await (Recipe.findByIdAndDelete({ _id: recipeId }));
     }
     throw Error(UNAUTHORISED_ACTION);
-}
+};
 
 export const deleteRecipes = async (userId) => {
     const user = await getUserInternal(userId);
@@ -74,15 +74,15 @@ export const deleteRecipes = async (userId) => {
         return await Recipe.deleteMany();
     }
     throw Error(UNAUTHORISED_ACTION);
-}
+};
 
 const isRegexSearchKey = (searchQuery) => {
     return (searchQuery.title || searchQuery.core_ingredient
         || searchQuery.prep_time || searchQuery.cook_time);
-}
+};
 
 const convertStringIdToObject = (ids) => {
     return ids.split(',').map((element) => {
         return mongoose.Types.ObjectId(element);
     })
-}
+};

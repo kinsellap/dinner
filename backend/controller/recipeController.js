@@ -76,7 +76,7 @@ const handleGetByIdResult = (result, res, response) => {
     } else {
         res.json(response);
     };
-}
+};
 
 module.exports = recipeRouter;
 

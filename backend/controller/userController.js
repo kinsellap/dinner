@@ -86,6 +86,6 @@ const handleGetUserResult = (result, res, response) => {
     } else {
         res.json(response);
     };
-}
+};
 
 module.exports = userRouter;

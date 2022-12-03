@@ -38,6 +38,6 @@ function HeaderLayout() {
         </ul>
       </div>
     </nav>
-  )
+  );
 }
 export default HeaderLayout;

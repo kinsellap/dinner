@@ -7,7 +7,7 @@ export const UserProvider = ({ children }) => {
 
     useEffect(() => {
         setLoggedInUser(getAuthenticatedUser());
-    }, [])
+    }, []);
 
     return (
         <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>

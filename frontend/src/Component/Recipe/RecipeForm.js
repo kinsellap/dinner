@@ -75,7 +75,6 @@ function RecipeForm(props) {
             ...values,
             vegetarian: Boolean(event.target.checked),
         }));
-
     };
 
     const handlePremadeChange = (event) => {
@@ -136,13 +135,13 @@ function RecipeForm(props) {
 
     const handleEditClick = (event) => {
         setEditable(true);
-    }
+    };
 
     const handleAuthFailure = () => {
         removeAuthenticatedUser();
         setLoggedInUser();
         setTimeout(() => navigate('/users/login'), 1000);
-    }
+    };
 
     const doSubmit = async (event) => {
         event.preventDefault();
@@ -323,7 +322,7 @@ function RecipeForm(props) {
                 </form>
             </div>
         </div>
-    )
+    );
 }
 
 export default RecipeForm;

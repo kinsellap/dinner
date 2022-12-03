@@ -13,7 +13,7 @@ export const createUser = async (userData) => {
     }
     const updatedUser = await removePassword(user);
     return addTokenToUser(updatedUser)
-}
+};
 
 export const getUserByAuth = async (userData) => {
     const { email_address, password } = userData;
@@ -28,7 +28,7 @@ export const getUserByAuth = async (userData) => {
     } else {
         throw Error('Invalid password')
     };
-}
+};
 
 export const changePassword = async (userData, requesterId) => {
     const { email_address, password, new_password } = userData;
@@ -42,14 +42,14 @@ export const changePassword = async (userData, requesterId) => {
     } else {
         throw Error('Invalid password')
     };
-}
+};
 
 export const resetPassword = async (email) => {
     let user = await User.findOne({ email_address: email })
     if (!user) {
         return null;
     }
-}
+};
 
 export const updateUser = async (userId, userBody, requesterId) => {
     const requester = await getUserInternal(requesterId);
@@ -62,7 +62,7 @@ export const updateUser = async (userId, userBody, requesterId) => {
         return await User.findOneAndUpdate({ _id: userId }, updateBody, { new: true });
     }
     throw Error(UNAUTHORISED_ACTION);
-}
+};
 
 export const deleteUser = async (userId, requesterId) => {
     const requester = await getUserInternal(requesterId);
@@ -70,7 +70,7 @@ export const deleteUser = async (userId, requesterId) => {
         return await User.findByIdAndDelete({ _id: userId });
     }
     throw Error(UNAUTHORISED_ACTION);
-}
+};
 
 export const deleteUsers = async (requesterId) => {
     const requester = await getUserInternal(requesterId);
@@ -78,7 +78,7 @@ export const deleteUsers = async (requesterId) => {
         return await User.deleteMany();
     }
     throw Error(UNAUTHORISED_ACTION);
-}
+};
 
 export const getUser = async (userId, requesterId) => {
     const requester = await getUserInternal(requesterId);
@@ -86,11 +86,11 @@ export const getUser = async (userId, requesterId) => {
         return await User.findById(userId);
     }
     throw Error(UNAUTHORISED_ACTION);
-}
+};
 
 export const getUserInternal = async (userId) => {
     return await User.findById(userId);
-}
+};
 
 export const getUsers = async (requesterId) => {
     const requester = await getUserInternal(requesterId);
@@ -98,16 +98,16 @@ export const getUsers = async (requesterId) => {
         return await User.find();
     }
     throw Error(UNAUTHORISED_ACTION);
-}
+};
 
 const removePassword = async (user) => {
     return lodash.omit(user.toObject(), ['password']);
-}
+};
 
 const addTokenToUser = (user) => {
     const { _id, email_address, password, } = user;
     const token = signRequest({ _id, email_address, password });
     return { user, token };
-}
+};
 
 

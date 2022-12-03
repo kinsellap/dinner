@@ -1,4 +1,3 @@
-
 const LOGGED_IN_USER = "loggedInUser";
 const AUTH_TOKEN = "authToken";
 
@@ -29,4 +28,4 @@ export const getAuthToken = () => {
 export const removeAuthenticatedUser = () => {
     sessionStorage.removeItem(LOGGED_IN_USER);
     sessionStorage.removeItem(AUTH_TOKEN);
-}
+};

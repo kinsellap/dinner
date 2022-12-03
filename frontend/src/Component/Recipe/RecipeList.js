@@ -24,7 +24,7 @@ function RecipeList() {
     useEffect(() => {
         var elems = document.querySelectorAll('.tooltipped');
         M.Tooltip.init(elems);
-    }, [])
+    }, []);
 
     useEffect(() => {
         var elems = document.querySelectorAll('select');
@@ -149,7 +149,7 @@ function RecipeList() {
         removeAuthenticatedUser();
         setLoggedInUser();
         setTimeout(() => navigate('/users/login'), 1000);
-    }
+    };
 
     const handleDeleteClick = (event) => {
         event.preventDefault();
@@ -171,15 +171,15 @@ function RecipeList() {
                     }
                 })
         }
-    }
+    };
 
     const isUserFavouriteRecipesEmpty = () => {
         return loggedInUser?.favourite_recipes.length === 0 ;
-    }
+    };
 
     const isUserFavouriteRecipesFull = () => {
         return loggedInUser?.favourite_recipes.length === MAX_FAVOURITE_RECIPES ;
-    }
+    };
 
     const handleFavouriteClick = (event) => {
         if (loggedInUser) {
@@ -193,7 +193,7 @@ function RecipeList() {
             }
             event.preventDefault();
             const row = event.target.closest('tr');
-            const rowId = row.getAttribute("row_id");
+            const rowId = row.getAttribute('row_id');
             const index = loggedInUser?.favourite_recipes.indexOf(rowId);
             if (index > -1) {
                 loggedInUser.favourite_recipes.splice(index, 1);
@@ -216,7 +216,7 @@ function RecipeList() {
                     }
                 })
         }
-    }
+    };
 
     return (
         <div className="row">
@@ -310,7 +310,7 @@ function RecipeList() {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default RecipeList;

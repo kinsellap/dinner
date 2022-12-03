@@ -134,8 +134,7 @@ function UserForm(props) {
                 </div>
             </form>
         </div>
-    )
-
+    );
 }
 
 export default UserForm;

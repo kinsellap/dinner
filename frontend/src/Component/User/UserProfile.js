@@ -46,7 +46,7 @@ function UserProfile() {
         if (loggedInUser?._id) {
             userCountRecipesAdded(loggedInUser._id);
         }
-    }, []);
+    }, [loggedInUser?._id]);
 
     useEffect(() => {
         const userCountRecipesUpdated = async (userId) => {
@@ -67,7 +67,7 @@ function UserProfile() {
         if (loggedInUser?._id) {
             userCountRecipesUpdated(loggedInUser._id);
         }
-    }, []);
+    }, [loggedInUser?._id]);
 
     useEffect(() => {
         const setFileType = async (profile_picture) => {
@@ -90,7 +90,7 @@ function UserProfile() {
     const handleShowPasswordClick = (event) => {
         event.preventDefault();
         setShowPassword(!showPassword);
-    }
+    };
 
     const handleDeleteClick = (event) => {
         event.preventDefault();
@@ -119,7 +119,7 @@ function UserProfile() {
                     }
                 })
         }
-    }
+    };
 
     const handleClearFavouritesClick = (event) => {
         event.preventDefault();
@@ -140,7 +140,7 @@ function UserProfile() {
                     }
                 })
         }
-    }
+    };
 
     const handleCurrentPasswordChange = (event) => {
         event.persist();
@@ -161,7 +161,7 @@ function UserProfile() {
     const handleChangePasswordClick = (event) => {
         event.preventDefault();
         setPasswordChange(true);
-    }
+    };
 
     const handleCancelChangePasswordClick = (event) => {
         event.preventDefault();
@@ -170,7 +170,7 @@ function UserProfile() {
             password: ''
         }));
         setPasswordChange(false);
-    }
+    };
 
     const doPasswordUpdate = (event) => {
         event.preventDefault();
@@ -194,38 +194,38 @@ function UserProfile() {
                     }
                 })
         }
-    }
+    };
 
     const handleAuthFailure = () => {
         removeAuthenticatedUser();
         setLoggedInUser();
         setTimeout(() => navigate('/users/login'), 1000);
-    }
+    };
 
     const isRemoveProfilePicture = (file) => {
         return profilePicture?.length > 0 && !file;
-    }
+    };
 
     const getCountRecipesFavourited = () => {
         return loggedInUser ? loggedInUser.favourite_recipes.length : 0;
-    }
+    };
 
     const hasFavouriteRecipies = () => {
         return loggedInUser ? loggedInUser.favourite_recipes.length > 0 : false;
-    }
+    };
 
     const getProfileName = () => {
         return loggedInUser ? capitaliseFirstLetter(loggedInUser?.first_name) + "'s Profile" : '';
-    }
+    };
 
     const isWithinFileSizeLimit = (file) => {
         return file.size <= MAX_FILE_SIZE;
-    }
+    };
 
     const isAcceptedMimeType = (file) => {
         const mime = file.type.substring(file.type.indexOf('/') + 1);
         return ACCEPTED_FILE_TYPES.includes(mime.toLowerCase());
-    }
+    };
 
     const onImageChange = (image) => {
         const file = image[0];
