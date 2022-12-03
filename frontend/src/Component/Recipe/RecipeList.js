@@ -55,6 +55,12 @@ function RecipeList() {
 
     const handleSearchKeyChange = (event) => {
         document.getElementById('search-value').value = '';
+        const searchValueDivElement = document.getElementById('search-value-div');
+        if(event.target.value === 'id'){
+            searchValueDivElement.hidden = true;
+        } else {
+            searchValueDivElement.hidden = false;
+        }
         setSearchKey(event.target.value);
     };
 
@@ -216,7 +222,7 @@ function RecipeList() {
                                 <option value="batch">Batch</option>
                             </select>
                         </div>
-                        <div className="input-field col s4 center">
+                        <div className="input-field col s4 center" id='search-value-div'>
                             <input className="validate" id="search-value" type={isSearchKeyNumericValue() ? "number" : "text"} maxLength="20" />
                             <label htmlFor="search-value">Search
                                 <i className="material-icons left">search</i>
