@@ -17,7 +17,7 @@ function RecipeList() {
     const [recipes, setRecipes] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [searchKey, setSearchKey] = useState('title');
-    const [currentQuery, setCurrentQuery] = useState({ searchKey: 'title', searchValue: '' });
+    const [currentQuery, setCurrentQuery] = useState({ key: 'title', value: '' });
 
     useEffect(() => {
         var elems = document.querySelectorAll('.tooltipped');
@@ -54,6 +54,10 @@ function RecipeList() {
         setSearchKey(event.target.value);
     };
 
+    const isSearchKeyNumericValue = () => {
+        return (searchKey === 'difficulty' || searchKey === 'healthy_level');
+    };
+
     const handleSearchRecipe = async (event) => {
         event.preventDefault();
         let searchParamValue = document.getElementById('search-value').value;
@@ -71,7 +75,7 @@ function RecipeList() {
                     return;
                 }
             }
-            if (searchKey === 'difficulty' || searchKey === 'healthy_level') {
+            if (isSearchKeyNumericValue()) {
                 if (isAnInteger(searchParamValue.trim())) {
                     searchParamValue = parseInt(searchParamValue.trim());
                     if (searchParamValue < 0 || searchParamValue > 6) {
@@ -91,8 +95,8 @@ function RecipeList() {
             }
         }
         setCurrentQuery(() => ({
-            searchKey: searchKey,
-            searchValue: searchParamValue
+            key: searchKey,
+            value: searchParamValue
         }));
     };
 
@@ -189,7 +193,7 @@ function RecipeList() {
                             </select>
                         </div>
                         <div className="input-field col s4 center">
-                            <input className="validate" id="search-value" type="text" maxLength="20" />
+                            <input className="validate" id="search-value" type={isSearchKeyNumericValue() ? "number" : "text"} maxLength="20" />
                             <label htmlFor="search-value">Search
                                 <i className="material-icons left">search</i>
                             </label>
@@ -204,10 +208,10 @@ function RecipeList() {
                     </div>
                 </div>
                 <div>
-                <ConfirmActionModal id="delete-recipe-modal" header="Delete Recipe" content="Are you sure you want to delete this recipe? This cannot be undone." callback={handleDeleteClick}/>
+                    <ConfirmActionModal id="delete-recipe-modal" header="Delete Recipe" content="Are you sure you want to delete this recipe? This cannot be undone." callback={handleDeleteClick} />
                     <table className="table-auto">
                         <thead>
-                            <tr className="tooltipped" data-position="top" data-tooltip= {loggedInUser ? "Double click row for details" : "Create an account to see more details"}>
+                            <tr className="tooltipped" data-position="top" data-tooltip={loggedInUser ? "Double click row for details" : "Create an account to see more details"}>
                                 <th>Name</th>
                                 <th>Core</th>
                                 <th>Premade</th>

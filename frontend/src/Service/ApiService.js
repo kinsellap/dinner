@@ -69,8 +69,8 @@ export const deleteRecipe = async (recipeId) => {
 export const fetchRecipes = async (page, query, limit) => {
     const token = getAuthToken();
     let url = RECIPES_ENDPOINT + page + "/" + limit;
-    if (isNotEmpty(query) && isNotEmpty(query.searchValue)) {
-        url += "?" + query.searchKey + "=" + query.searchValue;
+    if (isNotEmpty(query) && isNotEmpty(query.value)) {
+        url += "?" + query.key + "=" + query.value;
     }
     return await axios.get(url, contentAuthHeaders(token));
 }
