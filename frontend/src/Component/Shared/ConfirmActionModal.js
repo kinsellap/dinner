@@ -1,7 +1,7 @@
 import { React, useEffect } from "react";
-import M from 'materialize-css';
+import M from "materialize-css";
 
-function DinnerModal(props) {
+function ConfirmActionModal(props) {
     useEffect(() => {
         var elems = document.querySelectorAll('.modal');
         M.Modal.init(elems);
@@ -20,4 +20,4 @@ function DinnerModal(props) {
         </div>);
 }
 
-export default DinnerModal;
+export default ConfirmActionModal;

@@ -9,9 +9,9 @@ import { getCountRecipesUpdated, getCountRecipesAdded, deleteUser, updateUser, c
 import { dateOnly } from "../../Utils/DateTimeUtils";
 import { getMimeType } from "../../Utils/FileUtils";
 import ImageUploading from "react-images-uploading";
-import DinnerModal from "../Shared/DinnerModal";
+import ConfirmActionModal from "../Shared/ConfirmActionModal";
 import M from "materialize-css";
-const MAX_FILE_SIZE = 720000;
+const MAX_FILE_SIZE = 72000;
 const ACCEPTED_FILE_TYPES = ["jpg", "jpeg"];
 
 function UserProfile() {
@@ -360,7 +360,7 @@ function UserProfile() {
                     </div>
                     <div className="row">
                         <div hidden={!loggedInUser || passwordChange} className="col s4 left">
-                            <DinnerModal id="delete-account-modal" header="Delete Account" content="Are you sure you want to delete your account? This cannot be undone." callback={handleDeleteClick} />
+                            <ConfirmActionModal id="delete-account-modal" header="Delete Account" content="Are you sure you want to delete your account? This cannot be undone." callback={handleDeleteClick} />
                             <button className="btn waves-light modal-trigger left" type="button" data-target="delete-account-modal" >Delete Account
                                 <i className="material-icons right">delete_forever</i>
                             </button>
@@ -379,7 +379,7 @@ function UserProfile() {
                                 <i className="material-icons right"></i></button>
                         </div>
                         <div hidden={!loggedInUser || passwordChange} className="col s4 right">
-                            <DinnerModal id="clear-favourites-modal" header="Clear Favourites" content="Are you sure you want to clear your favourites? They cannot be recovered if deleted." callback={handleClearFavouritesClick} />
+                            <ConfirmActionModal id="clear-favourites-modal" header="Clear Favourites" content="Are you sure you want to clear your favourites? They cannot be recovered if deleted." callback={handleClearFavouritesClick} />
                             <button className="btn waves-light right modal-trigger" type="button" data-target="clear-favourites-modal" >Clear Favourites
                                 <i className="material-icons right">delete_sweep</i>
                             </button>

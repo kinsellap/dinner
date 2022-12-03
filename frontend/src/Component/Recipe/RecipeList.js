@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { fetchRecipes, deleteRecipe, updateUser } from "../../Service/ApiService";
 import { checkAuthFailure, getErrorDetails } from "../../Utils/ErrorUtils";
-import DinnerModal from "../Shared/DinnerModal";
+import ConfirmActionModal from "../Shared/ConfirmActionModal";
 import { isNotEmpty, isAnInteger } from '../../Utils/StringUtils';
 import { removeAuthenticatedUser, setAuthenticatedUser } from "../../Service/SessionService";
 import M from 'materialize-css';
@@ -204,7 +204,7 @@ function RecipeList() {
                     </div>
                 </div>
                 <div>
-                <DinnerModal id="delete-recipe-modal" header="Delete Recipe" content="Are you sure you want to delete this recipe? This cannot be undone." callback={handleDeleteClick}/>
+                <ConfirmActionModal id="delete-recipe-modal" header="Delete Recipe" content="Are you sure you want to delete this recipe? This cannot be undone." callback={handleDeleteClick}/>
                     <table className="table-auto">
                         <thead>
                             <tr className="tooltipped" data-position="top" data-tooltip= {loggedInUser ? "Double click row for details" : "Create an account to see more details"}>
