@@ -258,7 +258,7 @@ function RecipeList() {
                             <tr className="tooltipped" data-position="top" data-tooltip={loggedInUser ? "Double click row for details" : "Create an account to see more details"}>
                                 <th>Name</th>
                                 <th>Core</th>
-                                <th>Premade</th>
+                                <th className="hide-on-small-only">Premade</th>
                                 <th>Difficulty</th>
                                 <th>Healthy</th>
                             </tr>
@@ -269,7 +269,7 @@ function RecipeList() {
                                     <tr key={recipe._id} row_id={recipe._id} onDoubleClick={() => { if (loggedInUser) { navigate('/recipes/' + recipe._id, { state: { recipe } }) } }}>
                                         <td id="title"><a href={recipe.url} target="_blank" rel="noopener noreferrer">{recipe.title}</a></td>
                                         <td id="core">{recipe.core_ingredient}</td>
-                                        <td id="premade">{recipe.premade.toString()}</td>
+                                        <td className="hide-on-small-only" id="premade">{recipe.premade.toString()}</td>
                                         <td id="difficulty">{recipe.difficulty}</td>
                                         <td id="healthy">{recipe.healthy_level}</td>
                                         <td id="delete" className="tooltipped" data-position="top" data-tooltip="delete?" hidden={!isAdmin}><a href="#!" className="secondary-content modal-trigger" data-target={recipe._id}>
