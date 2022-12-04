@@ -292,10 +292,10 @@ function RecipeList() {
                         <li className={currentPage === 3 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">4</a></li>
                         <li className={currentPage === 4 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">5</a></li>
                         <li className={currentPage === 5 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">6</a></li>
-                        <li className={currentPage === 6 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">7</a></li>
-                        <li className={currentPage === 7 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">8</a></li>
-                        <li className={currentPage === 8 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">9</a></li>
-                        <li className={currentPage === 9 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">10</a></li>
+                        <li className={currentPage === 6 ? "active hide-on-small-only" : "waves-effect hide-on-small-only"} onClick={handlePaginationClick}><a href="#!">7</a></li>
+                        <li className={currentPage === 7 ? "active hide-on-small-only" : "waves-effect hide-on-small-only"} onClick={handlePaginationClick}><a href="#!">8</a></li>
+                        <li className={currentPage === 8 ? "active hide-on-small-only" : "waves-effect hide-on-small-only"} onClick={handlePaginationClick}><a href="#!">9</a></li>
+                        <li className={currentPage === 9 ? "active hide-on-small-only" : "waves-effect hide-on-small-only"} onClick={handlePaginationClick}><a href="#!">10</a></li>
                         <li className={currentPage === 9 ? "disabled" : ""} onClick={handleChevronClick}><a href="#!"><i className="material-icons">chevron_right</i></a></li>
                     </ul>
                 </div>
