@@ -32,10 +32,10 @@ function HeaderLayout() {
           <li hidden={loggedInUser}><Link to="/users/register">Register</Link></li>
         </ul>
         <ul className="sidenav !right" id="burger">
-          <li hidden={!loggedInUser}><Link to="/users">Profile</Link></li>
-          <li><Link to="/recipes">Recipes</Link></li>
-          <li hidden={!loggedInUser}><Link to="/"><span onClick={doLogout}>Logout</span></Link></li>
-          <li hidden={loggedInUser}><Link to="/users/register">Register</Link></li>
+          <li className="sidenav-close" hidden={!loggedInUser}><Link to="/users">Profile</Link></li>
+          <li className="sidenav-close"><Link to="/recipes">Recipes</Link></li>
+          <li className="sidenav-close" hidden={!loggedInUser}><Link to="/"><span onClick={doLogout}>Logout</span></Link></li>
+          <li className="sidenav-close" hidden={loggedInUser}><Link to="/users/register">Register</Link></li>
         </ul>
       </div>
     </nav>
