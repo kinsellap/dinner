@@ -260,7 +260,7 @@ function RecipeForm(props) {
                         <div className="input-field col s6">
                             <div className="range-field">
                                 <input type="range" id="difficulty" min="1" max="5" value={values.difficulty} onChange={handleDifficultyChange} disabled={!editable} />
-                                <label htmlFor="difficulty"> Note: 1 is easiest and 5 is hardest
+                                <label htmlFor="difficulty"> Note: 1 is easiest & 5 is hardest
                                     <br />Difficulty = </label>
                                 <output>{values.difficulty}</output>
                             </div>
@@ -268,7 +268,7 @@ function RecipeForm(props) {
                         <div className="input-field col s6">
                             <div className="range-field">
                                 <input type="range" id="healthy_level" min="1" max="5" value={values.healthy_level} onChange={handleHealthyChange} disabled={!editable} />
-                                <label htmlFor="healthy_level" >Note: 1 is most healthy and 5 is least healthy
+                                <label htmlFor="healthy_level" >Note: 1 is most healthy & 5 is least healthy
                                     <br /> Healthy = </label>
                                 <output>{values.healthy_level}</output>
                             </div>
