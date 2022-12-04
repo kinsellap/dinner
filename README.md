@@ -40,9 +40,9 @@ The administrator has permissions that standard users do not (such as deleting r
 * There are controllers for each resource to specify the supported routes
 * There are services provided for each resource to manage access to the data models
      * there is an additional service provided for jwt authorisation
-           * authentication tokens are returned to register/login requests
-           * this token is used to verify the user for all api calls that require authorisation
-           * this token is passed in the request header [x-access-token]
+        * authentication tokens are returned to register/login requests
+        * this token is used to verify the user for all api calls that require authorisation
+        * this token is passed in the request header [x-access-token]
 
 ## User Manual ##  
 * The frontend is configured to run on port 3000.
