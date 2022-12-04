@@ -3,6 +3,7 @@ import { UserContext } from "../../Service/UserProvider";
 import { createUser, loginUser } from "../../Service/ApiService";
 import { getErrorDetails } from "../../Utils/ErrorUtils";
 import M from "materialize-css";
+import "../../Css/Responsive.css";
 import { useNavigate, Link } from "react-router-dom";
 import { setAuthenticatedUser, setAuthToken } from "../../Service/SessionService";
 
@@ -88,7 +89,7 @@ function UserForm(props) {
 
     return (
         <div className="col s12">
-            <h4 className="teal-text text-lighten-2">{formAction}</h4>
+            <h4 className="teal-text text-lighten-2 text-responsive">{formAction}</h4>
             <form onSubmit={isRegister ? doRegister : doLogin}>
                 <div hidden={!isRegister} className="row">
                     <div className="input-field col s12">
@@ -116,7 +117,7 @@ function UserForm(props) {
                 </div>
                 <div className="row">
                     <div className="col s12">
-                        <button className="btn waves-light" type="submit">{formAction}
+                        <button className="btn waves-light text-responsive-btn" type="submit">{formAction}
                             <i className="material-icons right">account_circle</i></button>
                     </div>
                 </div>

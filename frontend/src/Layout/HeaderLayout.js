@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../Service/UserProvider";
 import { removeAuthenticatedUser } from "../Service/SessionService";
+import "../Css/Responsive.css";
 import M from "materialize-css";
 
 function HeaderLayout() {
@@ -22,7 +23,7 @@ function HeaderLayout() {
   return (
     <nav>
       <div className="nav-wrapper">
-        <Link to="/recipes" className="brand-logo center">What's for Dinner?</Link>
+        <Link to="/recipes" className="text-responsive brand-logo center" >What's for Dinner?</Link>
         <a href="#§" data-target="burger" className="sidenav-trigger"><i className="material-icons">menu</i></a>
         <ul className="right hide-on-med-and-down">
           <li hidden={!loggedInUser}><Link to="/users">Profile</Link></li>

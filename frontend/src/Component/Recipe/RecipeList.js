@@ -5,6 +5,7 @@ import { checkAuthFailure, getErrorDetails } from "../../Utils/ErrorUtils";
 import ConfirmActionModal from "../Shared/ConfirmActionModal";
 import { isNotEmpty, isAnInteger } from '../../Utils/StringUtils';
 import { removeAuthenticatedUser, setAuthenticatedUser } from "../../Service/SessionService";
+import "../../Css/Responsive.css";
 import M from "materialize-css";
 import { UserContext } from "../../Service/UserProvider";
 const ITEMS_PER_PAGE = 10;
@@ -223,7 +224,7 @@ function RecipeList() {
             <div className="col s12">
                 <div className="row">
                     <div className="col s12">
-                        <h5 className="teal-text text-lighten-2">Search Recipe</h5>
+                        <h5 className="teal-text text-lighten-2 text-responsive">Search Recipe</h5>
                         <div className="input-field col s3 center">
                             <select id="search-key" value={searchKey} onChange={handleSearchKeyChange}>
                                 <option value="title">Name</option>
@@ -238,13 +239,13 @@ function RecipeList() {
                         </div>
                         <div className="input-field col s4 center" id='search-value-div'>
                             <input className="validate" id="search-value" type={isSearchKeyNumericValue() ? "number" : "text"} maxLength="20" />
-                            <label htmlFor="search-value">Search
+                            <label className="text-responsive-btn" htmlFor="search-value">Search
                                 <i className="material-icons left">search</i>
                             </label>
                         </div>
                         <div className="row">
                             <div className="col s12">
-                                <button className="btn waves-light" onClick={handleSearchRecipe}>Search
+                                <button className="btn waves-light text-responsive-btn" onClick={handleSearchRecipe}>Search
                                     <i className="material-icons right">send</i>
                                 </button>
                             </div>
@@ -275,7 +276,7 @@ function RecipeList() {
                                             <i className="material-icons left">delete</i></a></td>
                                         <td id="favourite" className="tooltipped" data-position="top" data-tooltip="mark favourite?" hidden={!loggedInUser}><a href="#!" className="secondary-content" onClick={handleFavouriteClick}>
                                             <i className="material-icons left">{loggedInUser?.favourite_recipes.includes(recipe._id) ? "star" : "star_border"}</i></a></td>
-                                        <ConfirmActionModal id={recipe._id} header="Delete Recipe" content="Are you sure you want to delete this recipe? This cannot be undone." callback={handleDeleteClick}/>
+                                        <ConfirmActionModal id={recipe._id} header="Delete Recipe" content="Are you sure you want to delete this recipe?This cannot be undone." callback={handleDeleteClick}/>
                                     </tr>
                                 )
                             })}
@@ -302,7 +303,7 @@ function RecipeList() {
                 <div hidden={!loggedInUser} className="row">
                     <div className="col s12">
                         <Link to="/recipes/new">
-                            <button className="btn waves-effect waves-light"> Add Recipe
+                            <button className="btn waves-effect waves-light text-responsive-btn"> Add Recipe
                                 <i className="material-icons right">arrow_forward</i>
                             </button>
                         </Link>

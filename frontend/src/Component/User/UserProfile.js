@@ -10,6 +10,7 @@ import { dateOnly } from "../../Utils/DateTimeUtils";
 import { getMimeType } from "../../Utils/FileUtils";
 import ImageUploading from "react-images-uploading";
 import ConfirmActionModal from "../Shared/ConfirmActionModal";
+import "../../Css/Responsive.css";
 import M from "materialize-css";
 const MAX_FILE_SIZE = 72000;
 const ACCEPTED_FILE_TYPES = ["jpg", "jpeg"];
@@ -285,7 +286,7 @@ function UserProfile() {
     return (
         <div className="row">
             <div className="col s12">
-                <h4 className="teal-text text-lighten-2 center">{getProfileName()}</h4>
+                <h4 className="teal-text text-lighten-2 center text-responsive">{getProfileName()}</h4>
                 <div className="row col s12 center " >
                     {profilePicture.map((image, index) => (
                         <div key={index} className="image-item"><img className="circle responsive-img" src={image.data_url} alt="" width="100" /></div>
@@ -295,9 +296,9 @@ function UserProfile() {
                     <ImageUploading value={profilePicture} onChange={onImageChange} maxNumber={1} dataURLKey="data_url" acceptType={ACCEPTED_FILE_TYPES}>
                         {({ onImageUpdate, onImageRemove }) => (
                             <div className="upload__image-wrapper center">
-                                <button className=" btn waves-light center" type="button" onClick={onImageUpdate}>{loggedInUser?.profile_picture ? "Update Photo" : "Upload Photo"}</button>
+                                <button className=" btn waves-light center text-responsive-btn" type="button" onClick={onImageUpdate}>{loggedInUser?.profile_picture ? "Update Photo" : "Upload Photo"}</button>
                                 &nbsp;
-                                <button className="btn waves-light center" type="button" onClick={onImageRemove}>Remove Photo</button>
+                                <button className="btn waves-light center text-responsive-btn" type="button" onClick={onImageRemove}>Remove Photo</button>
                             </div>
                         )}
                     </ImageUploading>
@@ -307,16 +308,16 @@ function UserProfile() {
                     <div className="row">
                         <div className="col s2 left teal lighten-2 circle" style={{ color: "white" }}>
                             <h5 className="center"> {countRecipesAdded}</h5>
-                            <p className="center"> Recipes <br /><i className="material-icons">add_circle</i></p>
+                            <p className="center text-responsive-btn"> Recipes <br /><i className="material-icons">add_circle</i></p>
                         </div>
                         <div className="col s2  circle" style={{ outline: "2px solid #4db6ac", color: "#4db6ac", marginLeft: "25%" }}>
                             <h5 className="center"> {getCountRecipesFavourited()}</h5>
-                            <p className="center" >Recipes <br /><i className="material-icons">star</i></p>
+                            <p className="center text-responsive-btn" >Recipes <br /><i className="material-icons">star</i></p>
                         </div>
 
                         <div className="col s2 right  teal lighten-2 circle" style={{ color: "white" }}>
                             <h5 className="center">  {countRecipesUpdated}</h5>
-                            <p className="center">Recipes <br /><i className="material-icons">edit</i></p>
+                            <p className="center text-responsive-btn">Recipes <br /><i className="material-icons">edit</i></p>
                         </div>
                     </div>
                     <div className="row">
@@ -365,26 +366,26 @@ function UserProfile() {
                     <div className="row">
                         <div hidden={!loggedInUser || passwordChange} className="col s4 left">
                             <ConfirmActionModal id="delete-account-modal" header="Delete Account" content="Are you sure you want to delete your account? This cannot be undone." callback={handleDeleteClick} />
-                            <button className="btn waves-light modal-trigger left" type="button" data-target="delete-account-modal" >Delete Account
+                            <button className="btn waves-light modal-trigger left text-responsive-btn" type="button" data-target="delete-account-modal" >Delete Account
                                 <i className="material-icons right">delete_forever</i>
                             </button>
                         </div>
                         <div hidden={!loggedInUser || passwordChange} className="col s4 center">
-                            <button className="btn waves-light center" type="button" onClick={handleChangePasswordClick} >Change Password
+                            <button className="btn waves-light center text-responsive-btn" type="button" onClick={handleChangePasswordClick} >Change Password
                                 <i className="material-icons right"></i>
                             </button>
                         </div>
                         <div hidden={!loggedInUser || !passwordChange} className="col s4 right">
-                            <button className="btn waves-light right" type="submit">Submit
+                            <button className="btn waves-light right text-responsive-btn" type="submit">Submit
                                 <i className="material-icons right"></i></button>
                         </div>
                         <div hidden={!loggedInUser || !passwordChange} className="col s4 left">
-                            <button className="btn waves-light left" type="button" onClick={handleCancelChangePasswordClick}>Cancel
+                            <button className="btn waves-light left text-responsive-btn" type="button" onClick={handleCancelChangePasswordClick}>Cancel
                                 <i className="material-icons right"></i></button>
                         </div>
                         <div hidden={!loggedInUser || passwordChange} className="col s4 right">
                             <ConfirmActionModal id="clear-favourites-modal" header="Clear Favourites" content="Are you sure you want to clear your favourites? They cannot be recovered if deleted." callback={handleClearFavouritesClick} />
-                            <button className="btn waves-light right modal-trigger" type="button" data-target="clear-favourites-modal" >Clear Favourites
+                            <button className="btn waves-light right modal-trigger text-responsive-btn" type="button" data-target="clear-favourites-modal" >Clear Favourites
                                 <i className="material-icons right">delete_sweep</i>
                             </button>
                         </div>

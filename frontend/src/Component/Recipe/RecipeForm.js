@@ -4,6 +4,7 @@ import { createRecipe, updateRecipe } from "../../Service/ApiService";
 import { checkAuthFailure, getErrorDetails } from "../../Utils/ErrorUtils";
 import { dateOnly } from "../../Utils/DateTimeUtils";
 import { removeAuthenticatedUser } from "../../Service/SessionService";
+import "../../Css/Responsive.css";
 import M from "materialize-css";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
@@ -182,7 +183,7 @@ function RecipeForm(props) {
     return (
         <div className="row">
             <div className="col s12 ">
-                <h5 className="teal-text text-lighten-2">{editable && isCreateMode ? "Add a new recipe" : "Recipe details"}</h5>
+                <h5 className="teal-text text-lighten-2 text-responsive">{editable && isCreateMode ? "Add a new recipe" : "Recipe details"}</h5>
                 <form onSubmit={doSubmit}>
                     <div className="row">
                         <div className="input-field col s12">
@@ -302,19 +303,19 @@ function RecipeForm(props) {
                     <div className="row">
                         <div className="col s8">
                             <Link to="/recipes">
-                                <button className="btn waves-effect waves-light" type="button"> Back
+                                <button className="btn waves-effect waves-light text-responsive-btn" type="button"> Back
                                     <i className="material-icons left">arrow_back</i>
                                 </button>
                             </Link>
                         </div>
                         <div hidden={!editable} className="col s4">
-                            <button className="btn waves-light right" type="submit">
+                            <button className="btn waves-light right text-responsive-btn" type="submit">
                                 {editable && !isCreateMode ? "Update Recipe" : "Add Recipe"}
                                 <i className="material-icons right">add_circle</i>
                             </button>
                         </div>
                         <div hidden={editable || !loggedInUser} className="col s4">
-                            <button className="btn waves-effect waves-light right" type="button" onClick={handleEditClick} >Edit Recipe
+                            <button className="btn waves-effect waves-light right text-responsive-btn" type="button" onClick={handleEditClick} >Edit Recipe
                                 <i className="material-icons right">edit</i>
                             </button>
                         </div>
