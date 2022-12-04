@@ -1,15 +1,13 @@
-# dinner
+# What's for Dinner Application
+
+
 
 # dependencies
 - version of react etc
 
 # database
-- mongodb
-- version --
-- start with mac : brew services start mongodb-community
-- start with windowns
-- stop with mac:  brew services stop mongodb-community
-- stop with windows
+- mongodb-community@6.0
+- installation instructions here (https://www.mongodb.com/docs/manual/administration/install-community/)
 
 # boot
 - root folder of diner
