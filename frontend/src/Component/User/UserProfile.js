@@ -29,6 +29,11 @@ function UserProfile() {
     const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
+        var elems = document.querySelectorAll('.tooltipped');
+        M.Tooltip.init(elems);
+    }, []);
+
+    useEffect(() => {
         const userCountRecipesAdded = async (userId) => {
             await getCountRecipesAdded(userId)
                 .then(
@@ -308,44 +313,47 @@ function UserProfile() {
                     <div className="row">
                         <div className="col s2 left teal lighten-2 circle" style={{ color: "white" }}>
                             <h5 className="center"> {countRecipesAdded}</h5>
-                            <p className="center text-responsive-btn"> Recipes <br /><i className="material-icons">add_circle</i></p>
+                            <p className="center text-responsive-btn"> Recipes <br/> <span className="hide-on-small-only">Added</span>
+                            <i className="material-icons hide-on-med-and-up">add_circle</i></p>
                         </div>
                         <div className="col s2  circle" style={{ outline: "2px solid #4db6ac", color: "#4db6ac", marginLeft: "25%" }}>
                             <h5 className="center"> {getCountRecipesFavourited()}</h5>
-                            <p className="center text-responsive-btn" >Recipes <br /><i className="material-icons">star</i></p>
+                            <p className="center text-responsive-btn" >Recipes <br/><span className="hide-on-small-only">Starred</span>
+                            <i className="material-icons hide-on-med-and-up">star</i></p>
                         </div>
 
                         <div className="col s2 right  teal lighten-2 circle" style={{ color: "white" }}>
-                            <h5 className="center">  {countRecipesUpdated}</h5>
-                            <p className="center text-responsive-btn">Recipes <br /><i className="material-icons">edit</i></p>
+                            <h5 className="center"> {countRecipesUpdated}</h5>
+                            <p className="center text-responsive-btn">Recipes <br/><span className="hide-on-small-only">Edited</span>
+                            <i className="material-icons hide-on-med-and-up">edit</i></p>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col s12">
                             <label htmlFor="first-name">First Name</label>
-                            <textarea id="first-name" className="materialize-textarea" value={loggedInUser?.first_name} type="text" maxLength="20" readOnly />
+                            <textarea id="first-name" className="materialize-textarea text-responsive-text " value={loggedInUser?.first_name} type="text" maxLength="20" readOnly />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col s12">
                             <label htmlFor="last-name">Last Name</label>
-                            <textarea id="last-name" className="materialize-textarea" value={loggedInUser?.last_name} type="text" maxLength="20" readOnly />
+                            <textarea id="last-name" className="materialize-textarea text-responsive-text" value={loggedInUser?.last_name} type="text" maxLength="20" readOnly />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col s12">
                             <label htmlFor="email-address" data-error="wrong" data-success="right">Email</label>
-                            <textarea id="email-address" className="materialize-textarea" value={loggedInUser?.email_address} type="email" readOnly />
+                            <textarea id="email-address" className="materialize-textarea text-responsive-text" value={loggedInUser?.email_address} type="email" readOnly />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col s6">
                             <label htmlFor="date-added">Date Added</label>
-                            <textarea id="date-added" className="materialize-textarea" value={dateOnly(loggedInUser?.date_added)} readOnly></textarea>
+                            <textarea id="date-added" className="materialize-textarea text-responsive-text" value={dateOnly(loggedInUser?.date_added)} readOnly></textarea>
                         </div>
                         <div className="col s6">
                             <label htmlFor="date-updated">Date Updated</label>
-                            <textarea id="date-updated" className="materialize-textarea" value={dateOnly(loggedInUser?.date_updated)} readOnly></textarea>
+                            <textarea id="date-updated" className="materialize-textarea text-responsive-text" value={dateOnly(loggedInUser?.date_updated)} readOnly></textarea>
                         </div>
                     </div>
                     <div hidden={!passwordChange} className="row">

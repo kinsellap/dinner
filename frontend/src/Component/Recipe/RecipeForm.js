@@ -187,14 +187,14 @@ function RecipeForm(props) {
                 <form onSubmit={doSubmit}>
                     <div className="row">
                         <div className="input-field col s12">
-                            <input className={isCreateMode ? "validate" : ""} id="title" value={values.title} type="text" maxLength="20" onChange={handleTitleChange} required readOnly={!editable} />
-                            <label className={isCreateMode ? "" : "active"} htmlFor="title">Recipe Name</label>
+                            <input className={isCreateMode ? "validate text-responsive-text" : "text-responsive-text"} id="title" value={values.title} type="text" maxLength="20" onChange={handleTitleChange} required readOnly={!editable} />
+                            <label className={isCreateMode ? "text-responsive-text" : "active text-responsive-text truncate"} htmlFor="title">Recipe Name</label>
                         </div>
                     </div>
                     <div className="row">
                         <div className="input-field col s12">
-                            <input className={isCreateMode ? "validate" : ""} id="url" value={values.url} type="url" onChange={handleUrlChange} maxLength="250" required readOnly={!editable} />
-                            <label className={isCreateMode ? "" : "active"} htmlFor="url">Webpage</label>
+                            <input className={isCreateMode ? "validate text-responsive-text" : "text-responsive-text"} id="url" value={values.url} type="url" onChange={handleUrlChange} maxLength="250" required readOnly={!editable} />
+                            <label className={isCreateMode ? "text-responsive-text" : "active text-responsive-text"} htmlFor="url">Webpage</label>
                         </div>
                     </div>
                     <div className="row">
@@ -240,19 +240,19 @@ function RecipeForm(props) {
                         <div className="input-field col s4">
                             <label >
                                 <input id="vegetarian" checked={values.vegetarian} type="checkbox" onChange={handleVegetarianChange} disabled={!editable} />
-                                <span>Vegetarian </span>
+                                <span className="text-responsive-btn">Vegetarian </span>
                             </label>
                         </div>
                         <div className="input-field col s4">
                             <label >
                                 <input id="premade" checked={values.premade} type="checkbox" onChange={handlePremadeChange} disabled={!editable} />
-                                <span>Premade</span>
+                                <span className="text-responsive-btn">Premade</span>
                             </label>
                         </div>
                         <div className="input-field col s4">
                             <label >
                                 <input id="batch" checked={values.batch} type="checkbox" onChange={handleBatchChange} disabled={!editable} />
-                                <span>Batch</span>
+                                <span className="text-responsive-btn">Batch</span>
                             </label>
                         </div>
                     </div>
@@ -277,26 +277,26 @@ function RecipeForm(props) {
                     <div className="row" hidden={isCreateMode}>
                         <div className="col s6">
                             <label htmlFor="date-added">Date Added</label>
-                            <textarea id="date-added" className="materialize-textarea" value={values.date_added} readOnly></textarea>
+                            <textarea id="date-added" className="materialize-textarea text-responsive-text" value={values.date_added} readOnly></textarea>
                         </div>
                         <div className="col s6">
                             <label htmlFor="added-by">Added By</label>
-                            <textarea id="added-by" className="materialize-textarea" value={values.added_by?.email_address} readOnly></textarea>
+                            <textarea id="added-by" className="materialize-textarea text-responsive-text" value={values.added_by?.email_address} readOnly></textarea>
                         </div>
                     </div>
                     <div className="row" hidden={isCreateMode}>
                         <div className="col s6">
                             <label htmlFor="date-updated">Date Updated</label>
-                            <textarea id="date-updated" className="materialize-textarea " value={values.date_updated} readOnly></textarea>
+                            <textarea id="date-updated" className="materialize-textarea text-responsive-text" value={values.date_updated} readOnly></textarea>
                         </div>
                         <div className="col s6">
                             <label htmlFor="updated-by">Updated By</label>
-                            <textarea id="updated-by" className="materialize-textarea" value={values.updated_by?.email_address} readOnly></textarea>
+                            <textarea id="updated-by" className="materialize-textarea text-responsive-text" value={values.updated_by?.email_address} readOnly></textarea>
                         </div>
                     </div>
                     <div className="row">
                         <div className="input-field col s12">
-                            <textarea id="notes" className="materialize-textarea{height: 12rem;}" value={values.notes} onChange={handleNotesChange} maxLength="500" readOnly={!editable}></textarea>
+                            <textarea id="notes" className="materialize-textarea{height: 12rem;} text-responsive-text" value={values.notes} onChange={handleNotesChange} maxLength="500" readOnly={!editable}></textarea>
                             <label className={isCreateMode ? "" : "active"} htmlFor="notes">Notes</label>
                         </div>
                     </div>
