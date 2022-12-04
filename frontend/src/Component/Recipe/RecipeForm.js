@@ -206,7 +206,7 @@ function RecipeForm(props) {
                                 <option value="Chicken">Chicken</option>
                                 <option value="Fish">Fish</option>
                                 <option value="Grains">Grains</option>
-                                <option value="Lentils">Lentils</option>]
+                                <option value="Lentils">Lentils</option>
                                 <option value="Other">Other</option>
                                 <option value="Pasta">Pasta</option>
                                 <option value="Pork">Pork</option>
@@ -297,7 +297,7 @@ function RecipeForm(props) {
                     <div className="row">
                         <div className="input-field col s12">
                             <textarea id="notes" className="materialize-textarea{height: 12rem;} text-responsive-text" value={values.notes} onChange={handleNotesChange} maxLength="500" readOnly={!editable}></textarea>
-                            <label className={isCreateMode ? "" : "active"} htmlFor="notes">Notes</label>
+                            <label className={isCreateMode ? " text-responsive-text" : "active text-responsive-text"} htmlFor="notes">Notes</label>
                         </div>
                     </div>
                     <div className="row">
