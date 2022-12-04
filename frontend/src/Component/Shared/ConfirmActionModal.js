@@ -11,7 +11,7 @@ function ConfirmActionModal(props) {
     return (
         <div id={props.id} className="modal">
             <div className="modal-content">
-                <h5 className="text-responsive">{props.header}</h5>
+                <h5 className="text-responsive-header">{props.header}</h5>
                 <p>{props.content}</p>
             </div>
             <div className="modal-footer">

@@ -291,7 +291,7 @@ function UserProfile() {
     return (
         <div className="row">
             <div className="col s12">
-                <h4 className="teal-text text-lighten-2 center text-responsive">{getProfileName()}</h4>
+                <h4 className="teal-text text-lighten-2 center text-responsive-header">{getProfileName()}</h4>
                 <div className="row col s12 center " >
                     {profilePicture.map((image, index) => (
                         <div key={index} className="image-item"><img className="circle responsive-img" src={image.data_url} alt="" width="100" /></div>

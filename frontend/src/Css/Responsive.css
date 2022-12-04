@@ -1,4 +1,4 @@
-.text-responsive {
+.text-responsive-header {
   font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
 }
 

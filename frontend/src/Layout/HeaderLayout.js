@@ -23,7 +23,7 @@ function HeaderLayout() {
   return (
     <nav>
       <div className="nav-wrapper">
-        <Link to="/recipes" className="text-responsive brand-logo center" >What's for Dinner?</Link>
+        <Link to="/recipes" className="text-responsive-header brand-logo center" >What's for Dinner?</Link>
         <a href="#§" data-target="burger" className="sidenav-trigger"><i className="material-icons">menu</i></a>
         <ul className="right hide-on-med-and-down">
           <li hidden={!loggedInUser}><Link to="/users">Profile</Link></li>

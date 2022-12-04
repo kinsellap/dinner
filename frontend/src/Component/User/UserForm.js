@@ -89,7 +89,7 @@ function UserForm(props) {
 
     return (
         <div className="col s12">
-            <h4 className="teal-text text-lighten-2 text-responsive">{formAction}</h4>
+            <h4 className="teal-text text-lighten-2 text-responsive-header">{formAction}</h4>
             <form onSubmit={isRegister ? doRegister : doLogin}>
                 <div hidden={!isRegister} className="row">
                     <div className="input-field col s12">
