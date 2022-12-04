@@ -1,4 +1,4 @@
-# What's for Dinner Application #  
+# *What's for Dinner* Application #  
 ## Overview ## 
 Web application used to add, edit, delete and search recipes.
 
