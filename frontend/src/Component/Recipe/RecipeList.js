@@ -225,7 +225,7 @@ function RecipeList() {
                 <div className="row">
                     <div className="col s12">
                         <h5 className="teal-text text-lighten-2 text-responsive">Search Recipe</h5>
-                        <div className="input-field col s3 center">
+                        <div className="input-field col s4 center">
                             <select id="search-key" value={searchKey} onChange={handleSearchKeyChange}>
                                 <option value="title">Name</option>
                                 <option value={FAVOURITE_SEARCH_KEY}>Favourites</option>
@@ -237,8 +237,8 @@ function RecipeList() {
                                 <option value="batch">Batch</option>
                             </select>
                         </div>
-                        <div className="input-field col s4 center" id='search-value-div'>
-                            <input className="validate" id="search-value" type={isSearchKeyNumericValue() ? "number" : "text"} maxLength="20" />
+                        <div className="input-field col s8 center" id='search-value-div'>
+                            <input className="validate text-responsive-text" id="search-value" type={isSearchKeyNumericValue() ? "number" : "text"} maxLength="20" />
                             <label className="text-responsive-btn" htmlFor="search-value">Search
                                 <i className="material-icons left">search</i>
                             </label>
