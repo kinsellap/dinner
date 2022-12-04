@@ -18,9 +18,9 @@ The administrator has permissions that standard users do not (such as deleting r
 ## Installation ##
 1. Navigate to the root directory (dinner) of the project
 1. Run `npm install` 
-1. Navigate to the frontend directory just below the root directory 
+1. Navigate to the ***frontend*** directory just below the root directory 
 1. Run `npm install`
-1. Navigate to the backend directory just below the root directory 
+1. Navigate to the ***backend*** directory just below the root directory 
 1. Run `npm install`
 
 ## Start Application ##
