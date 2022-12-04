@@ -93,19 +93,19 @@ function UserForm(props) {
             <form onSubmit={isRegister ? doRegister : doLogin}>
                 <div hidden={!isRegister} className="row">
                     <div className="input-field col s12">
-                        <input className="validate" id="first-name" value={values.first_name} type="text" required={isRegister} maxLength="20" onChange={handleFirstNameChange} />
+                        <input className="validate text-responsive-text" id="first-name" value={values.first_name} type="text" required={isRegister} maxLength="20" onChange={handleFirstNameChange} />
                         <label htmlFor="first-name">First Name</label>
                     </div>
                 </div>
                 <div hidden={!isRegister} className="row">
                     <div className="input-field col s12">
-                        <input className="validate" id="last-name" value={values.last_name} type="text" required={isRegister} maxLength="20" onChange={handleLastNameChange} />
+                        <input className="validate text-responsive-text" id="last-name" value={values.last_name} type="text" required={isRegister} maxLength="20" onChange={handleLastNameChange} />
                         <label htmlFor="last-name">Last Name</label>
                     </div>
                 </div>
                 <div className="row">
                     <div className="input-field col s12">
-                        <input className="validate" id="email-address" value={values.email_address} type="email" required onChange={handleEmailChange} />
+                        <input className="validate text-responsive-text" id="email-address" value={values.email_address} type="email" required onChange={handleEmailChange} />
                         <label htmlFor="email-address" data-error="wrong" data-success="right">Email</label>
                     </div>
                 </div>
