@@ -1,5 +1,6 @@
 import { React, useEffect } from "react";
 import M from "materialize-css";
+import "../../Css/Responsive.css";
 
 function ConfirmActionModal(props) {
     useEffect(() => {
@@ -10,12 +11,12 @@ function ConfirmActionModal(props) {
     return (
         <div id={props.id} className="modal">
             <div className="modal-content">
-                <h5>{props.header}</h5>
+                <h5 className="text-responsive">{props.header}</h5>
                 <p>{props.content}</p>
             </div>
             <div className="modal-footer">
-                <button className="modal-close btn waves-light left">Cancel</button>
-                <button className="modal-close btn waves-light" onClick={props.callback}>Confirm</button>
+                <button className="modal-close btn waves-light left text-responsive-btn">Cancel</button>
+                <button className="modal-close btn waves-light text-responsive-btn" onClick={props.callback}>Confirm</button>
             </div>
         </div>);
 }

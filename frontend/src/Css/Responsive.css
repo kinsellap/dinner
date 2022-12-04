@@ -1,0 +1,12 @@
+.text-responsive {
+  font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+}
+
+.text-responsive-btn {
+  font-size: clamp(0.7rem, 2vw, 0.9rem) !important;
+}
+
+.text-responsive-text {
+  font-size: clamp(0.9rem, 2vw, 1.1rem) !important;
+}
+

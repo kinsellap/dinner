@@ -5,6 +5,7 @@ import { checkAuthFailure, getErrorDetails } from "../../Utils/ErrorUtils";
 import ConfirmActionModal from "../Shared/ConfirmActionModal";
 import { isNotEmpty, isAnInteger } from '../../Utils/StringUtils';
 import { removeAuthenticatedUser, setAuthenticatedUser } from "../../Service/SessionService";
+import "../../Css/Responsive.css";
 import M from "materialize-css";
 import { UserContext } from "../../Service/UserProvider";
 const ITEMS_PER_PAGE = 10;
@@ -223,8 +224,8 @@ function RecipeList() {
             <div className="col s12">
                 <div className="row">
                     <div className="col s12">
-                        <h5 className="teal-text text-lighten-2">Search Recipe</h5>
-                        <div className="input-field col s3 center">
+                        <h5 className="teal-text text-lighten-2 text-responsive">Search Recipe</h5>
+                        <div className="input-field col s4 center">
                             <select id="search-key" value={searchKey} onChange={handleSearchKeyChange}>
                                 <option value="title">Name</option>
                                 <option value={FAVOURITE_SEARCH_KEY}>Favourites</option>
@@ -236,15 +237,15 @@ function RecipeList() {
                                 <option value="batch">Batch</option>
                             </select>
                         </div>
-                        <div className="input-field col s4 center" id='search-value-div'>
-                            <input className="validate" id="search-value" type={isSearchKeyNumericValue() ? "number" : "text"} maxLength="20" />
-                            <label htmlFor="search-value">Search
+                        <div className="input-field col s8 center" id='search-value-div'>
+                            <input className="validate text-responsive-text" id="search-value" type={isSearchKeyNumericValue() ? "number" : "text"} maxLength="20" />
+                            <label className="text-responsive-btn" htmlFor="search-value">Search
                                 <i className="material-icons left">search</i>
                             </label>
                         </div>
                         <div className="row">
                             <div className="col s12">
-                                <button className="btn waves-light" onClick={handleSearchRecipe}>Search
+                                <button className="btn waves-light text-responsive-btn" onClick={handleSearchRecipe}>Search
                                     <i className="material-icons right">send</i>
                                 </button>
                             </div>
@@ -257,7 +258,7 @@ function RecipeList() {
                             <tr className="tooltipped" data-position="top" data-tooltip={loggedInUser ? "Double click row for details" : "Create an account to see more details"}>
                                 <th>Name</th>
                                 <th>Core</th>
-                                <th>Premade</th>
+                                <th className="hide-on-small-only">Premade</th>
                                 <th>Difficulty</th>
                                 <th>Healthy</th>
                             </tr>
@@ -268,14 +269,14 @@ function RecipeList() {
                                     <tr key={recipe._id} row_id={recipe._id} onDoubleClick={() => { if (loggedInUser) { navigate('/recipes/' + recipe._id, { state: { recipe } }) } }}>
                                         <td id="title"><a href={recipe.url} target="_blank" rel="noopener noreferrer">{recipe.title}</a></td>
                                         <td id="core">{recipe.core_ingredient}</td>
-                                        <td id="premade">{recipe.premade.toString()}</td>
+                                        <td className="hide-on-small-only" id="premade">{recipe.premade.toString()}</td>
                                         <td id="difficulty">{recipe.difficulty}</td>
                                         <td id="healthy">{recipe.healthy_level}</td>
                                         <td id="delete" className="tooltipped" data-position="top" data-tooltip="delete?" hidden={!isAdmin}><a href="#!" className="secondary-content modal-trigger" data-target={recipe._id}>
                                             <i className="material-icons left">delete</i></a></td>
                                         <td id="favourite" className="tooltipped" data-position="top" data-tooltip="mark favourite?" hidden={!loggedInUser}><a href="#!" className="secondary-content" onClick={handleFavouriteClick}>
                                             <i className="material-icons left">{loggedInUser?.favourite_recipes.includes(recipe._id) ? "star" : "star_border"}</i></a></td>
-                                        <ConfirmActionModal id={recipe._id} header="Delete Recipe" content="Are you sure you want to delete this recipe? This cannot be undone." callback={handleDeleteClick}/>
+                                        <ConfirmActionModal id={recipe._id} header="Delete Recipe" content="Are you sure you want to delete this recipe?This cannot be undone." callback={handleDeleteClick}/>
                                     </tr>
                                 )
                             })}
@@ -291,10 +292,10 @@ function RecipeList() {
                         <li className={currentPage === 3 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">4</a></li>
                         <li className={currentPage === 4 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">5</a></li>
                         <li className={currentPage === 5 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">6</a></li>
-                        <li className={currentPage === 6 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">7</a></li>
-                        <li className={currentPage === 7 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">8</a></li>
-                        <li className={currentPage === 8 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">9</a></li>
-                        <li className={currentPage === 9 ? "active" : "waves-effect"} onClick={handlePaginationClick}><a href="#!">10</a></li>
+                        <li className={currentPage === 6 ? "active hide-on-small-only" : "waves-effect hide-on-small-only"} onClick={handlePaginationClick}><a href="#!">7</a></li>
+                        <li className={currentPage === 7 ? "active hide-on-small-only" : "waves-effect hide-on-small-only"} onClick={handlePaginationClick}><a href="#!">8</a></li>
+                        <li className={currentPage === 8 ? "active hide-on-small-only" : "waves-effect hide-on-small-only"} onClick={handlePaginationClick}><a href="#!">9</a></li>
+                        <li className={currentPage === 9 ? "active hide-on-small-only" : "waves-effect hide-on-small-only"} onClick={handlePaginationClick}><a href="#!">10</a></li>
                         <li className={currentPage === 9 ? "disabled" : ""} onClick={handleChevronClick}><a href="#!"><i className="material-icons">chevron_right</i></a></li>
                     </ul>
                 </div>
@@ -302,7 +303,7 @@ function RecipeList() {
                 <div hidden={!loggedInUser} className="row">
                     <div className="col s12">
                         <Link to="/recipes/new">
-                            <button className="btn waves-effect waves-light"> Add Recipe
+                            <button className="btn waves-effect waves-light text-responsive-btn"> Add Recipe
                                 <i className="material-icons right">arrow_forward</i>
                             </button>
                         </Link>
