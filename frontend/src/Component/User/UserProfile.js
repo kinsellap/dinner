@@ -374,27 +374,25 @@ function UserProfile() {
                     <div className="row">
                         <div hidden={!loggedInUser || passwordChange} className="col s4 left">
                             <ConfirmActionModal id="delete-account-modal" header="Delete Account" content="Are you sure you want to delete your account? This cannot be undone." callback={handleDeleteClick} />
-                            <button className="btn waves-light modal-trigger left text-responsive-btn" type="button" data-target="delete-account-modal" >Delete Account
-                                <i className="material-icons right">delete_forever</i>
+                            <button className="btn waves-light modal-trigger left text-responsive-btn tooltipped" data-position="top" data-tooltip="Delete Account?" type="button" data-target="delete-account-modal" ><span className="hide-on-small-only">Delete</span> Account
+                                <i className="material-icons right hide-on-med-and-up">delete_forever</i>  
                             </button>
                         </div>
                         <div hidden={!loggedInUser || passwordChange} className="col s4 center">
-                            <button className="btn waves-light center text-responsive-btn" type="button" onClick={handleChangePasswordClick} >Change Password
-                                <i className="material-icons right"></i>
+                            <button className="btn waves-light center text-responsive-btn tooltipped" data-position="top" data-tooltip="Change password?" type="button" onClick={handleChangePasswordClick} >Change <span className="hide-on-small-only">Password</span>
+                            <i className="material-icons right hide-on-med-and-up">lock</i>  
                             </button>
                         </div>
                         <div hidden={!loggedInUser || !passwordChange} className="col s4 right">
-                            <button className="btn waves-light right text-responsive-btn" type="submit">Submit
-                                <i className="material-icons right"></i></button>
+                            <button className="btn waves-light right text-responsive-btn" type="submit">Submit</button>
                         </div>
                         <div hidden={!loggedInUser || !passwordChange} className="col s4 left">
-                            <button className="btn waves-light left text-responsive-btn" type="button" onClick={handleCancelChangePasswordClick}>Cancel
-                                <i className="material-icons right"></i></button>
+                            <button className="btn waves-light left text-responsive-btn" type="button" onClick={handleCancelChangePasswordClick}>Cancel</button>
                         </div>
                         <div hidden={!loggedInUser || passwordChange} className="col s4 right">
                             <ConfirmActionModal id="clear-favourites-modal" header="Clear Favourites" content="Are you sure you want to clear your favourites? They cannot be recovered if deleted." callback={handleClearFavouritesClick} />
-                            <button className="btn waves-light right modal-trigger text-responsive-btn" type="button" data-target="clear-favourites-modal" >Clear Favourites
-                                <i className="material-icons right">delete_sweep</i>
+                            <button className="btn waves-light right modal-trigger text-responsive-btn tooltipped" data-position="top" data-tooltip="Clear faves?" type="button" data-target="clear-favourites-modal" >Clear <span className="hide-on-small-only">Favourites</span>
+                                <i className="material-icons right  hide-on-med-and-up">star</i>
                             </button>
                         </div>
                     </div>
