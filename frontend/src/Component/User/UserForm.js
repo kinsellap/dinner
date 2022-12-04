@@ -58,7 +58,7 @@ function UserForm(props) {
                 setLoggedInUser(res.data.user);
                 setAuthenticatedUser(res.data.user);
                 setAuthToken(res.data.token)
-                M.toast({ html: `User ${res.data.user.first_name} ${res.data.user.last_name} created` })
+                M.toast({ html: `${res.data.user.first_name} ${res.data.user.last_name} has been created, welcome!` })
                 setTimeout(() => navigate('/recipes'), 1000);
             })
             .catch((err) => {

@@ -181,13 +181,21 @@ function UserProfile() {
     const doPasswordUpdate = (event) => {
         event.preventDefault();
         if (loggedInUser && isNotEmpty(passwordValues.password) && isNotEmpty(passwordValues.new_password)) {
+            if(passwordValues.password === passwordValues.new_password){
+                M.toast({
+                    html: `<strong>Your new password cannot be the same as your existing password</strong>`,
+                    classes: 'red lighten-2' 
+                })
+                return;
+            }
             const { email_address, _id } = loggedInUser;
             const { password, new_password } = passwordValues;
             changePassword({ email_address, _id, password, new_password })
                 .then((res) => {
                     setLoggedInUser(res.data);
                     setAuthenticatedUser(res.data);
-                    setTimeout(window.location.reload(), 1000);
+                    M.toast({ html: `Your password has been successfully changed` })
+                    setTimeout(window.location.reload(), 3000);
                 })
                 .catch((err) => {
                     M.toast({
