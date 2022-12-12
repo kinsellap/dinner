@@ -1,6 +1,6 @@
 import { verifyToken } from '../service/AuthService';
 
-const verify = (req, res, next) => {
+const verify = (req, res) => {
   const token = req.headers["x-access-token"];
   if (!token) {
     res.status(403);
@@ -13,7 +13,6 @@ const verify = (req, res, next) => {
       res.status(401);
       return res.json({ message: "Invalid Token: " + err.message });
     }
-    return next();
   }
 };
 
