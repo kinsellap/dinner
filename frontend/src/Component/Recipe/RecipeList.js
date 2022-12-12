@@ -113,14 +113,14 @@ function RecipeList() {
 
         } 
        if(searchKey===FAVOURITE_SEARCH_KEY){
-            if(isUserFavouriteRecipesEmpty()){
+            if(!loggedInUser || isUserFavouriteRecipesEmpty()){
                 M.toast({
                     html: `<strong>You currently have no favourites</strong>`,
                     classes: 'red lighten-2' 
                 })
                 return;
             } 
-            searchParamValue = loggedInUser.favourite_recipes;
+            searchParamValue = loggedInUser?.favourite_recipes;
         }
         setCurrentQuery(() => ({
             key: searchKey,
@@ -276,7 +276,7 @@ function RecipeList() {
                                             <i className="material-icons left">delete</i></a></td>
                                         <td id="favourite" className="tooltipped" data-position="top" data-tooltip="mark favourite?" hidden={!loggedInUser}><a href="#!" className="secondary-content" onClick={handleFavouriteClick}>
                                             <i className="material-icons left">{loggedInUser?.favourite_recipes.includes(recipe._id) ? "star" : "star_border"}</i></a></td>
-                                        <ConfirmActionModal id={recipe._id} header="Delete Recipe" content="Are you sure you want to delete this recipe?This cannot be undone." callback={handleDeleteClick}/>
+                                        <ConfirmActionModal id={recipe._id} header="Delete Recipe" content="Are you sure you want to delete this recipe? This cannot be undone." callback={handleDeleteClick}/>
                                     </tr>
                                 )
                             })}
