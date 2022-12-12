@@ -1,8 +1,8 @@
 import RecipeList from "../Component/Recipe/RecipeList";
 
-function RecipeListLayout(user) {
+function RecipeListLayout() {
   return (
-      <div className="container"><RecipeList user/></div>
+      <div className="container"><RecipeList/></div>
   );
 }
 export default RecipeListLayout;
